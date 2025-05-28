@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase'
+import { isIntegrationEnabled } from '@/lib/integrationSettings'
 
 export async function GET() {
+  if (!(await isIntegrationEnabled('teams'))) {
+    return NextResponse.json({ success: false, error: 'Teams integration disabled' }, { status: 403 })
+  }
+
   try {
     const supabase = createClient()
     

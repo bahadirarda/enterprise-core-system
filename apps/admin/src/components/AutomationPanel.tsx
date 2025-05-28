@@ -106,8 +106,8 @@ export default function AutomationPanel() {
     try {
       // Mock data - in real implementation, these would be API calls
       setPipelines([
-        {
-          id: '1',
+  {
+    id: '1',
           status: 'running',
           branch: 'feature/status-page-updates',
           commit: 'abc123f',
@@ -121,9 +121,9 @@ export default function AutomationPanel() {
             { id: '4', name: 'Integration Tests', status: 'pending' },
             { id: '5', name: 'Deploy to Staging', status: 'pending' }
           ]
-        },
-        {
-          id: '2',
+  },
+  {
+    id: '2',
           status: 'success',
           branch: 'main',
           commit: 'def456g',
@@ -141,8 +141,8 @@ export default function AutomationPanel() {
       ])
 
       setMergeRequests([
-        {
-          id: '1',
+  {
+    id: '1',
           title: 'Add DevOps pipeline and Docker configuration',
           description: 'Complete CI/CD setup with Docker, health checks, and automated deployments',
           author: 'bahadirarda',
@@ -160,9 +160,9 @@ export default function AutomationPanel() {
             deletions: 23,
             files: 12
           }
-        },
-        {
-          id: '2',
+  },
+  {
+    id: '2',
           title: 'Update admin panel automation features',
           description: 'Enhanced admin panel with pipeline management and merge request approval system',
           author: 'team-member',
@@ -208,17 +208,17 @@ export default function AutomationPanel() {
       ])
 
       setFeatureFlags([
-        {
-          id: '1',
+  {
+    id: '1',
           name: 'enhanced_status_page',
           description: 'New enhanced status page with real-time metrics',
           enabled: true,
           environment: 'production',
           rolloutPercentage: 100,
           lastModified: new Date(Date.now() - 1800000).toISOString()
-        },
-        {
-          id: '2',
+  },
+  {
+    id: '2',
           name: 'admin_automation_v2',
           description: 'Advanced admin panel automation features',
           enabled: false,
@@ -334,7 +334,7 @@ export default function AutomationPanel() {
             <p className="text-gray-600">CI/CD Pipeline Management & Deployment Control</p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-3">
           {notifications > 0 && (
             <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg">
@@ -353,12 +353,12 @@ export default function AutomationPanel() {
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
+          </div>
         </div>
-      </div>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8">
           {[
             { id: 'pipelines', label: 'Pipelines', icon: Activity, count: pipelines.filter(p => p.status === 'running').length },
             { id: 'merges', label: 'Merge Requests', icon: GitMerge, count: mergeRequests.filter(mr => mr.status === 'open').length },
@@ -415,26 +415,26 @@ export default function AutomationPanel() {
                       </span>
                       
                       {(pipeline.status === 'failed' || pipeline.status === 'cancelled') && (
-                        <button
+            <button
                           onClick={() => handlePipelineAction(pipeline.id, 'retry')}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        >
+            >
                           <Play className="w-4 h-4" />
-                        </button>
+            </button>
                       )}
                       
                       {pipeline.status === 'running' && (
-                        <button
+            <button
                           onClick={() => handlePipelineAction(pipeline.id, 'cancel')}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
+            >
                           <Pause className="w-4 h-4" />
-                        </button>
+            </button>
                       )}
                     </div>
-                  </div>
-                </div>
-                
+        </div>
+      </div>
+
                 <div className="p-4 space-y-2">
                   {pipeline.jobs.map((job) => (
                     <div key={job.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -450,7 +450,7 @@ export default function AutomationPanel() {
                         <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(job.status)}`}>
                           {job.status}
                         </span>
-                      </div>
+          </div>
                     </div>
                   ))}
                 </div>
@@ -482,7 +482,7 @@ export default function AutomationPanel() {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                   <div className="flex items-center space-x-4 text-sm">
                     <span className="text-green-600">+{mr.changes.additions}</span>
@@ -500,7 +500,7 @@ export default function AutomationPanel() {
                       <div className="flex items-center space-x-1">
                         {getStatusIcon(mr.pipelineStatus)}
                         <span>Pipeline {mr.pipelineStatus}</span>
-                      </div>
+                  </div>
                     )}
                   </div>
                   
@@ -515,21 +515,21 @@ export default function AutomationPanel() {
                         className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
                       >
                         Reject
-                      </button>
+                  </button>
                       
-                      <button
+                  <button
                         onClick={() => handleMergeApproval(mr.id, 'approve')}
                         className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
-                      >
+                  >
                         Approve
-                      </button>
+                  </button>
                     </div>
                   )}
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
+      )}
 
         {/* Deployments Tab */}
         {activeTab === 'deployments' && (
@@ -540,7 +540,7 @@ export default function AutomationPanel() {
                   <h3 className="font-medium text-gray-900">{deployment.environment}</h3>
                   {getStatusIcon(deployment.status)}
                 </div>
-                
+
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Version:</span>
@@ -568,12 +568,12 @@ export default function AutomationPanel() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
+      )}
 
         {/* Feature Flags Tab */}
         {activeTab === 'features' && (
-          <div className="space-y-4">
+            <div className="space-y-4">
             {featureFlags.map((flag) => (
               <div key={flag.id} className="bg-white rounded-lg border border-gray-200 p-4">
                 <div className="flex items-center justify-between">
@@ -595,7 +595,7 @@ export default function AutomationPanel() {
                         : 'bg-gray-100 text-gray-700'
                     }`}>
                       {flag.enabled ? 'Enabled' : 'Disabled'}
-                    </span>
+                      </span>
                     
                     <button
                       onClick={() => handleFeatureFlagToggle(flag.id)}
@@ -609,13 +609,13 @@ export default function AutomationPanel() {
                         }`}
                       />
                     </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
         )}
-      </div>
+        </div>
     </div>
   )
 } 

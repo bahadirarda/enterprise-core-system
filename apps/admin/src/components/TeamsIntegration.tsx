@@ -90,9 +90,13 @@ export default function TeamsIntegration() {
     description: '',
     channels: [] as string[]
   })
+  const [teamsEnabled, setTeamsEnabled] = useState(true)
 
   useEffect(() => {
     loadTeamsData()
+    fetch('/api/integrations')
+      .then(r => r.json())
+      .then(d => setTeamsEnabled(d.integrations?.teams ?? true))
   }, [])
 
   const loadTeamsData = async () => {
@@ -362,6 +366,16 @@ export default function TeamsIntegration() {
       default:
         return 'bg-gray-50 text-gray-700 border-gray-200'
     }
+  }
+
+  const toggleTeams = async () => {
+    const newVal = !teamsEnabled
+    setTeamsEnabled(newVal)
+    await fetch('/api/integrations', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ integration: 'teams', enabled: newVal })
+    })
   }
 
   return (
@@ -665,6 +679,17 @@ export default function TeamsIntegration() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">Entegrasyon Ayarları</h3>
             
             <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Microsoft Teams Entegrasyonu</span>
+                <label className="inline-flex items-center cursor-pointer">
+                  <span className="mr-2 text-xs text-gray-500">{teamsEnabled ? 'Açık' : 'Kapalı'}</span>
+                  <input type="checkbox" className="sr-only" checked={teamsEnabled} onChange={toggleTeams} />
+                  <div className={`w-11 h-6 rounded-full ${teamsEnabled ? 'bg-blue-600' : 'bg-gray-300'} relative transition-colors`}>
+                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transform transition-transform ${teamsEnabled ? 'translate-x-5' : ''}`}></span>
+                  </div>
+                </label>
+              </div>
+              
               <div>
                 <label className="flex items-center space-x-2">
                   <input type="checkbox" className="rounded" defaultChecked />
