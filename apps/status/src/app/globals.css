@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+/* Custom animations for header - yumuşak renk paleti */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(107, 114, 128, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(107, 114, 128, 0.15); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+  25% { transform: translateY(-3px) rotate(90deg); opacity: 0.2; }
+  50% { transform: translateY(-6px) rotate(180deg); opacity: 0.3; }
+  75% { transform: translateY(-3px) rotate(270deg); opacity: 0.2; }
+}
+
+/* Custom component styles */
+@layer components {
+  .status-card {
+    @apply bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .metric-card {
+    @apply rounded-xl p-6 border;
+  }
+  
+  .status-badge {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold shadow-sm;
+  }
+
+  .header-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .gradient-text {
+    background: linear-gradient(45deg, #374151, #6b7280, #9ca3af);
+    background-size: 300% 300%;
+    animation: gradient-shift 6s ease infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .particle-animation {
+    animation: particle-float 8s ease-in-out infinite;
+  }
+}

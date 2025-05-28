@@ -1,0 +1,209 @@
+version: '3.8'
+
+services:
+  # Database Services
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: hrms_system
+      POSTGRES_USER: hrms_user
+      POSTGRES_PASSWORD: hrms_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./supabase/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hrms_user -d hrms_system"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Application Services
+  status-app:
+    build:
+      context: ./apps/status
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_system
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./apps/status:/app
+      - /app/node_modules
+    command: npm run dev
+
+  admin-app:
+    build:
+      context: ./apps/admin
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_system
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/admin:/app
+      - /app/node_modules
+    command: npm run dev
+
+  auth-app:
+    build:
+      context: ./apps/auth
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_system
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/auth:/app
+      - /app/node_modules
+    command: npm run dev
+
+  hrms-app:
+    build:
+      context: ./apps/hrms
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_system
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/hrms:/app
+      - /app/node_modules
+    command: npm run dev
+
+  portal-app:
+    build:
+      context: ./apps/portal
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://hrms_user:hrms_password@postgres:5432/hrms_system
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./apps/portal:/app
+      - /app/node_modules
+    command: npm run dev
+
+  marketing-app:
+    build:
+      context: ./apps/marketing
+      dockerfile: Dockerfile
+    ports:
+      - "3006:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./apps/marketing:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Monitoring & Observability
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+
+  # Message Queue
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: hrms
+      RABBITMQ_DEFAULT_PASS: hrms_queue
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - status-app
+      - admin-app
+      - auth-app
+      - hrms-app
+      - portal-app
+      - marketing-app
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  rabbitmq_data:
+
+networks:
+  default:
+    name: hrms-network 

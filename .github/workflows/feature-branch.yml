@@ -1,0 +1,196 @@
+name: 🌿 Feature Branch Workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [develop, main]
+
+jobs:
+  feature-validation:
+    name: 🔍 Feature Validation
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate commit messages
+        run: |
+          echo "🔍 Validating commit messages..."
+          # Check conventional commits
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
+
+      - name: Run feature tests
+        run: |
+          echo "🧪 Running feature-specific tests..."
+          npm run test:feature
+
+      - name: Check for breaking changes
+        run: |
+          echo "⚠️ Checking for breaking changes..."
+          npm run check:breaking-changes
+
+  code-quality:
+    name: 📊 Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run code formatting check
+        run: npm run format:check
+
+      - name: Calculate code coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+
+  preview-deployment:
+    name: 🔗 Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [feature-validation, code-quality]
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for preview
+        run: npm run build:preview
+
+      - name: Deploy to preview environment
+        run: |
+          echo "🚀 Deploying preview for PR #${{ github.event.pull_request.number }}"
+          # Deploy to preview environment (Vercel, Netlify, etc.)
+          
+      - name: Comment with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🔗 **Preview Deployment**: https://pr-${{ github.event.pull_request.number }}.preview.yourapp.com\n\n✅ Preview is ready for testing!'
+            })
+
+  feature-flag-check:
+    name: 🚩 Feature Flag Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check feature flags
+        run: |
+          echo "🚩 Validating feature flags..."
+          # Check if new features are properly behind feature flags
+          npm run check:feature-flags
+
+      - name: Validate configuration
+        run: |
+          echo "⚙️ Validating configuration changes..."
+          npm run validate:config
+
+  auto-review:
+    name: 🤖 Auto Review
+    runs-on: ubuntu-latest
+    needs: [feature-validation, code-quality]
+    
+    steps:
+      - name: Auto approve safe changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            const safeChanges = files.every(file => 
+              file.filename.match(/\.(md|txt|json)$/) && 
+              file.additions < 50
+            );
+            
+            if (safeChanges) {
+              github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                event: 'APPROVE',
+                body: '🤖 Auto-approved: Safe documentation/configuration changes detected'
+              });
+            }
+
+  merge-strategy:
+    name: 📋 Merge Strategy Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check merge strategy
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            const targetBranch = pr.base.ref;
+            const sourceBranch = pr.head.ref;
+            
+            let mergeStrategy = 'squash';
+            if (sourceBranch.startsWith('hotfix/')) {
+              mergeStrategy = 'merge';
+            } else if (sourceBranch.startsWith('release/')) {
+              mergeStrategy = 'merge';
+            }
+            
+            console.log(`🔄 Recommended merge strategy: ${mergeStrategy}`);
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📋 **Merge Strategy**: This PR should use \`${mergeStrategy}\` merge based on branch naming convention.`
+            }); 
