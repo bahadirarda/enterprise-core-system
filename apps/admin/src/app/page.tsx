@@ -9,7 +9,7 @@ import CompanyModal from '@/components/CompanyModal'
 import SystemStatus from '@/components/SystemStatus'
 import AutomationPanel from '@/components/AutomationPanel'
 import CompactSystemStatus from '@/components/CompactSystemStatus'
-import TeamsIntegration from '@/components/TeamsIntegration'
+import IntegrationsManagement from '@/components/IntegrationsManagement'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
     { id: 'users', icon: Users, label: 'Kullanıcılar' },
     { id: 'system-status', icon: Monitor, label: 'Sistem Durumu' },
     { id: 'automation', icon: Zap, label: 'Otomasyon' },
-    { id: 'teams-integration', icon: MessageSquare, label: 'Teams Entegrasyonu' },
+    { id: 'integrations', icon: MessageSquare, label: 'Entegrasyonlar' },
     { id: 'support', icon: LifeBuoy, label: 'Destek' },
     { id: 'revenue', icon: DollarSign, label: 'Gelir Analizi' },
     { id: 'settings', icon: Settings, label: 'Sistem Ayarları' },
@@ -502,8 +502,8 @@ export default function AdminDashboard() {
         return <SystemStatus />
       case 'automation':
         return <AutomationPanel />
-      case 'teams-integration':
-        return <TeamsIntegration />
+      case 'integrations':
+        return <IntegrationsManagement />
       case 'support':
         return renderSupportContent()
       case 'revenue':
