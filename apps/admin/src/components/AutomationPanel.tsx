@@ -104,177 +104,186 @@ export default function AutomationPanel() {
     setIsLoading(true)
     
     try {
-      // Mock data - in real implementation, these would be API calls
-      setPipelines([
-  {
-    id: '1',
-          status: 'running',
-          branch: 'feature/status-page-updates',
-          commit: 'abc123f',
-          author: 'bahadirarda',
-          message: 'Add comprehensive status page features',
-          createdAt: new Date().toISOString(),
-          jobs: [
-            { id: '1', name: 'Lint & Type Check', status: 'success', duration: 45 },
-            { id: '2', name: 'Unit Tests', status: 'success', duration: 120 },
-            { id: '3', name: 'Build Applications', status: 'running' },
-            { id: '4', name: 'Integration Tests', status: 'pending' },
-            { id: '5', name: 'Deploy to Staging', status: 'pending' }
-          ]
-  },
-  {
-    id: '2',
-          status: 'success',
-          branch: 'main',
-          commit: 'def456g',
-          author: 'team-member',
-          message: 'Fix authentication middleware',
-          createdAt: new Date(Date.now() - 3600000).toISOString(),
-          jobs: [
-            { id: '6', name: 'Lint & Type Check', status: 'success', duration: 38 },
-            { id: '7', name: 'Unit Tests', status: 'success', duration: 95 },
-            { id: '8', name: 'Build Applications', status: 'success', duration: 180 },
-            { id: '9', name: 'Integration Tests', status: 'success', duration: 210 },
-            { id: '10', name: 'Deploy to Production', status: 'success', duration: 300 }
-          ]
-        }
-      ])
+      // Fetch real data from API endpoints
+      const [pipelinesResponse, mergeRequestsResponse, deploymentsResponse, featureFlagsResponse] = await Promise.all([
+        fetch('/api/automation/pipelines'),
+        fetch('/api/automation/merge-requests'),
+        fetch('/api/automation/deployments'),
+        fetch('/api/automation/feature-flags')
+      ]);
 
-      setMergeRequests([
-  {
-    id: '1',
-          title: 'Add DevOps pipeline and Docker configuration',
-          description: 'Complete CI/CD setup with Docker, health checks, and automated deployments',
-          author: 'bahadirarda',
-          sourceBranch: 'feature/devops-setup',
-          targetBranch: 'main',
-          status: 'open',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          approvals: 0,
-          requiredApprovals: 1,
-          conflicts: false,
-          pipelineStatus: 'running',
-          changes: {
-            additions: 450,
-            deletions: 23,
-            files: 12
-          }
-  },
-  {
-    id: '2',
-          title: 'Update admin panel automation features',
-          description: 'Enhanced admin panel with pipeline management and merge request approval system',
-          author: 'team-member',
-          sourceBranch: 'feature/admin-automation',
-          targetBranch: 'develop',
-          status: 'open',
-          createdAt: new Date(Date.now() - 7200000).toISOString(),
-          updatedAt: new Date(Date.now() - 1800000).toISOString(),
-          approvals: 1,
-          requiredApprovals: 2,
-          conflicts: true,
-          pipelineStatus: 'failed',
-          changes: {
-            additions: 280,
-            deletions: 56,
-            files: 8
-          }
-        }
-      ])
+      const [pipelinesData, mergeRequestsData, deploymentsData, featureFlagsData] = await Promise.all([
+        pipelinesResponse.json(),
+        mergeRequestsResponse.json(),
+        deploymentsResponse.json(),
+        featureFlagsResponse.json()
+      ]);
 
-      setDeployments([
-        {
-          environment: 'Production',
-          status: 'success',
-          version: 'v1.2.3',
-          lastDeployment: new Date(Date.now() - 3600000).toISOString(),
-          health: 'healthy'
-        },
-        {
-          environment: 'Staging',
-          status: 'deploying',
-          version: 'v1.2.4-rc.1',
-          lastDeployment: new Date().toISOString(),
-          health: 'unknown'
-        },
-        {
-          environment: 'Development',
-          status: 'success',
-          version: 'v1.2.4-dev.15',
-          lastDeployment: new Date(Date.now() - 900000).toISOString(),
-          health: 'healthy'
-        }
-      ])
+      // Transform pipelines data
+      const transformedPipelines = pipelinesData.map((pipeline: any) => ({
+        id: pipeline.id,
+        status: pipeline.status,
+        branch: pipeline.branch,
+        commit: pipeline.commitSha?.substring(0, 7) || 'unknown',
+        author: pipeline.author,
+        message: pipeline.message,
+        createdAt: pipeline.startedAt || pipeline.createdAt,
+        jobs: pipeline.jobs?.map((job: any) => ({
+          id: job.id || `${pipeline.id}-${job.name}`,
+          name: job.name,
+          status: job.status,
+          duration: job.duration,
+          startedAt: job.startedAt,
+          finishedAt: job.finishedAt
+        })) || []
+      }));
 
-      setFeatureFlags([
-  {
-    id: '1',
-          name: 'enhanced_status_page',
-          description: 'New enhanced status page with real-time metrics',
-          enabled: true,
-          environment: 'production',
-          rolloutPercentage: 100,
-          lastModified: new Date(Date.now() - 1800000).toISOString()
-  },
-  {
-    id: '2',
-          name: 'admin_automation_v2',
-          description: 'Advanced admin panel automation features',
-          enabled: false,
-          environment: 'staging',
-          rolloutPercentage: 50,
-          lastModified: new Date().toISOString()
+      // Transform merge requests data
+      const transformedMergeRequests = mergeRequestsData.map((mr: any) => ({
+        id: mr.id,
+        title: mr.title,
+        description: mr.description,
+        author: mr.author,
+        sourceBranch: mr.sourceBranch,
+        targetBranch: mr.targetBranch,
+        status: mr.status,
+        createdAt: mr.createdAt,
+        updatedAt: mr.updatedAt,
+        approvals: mr.approvals || 0,
+        requiredApprovals: mr.requiredApprovals || 1,
+        conflicts: mr.conflicts || false,
+        pipelineStatus: mr.pipelineStatus,
+        changes: {
+          additions: mr.additions || 0,
+          deletions: mr.deletions || 0,
+          files: mr.filesChanged || 0
         }
-      ])
+      }));
+
+      // Transform deployments data
+      const transformedDeployments = deploymentsData.map((deployment: any) => ({
+        environment: deployment.environment,
+        status: deployment.status,
+        version: deployment.version,
+        lastDeployment: deployment.deployedAt,
+        health: deployment.health
+      }));
+
+      // Transform feature flags data
+      const transformedFeatureFlags = featureFlagsData.map((flag: any) => ({
+        id: flag.id,
+        name: flag.name,
+        description: flag.description,
+        enabled: flag.enabled,
+        environment: flag.environment,
+        rolloutPercentage: flag.rolloutPercentage,
+        lastModified: flag.updatedAt
+      }));
+
+      setPipelines(transformedPipelines);
+      setMergeRequests(transformedMergeRequests);
+      setDeployments(transformedDeployments);
+      setFeatureFlags(transformedFeatureFlags);
 
       // Update notifications count
-      const pendingMerges = mergeRequests.filter(mr => mr.status === 'open' && mr.requiredApprovals > mr.approvals).length
-      setNotifications(pendingMerges)
+      const pendingMerges = transformedMergeRequests.filter((mr: any) => 
+        mr.status === 'open' && mr.requiredApprovals > mr.approvals
+      ).length;
+      setNotifications(pendingMerges);
 
     } catch (error) {
-      console.error('Failed to load automation data:', error)
+      console.error('Failed to load automation data:', error);
+      
+      // Fallback to minimal mock data on error
+      setPipelines([]);
+      setMergeRequests([]);
+      setDeployments([]);
+      setFeatureFlags([]);
+      setNotifications(0);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   const handleMergeApproval = async (mergeId: string, action: 'approve' | 'reject') => {
-    const updatedMergeRequests = mergeRequests.map(mr => 
-      mr.id === mergeId 
-        ? { 
-            ...mr, 
-            approvals: action === 'approve' ? mr.approvals + 1 : mr.approvals,
-            status: action === 'reject' ? 'closed' as const : mr.approvals + 1 >= mr.requiredApprovals ? 'merged' as const : mr.status
-          }
-        : mr
-    )
-    setMergeRequests(updatedMergeRequests)
+    try {
+      const response = await fetch('/api/automation/merge-requests', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: mergeId,
+          action: action,
+          approver: 'admin-user', // In real implementation, use actual user
+          comment: `${action === 'approve' ? 'Approved' : 'Rejected'} via admin panel`
+        })
+      });
 
-    // In real implementation, this would call the Git API
-    console.log(`${action === 'approve' ? 'Approved' : 'Rejected'} merge request ${mergeId}`)
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`${action === 'approve' ? 'Approved' : 'Rejected'} merge request ${mergeId}`);
+      } else {
+        console.error('Failed to update merge request');
+      }
+    } catch (error) {
+      console.error('Error updating merge request:', error);
+    }
   }
 
   const handlePipelineAction = async (pipelineId: string, action: 'retry' | 'cancel') => {
-    const updatedPipelines = pipelines.map(p => 
-      p.id === pipelineId 
-        ? { ...p, status: action === 'retry' ? 'pending' as const : 'cancelled' as const }
-        : p
-    )
-    setPipelines(updatedPipelines)
+    try {
+      const response = await fetch('/api/automation/pipelines', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: pipelineId,
+          action: action
+        })
+      });
 
-    console.log(`${action === 'retry' ? 'Retried' : 'Cancelled'} pipeline ${pipelineId}`)
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`${action === 'retry' ? 'Retried' : 'Cancelled'} pipeline ${pipelineId}`);
+      } else {
+        console.error('Failed to update pipeline');
+      }
+    } catch (error) {
+      console.error('Error updating pipeline:', error);
+    }
   }
 
   const handleFeatureFlagToggle = async (flagId: string) => {
-    const updatedFlags = featureFlags.map(flag => 
-      flag.id === flagId 
-        ? { ...flag, enabled: !flag.enabled, lastModified: new Date().toISOString() }
-        : flag
-    )
-    setFeatureFlags(updatedFlags)
+    try {
+      // Get current flag to toggle it
+      const currentFlag = featureFlags.find(flag => flag.id === flagId);
+      if (!currentFlag) return;
 
-    console.log(`Toggled feature flag ${flagId}`)
+      const response = await fetch('/api/automation/feature-flags', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: flagId,
+          enabled: !currentFlag.enabled
+        })
+      });
+
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`Toggled feature flag ${flagId}`);
+      } else {
+        console.error('Failed to update feature flag');
+      }
+    } catch (error) {
+      console.error('Error updating feature flag:', error);
+    }
   }
 
   const getStatusIcon = (status: string) => {
