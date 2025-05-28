@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase';
 
 export async function GET() {
@@ -23,47 +23,43 @@ export async function GET() {
       // Return mock data if database error
       return NextResponse.json([
         {
-          id: '1748437238456',
-          integration_id: '1',
-          request_type: 'connection',
-          title: 'Teams Workspace Bağlantı Onayı',
-          description: 'DigiDaga HR Teams workspace bağlantısı için onay gerekiyor.',
-          requested_by: 'hr-admin@digidaga.com',
-          status: 'approved',
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          reviewed_at: new Date().toISOString(),
-          integrations: {
-            name: 'DigiDaga HR Teams',
-            type: 'teams',
-            status: 'active'
-          }
-        },
-        {
-          id: '1748437238457',
-          integration_id: '2',
-          request_type: 'deployment',
-          title: 'Production Deployment Onayı',
-          description: 'Marketing Slack entegrasyonunun production ortamına deploy edilmesi için onay gerekiyor.',
-          requested_by: 'dev-team@digidaga.com',
-          status: 'pending',
-          created_at: new Date(Date.now() - 3600000).toISOString(),
-          integrations: {
-            name: 'Marketing Slack',
-            type: 'slack',
-            status: 'pending'
-          }
+          id: "1",
+          integrationId: "2",
+          integrationName: "Development Team", 
+          requestType: "connection",
+          title: "Teams Workspace Bağlantı Onayı",
+          description: "Development Team Microsoft Teams workspace'ine bağlantı izni talep ediyor. Bu bağlantı CI/CD pipeline bildirimleri için kullanılacak.",
+          requester: "DevOps Team",
+          status: "pending",
+          priority: "medium",
+          requestDate: "2025-05-28T09:15:00Z"
         }
       ]);
     }
 
-    return NextResponse.json(approvals || []);
+    // Transform the data to match frontend expectations
+    const transformedData = approvals?.map((approval: any) => ({
+      id: approval.id,
+      integrationId: approval.integration_id,
+      integrationName: approval.integrations?.name || 'Unknown Integration',
+      requestType: approval.request_type,
+      title: approval.title,
+      description: approval.description,
+      requester: "Admin User", // Since we don't have user names in the current data
+      status: approval.status,
+      priority: "medium", // Default priority since it's not in the current schema
+      requestDate: approval.created_at,
+      expiresAt: approval.expires_at
+    })) || [];
+
+    return NextResponse.json(transformedData);
   } catch (error) {
     console.error('Integration approvals API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const supabase = createClient();
@@ -71,13 +67,13 @@ export async function POST(request: Request) {
     const { data: approval, error } = await supabase
       .from('integration_approvals')
       .insert([{
-        integration_id: body.integration_id,
-        request_type: body.request_type,
+        integration_id: body.integrationId,
+        request_type: body.requestType,
         title: body.title,
         description: body.description,
-        requested_by: body.requested_by,
+        requested_by: body.requestedBy || 'admin-user-id',
         metadata: body.metadata || {},
-        expires_at: body.expires_at || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
+        expires_at: body.expiresAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
       }])
       .select()
       .single();
@@ -99,7 +95,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const supabase = createClient();
@@ -145,6 +141,56 @@ export async function PUT(request: Request) {
     return NextResponse.json(approval);
   } catch (error) {
     console.error('Integration approval update API error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, action } = body; // action: 'approve' or 'reject'
+    const supabase = createClient();
+    
+    const status = action === 'approve' ? 'approved' : 'rejected';
+    
+    console.log('🎯 Approval action:', {
+      id: id,
+      action: action,
+      status: status
+    });
+    
+    const { data: approval, error } = await supabase
+      .from('integration_approvals')
+      .update({
+        status: status,
+        reviewed_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Integration approval update error:', error);
+      return NextResponse.json({ 
+        success: false,
+        error: error.message 
+      }, { status: 500 });
+    }
+
+    // If approved, update related integration status
+    if (status === 'approved' && approval.integration_id) {
+      await supabase
+        .from('integrations')
+        .update({ 
+          status: 'active',
+          approved_at: new Date().toISOString()
+        })
+        .eq('id', approval.integration_id);
+    }
+
+    return NextResponse.json({ success: true, data: approval });
+  } catch (error) {
+    console.error('Integration approval PATCH API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 } 

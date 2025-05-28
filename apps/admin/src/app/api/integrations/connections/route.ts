@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase';
 
 export async function GET() {
@@ -15,41 +15,60 @@ export async function GET() {
       // Return mock data if database error
       return NextResponse.json([
         {
-          id: '1',
-          type: 'teams',
-          name: 'DigiDaga HR Teams',
-          description: 'Microsoft Teams entegrasyonu - Ana HR ekibi',
-          status: 'active',
-          configuration: {
-            organization_name: 'DigiDaga',
-            admin_email: 'admin@digidaga.com',
-            channels: ['hr-notifications', 'approvals']
-          },
-          created_at: new Date().toISOString()
+          id: "1",
+          name: "DigiDaga HR Teams",
+          type: "teams",
+          status: "active",
+          description: "Microsoft Teams entegrasyonu - Ana HR ekibi için bildirimler ve onaylar",
+          lastActivity: "2025-05-28T10:30:00Z"
         },
         {
-          id: '2',
-          type: 'slack',
-          name: 'Marketing Slack',
-          description: 'Pazarlama ekibi entegrasyonu',
-          status: 'inactive',
-          configuration: {
-            workspace: 'digidaga-marketing',
-            channels: ['campaigns']
-          },
-          created_at: new Date().toISOString()
+          id: "2", 
+          name: "Development Team",
+          type: "teams",
+          status: "pending",
+          description: "Geliştirici ekibi için CI/CD ve deployment bildirimleri",
+          lastActivity: "2025-05-28T09:15:00Z"
+        },
+        {
+          id: "3",
+          name: "Marketing Slack", 
+          type: "slack",
+          status: "inactive",
+          description: "Pazarlama ekibi için kampanya ve performans bildirimleri",
+          lastActivity: "2025-05-27T16:45:00Z"
+        },
+        {
+          id: "4",
+          name: "External API",
+          type: "webhook", 
+          status: "active",
+          description: "Dış sistemlere veri aktarımı için webhook",
+          lastActivity: "2025-05-28T08:20:00Z"
         }
       ]);
     }
 
-    return NextResponse.json(integrations || []);
+    // Transform the data to match frontend expectations
+    const transformedData = integrations?.map((integration: any) => ({
+      id: integration.id,
+      name: integration.name,
+      type: integration.type,
+      status: integration.status,
+      description: integration.description,
+      lastActivity: integration.updated_at,
+      webhookUrl: integration.webhook_url,
+      apiKey: integration.api_key
+    })) || [];
+
+    return NextResponse.json(transformedData);
   } catch (error) {
     console.error('Integrations API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const supabase = createClient();
@@ -57,12 +76,13 @@ export async function POST(request: Request) {
     const { data: integration, error } = await supabase
       .from('integrations')
       .insert([{
-        type: body.type || 'teams',
+        type: body.type,
         name: body.name,
         description: body.description,
-        configuration: body.configuration || {},
-        webhook_url: body.webhook_url,
-        status: 'pending'
+        status: 'pending',
+        configuration: {},
+        webhook_url: body.webhookUrl || null,
+        api_key: body.apiKey || null
       }])
       .select()
       .single();

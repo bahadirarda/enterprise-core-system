@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase';
 
 export async function GET() {
@@ -23,47 +23,51 @@ export async function GET() {
       // Return mock data if database error
       return NextResponse.json([
         {
-          id: '1',
-          integration_id: '1',
-          type: 'deployment',
-          title: 'Production Deployment',
-          message: 'HRMS System v2.0 başarıyla production ortamına deploy edildi.',
-          priority: 'high',
-          status: 'sent',
-          sent_at: new Date().toISOString(),
-          created_at: new Date().toISOString(),
-          integrations: {
-            name: 'DigiDaga HR Teams',
-            type: 'teams',
-            status: 'active'
-          }
+          id: "1",
+          integrationId: "1",
+          integrationName: "DigiDaga HR Teams",
+          title: "Production Deployment Successful",
+          message: "HRMS System v2.0 başarıyla production ortamına deploy edildi. Teams entegrasyonu aktif.",
+          type: "deployment",
+          timestamp: "2025-05-28T10:30:00Z",
+          read: false,
+          priority: "high"
         },
         {
-          id: '2',
-          integration_id: '2',
-          type: 'system',
-          title: 'New Integration Request',
-          message: 'Yeni bir entegrasyon bağlantı talebi alındı.',
-          priority: 'medium',
-          status: 'pending',
-          created_at: new Date().toISOString(),
-          integrations: {
-            name: 'Marketing Slack',
-            type: 'slack',
-            status: 'pending'
-          }
+          id: "2",
+          integrationId: "2", 
+          integrationName: "Development Team",
+          title: "New Integration Request",
+          message: "Yeni bir Teams entegrasyonu bağlantı talebi alındı.",
+          type: "system",
+          timestamp: "2025-05-28T09:15:00Z",
+          read: false,
+          priority: "medium"
         }
       ]);
     }
 
-    return NextResponse.json(notifications || []);
+    // Transform the data to match frontend expectations
+    const transformedData = notifications?.map((notification: any) => ({
+      id: notification.id,
+      integrationId: notification.integration_id,
+      integrationName: notification.integrations?.name || 'Unknown Integration',
+      title: notification.title,
+      message: notification.message,
+      type: notification.type,
+      timestamp: notification.created_at,
+      read: notification.status === 'read',
+      priority: notification.priority
+    })) || [];
+
+    return NextResponse.json(transformedData);
   } catch (error) {
     console.error('Integration notifications API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const supabase = createClient();
@@ -71,7 +75,7 @@ export async function POST(request: Request) {
     const { data: notification, error } = await supabase
       .from('integration_notifications')
       .insert([{
-        integration_id: body.integration_id,
+        integration_id: body.integrationId,
         type: body.type,
         title: body.title,
         message: body.message,
