@@ -3,7 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+// Create client function for API routes
+export const createSupabaseClient = () => {
+  return createClient(supabaseUrl, supabaseAnonKey)
+}
+
+// Default export for components
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Export createClient for backward compatibility
+export { createSupabaseClient as createClient }
 
 // Admin-specific types
 export interface Company {
