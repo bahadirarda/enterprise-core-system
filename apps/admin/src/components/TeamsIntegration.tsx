@@ -49,17 +49,39 @@ interface TeamsApproval {
   title: string
   description: string
   requester: string
+  requesterName?: string
   approvers: string[]
+  approverNames?: string[]
   status: 'pending' | 'approved' | 'rejected'
   createdAt: string
   teamsMessageId?: string
+  priority?: string
+  estimatedTime?: string
+  changedFiles?: string[]
+  branch?: string
+  pullRequestNumber?: number
+  linesAdded?: number
+  linesRemoved?: number
+}
+
+// User hierarchy için interface
+interface UserHierarchy {
+  [email: string]: {
+    name: string
+    role: string
+    level: number
+    manager: string | null
+    team: string
+    canApprove: string[]
+  }
 }
 
 export default function TeamsIntegration() {
   const [connections, setConnections] = useState<TeamsConnection[]>([])
   const [notifications, setNotifications] = useState<TeamsNotification[]>([])
   const [approvals, setApprovals] = useState<TeamsApproval[]>([])
-  const [activeTab, setActiveTab] = useState<'connections' | 'notifications' | 'approvals' | 'settings'>('connections')
+  const [userHierarchy, setUserHierarchy] = useState<UserHierarchy>({})
+  const [activeTab, setActiveTab] = useState<'connections' | 'notifications' | 'approvals' | 'settings'>('approvals')
   const [showConnectModal, setShowConnectModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [connectForm, setConnectForm] = useState({
@@ -109,23 +131,14 @@ export default function TeamsIntegration() {
 
       if (approvalsData.success) {
         setApprovals(approvalsData.approvals)
+        if (approvalsData.userHierarchy) {
+          setUserHierarchy(approvalsData.userHierarchy)
+        }
       }
     } catch (error) {
       console.error('Failed to load Teams data:', error)
-      // Fallback to mock data if API fails
-      setConnections([
-        {
-          id: '1',
-          name: 'HRMS Development Team',
-          tenantId: 'abc123-def456',
-          status: 'connected',
-          connectedAt: new Date(Date.now() - 86400000).toISOString(),
-          lastSync: new Date(Date.now() - 3600000).toISOString(),
-          channelCount: 5,
-          memberCount: 12,
-          permissions: ['read_messages', 'send_messages', 'manage_webhooks']
-        }
-      ])
+      // Show real data instead of fallback
+      alert('Could not connect to Teams API. Please check your connection.')
     } finally {
       setIsLoading(false)
     }
@@ -237,6 +250,9 @@ export default function TeamsIntegration() {
   }
 
   const handleApproval = async (approvalId: string, action: 'approve' | 'reject') => {
+    // Gerçek kullanıcı email'ini al (normalde authentication'dan gelecek)
+    const currentUserEmail = 'senior-dev@company.com' // Bu gerçek uygulamada auth'dan gelecek
+    
     try {
       const response = await fetch('/api/teams/approvals', {
         method: 'PUT',
@@ -246,7 +262,8 @@ export default function TeamsIntegration() {
         body: JSON.stringify({
           id: approvalId,
           action,
-          approver: 'current-user', // Gerçek implementasyonda kullanıcı bilgisinden gelecek
+          approver: currentUserEmail,
+          comments: action === 'reject' ? 'Need more testing before merge' : 'Code looks good, approved!'
         }),
       })
 
@@ -261,13 +278,53 @@ export default function TeamsIntegration() {
           )
         )
         
-        alert(result.message || `İşlem ${action === 'approve' ? 'onaylandı' : 'reddedildi'}`)
+        alert(`✅ ${result.message}`)
+        
+        // Sayfayı yenile ki güncel durumu görelim
+        setTimeout(() => {
+          loadTeamsData()
+        }, 1000)
       } else {
-        alert(result.error || 'İşlem başarısız')
+        alert(`❌ ${result.error || 'İşlem başarısız'}`)
       }
     } catch (error) {
       console.error('Approval action failed:', error)
-      alert('İşlem başarısız')
+      alert('❌ İşlem başarısız - Network hatası')
+    }
+  }
+
+  const triggerRealApprovalTest = async () => {
+    try {
+      const response = await fetch('/api/teams/approvals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'merge_request',
+          title: 'Real PR: Enhance Teams Integration UI',
+          description: 'Add real-time approval tracking and user hierarchy display to admin panel. This change improves the user experience and shows actual approval workflow.',
+          requester: 'bahadirarda96@icloud.com',
+          priority: 'high',
+          estimatedTime: '1 hour',
+          changedFiles: [
+            'apps/admin/src/components/TeamsIntegration.tsx'
+          ],
+          branch: 'feature/enhance-teams-notifications'
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        alert(`🚀 Real approval request created! Required approvers: ${result.approval.approverNames.join(', ')}`)
+        loadTeamsData() // Reload to show new approval
+      } else {
+        alert(`❌ Failed to create approval: ${result.error}`)
+      }
+    } catch (error) {
+      console.error('Failed to create approval:', error)
+      alert('❌ Failed to create approval')
     }
   }
 
@@ -455,20 +512,103 @@ export default function TeamsIntegration() {
           </div>
         )}
 
-        {/* Approvals Tab */}
+        {/* Approvals Tab - Enhanced with real data */}
         {activeTab === 'approvals' && (
           <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-medium text-blue-900">🧪 Test Real Approval Workflow</h3>
+                  <p className="text-sm text-blue-700 mt-1">Create a real approval request with your user hierarchy</p>
+                </div>
+                <button
+                  onClick={triggerRealApprovalTest}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
+                  🚀 Create Test Approval
+                </button>
+              </div>
+            </div>
+
             {approvals.map((approval) => (
-              <div key={approval.id} className="bg-white rounded-lg border border-gray-200 p-4">
-                <div className="flex items-start justify-between mb-3">
+              <div key={approval.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">{approval.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{approval.description}</p>
-                    <div className="flex items-center space-x-4 text-xs text-gray-500">
-                      <span>Talep eden: {approval.requester}</span>
-                      <span>Onaylayanlar: {approval.approvers.join(', ')}</span>
-                      <span>{new Date(approval.createdAt).toLocaleString()}</span>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <h3 className="font-medium text-gray-900">{approval.title}</h3>
+                      {approval.priority && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          approval.priority === 'high' ? 'bg-red-100 text-red-800' :
+                          approval.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          {approval.priority.toUpperCase()}
+                        </span>
+                      )}
                     </div>
+                    
+                    <p className="text-sm text-gray-600 mb-3">{approval.description}</p>
+                    
+                    {/* Real User Information */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs font-medium text-gray-500">REQUESTER</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {approval.requesterName || userHierarchy[approval.requester]?.name || approval.requester}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {userHierarchy[approval.requester]?.role} • {userHierarchy[approval.requester]?.team}
+                        </p>
+                      </div>
+                      
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs font-medium text-gray-500">REQUIRED APPROVERS</p>
+                        <div className="space-y-1">
+                          {approval.approverNames?.map((name, index) => (
+                            <div key={index} className="flex items-center space-x-2">
+                              <span className="text-sm font-medium text-gray-900">{name}</span>
+                              <span className="text-xs text-gray-500">
+                                {userHierarchy[approval.approvers[index]]?.role}
+                              </span>
+                            </div>
+                          )) || approval.approvers.map((email, index) => (
+                            <div key={index} className="flex items-center space-x-2">
+                              <span className="text-sm font-medium text-gray-900">
+                                {userHierarchy[email]?.name || email}
+                              </span>
+                              <span className="text-xs text-gray-500">{userHierarchy[email]?.role}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Additional Details */}
+                    <div className="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                      <span>📅 {new Date(approval.createdAt).toLocaleString()}</span>
+                      {approval.estimatedTime && <span>⏱️ {approval.estimatedTime}</span>}
+                      {approval.branch && <span>🌿 {approval.branch}</span>}
+                    </div>
+
+                    {/* Changed Files */}
+                    {approval.changedFiles && approval.changedFiles.length > 0 && (
+                      <div className="mt-3">
+                        <p className="text-xs font-medium text-gray-500 mb-1">CHANGED FILES</p>
+                        <div className="flex flex-wrap gap-1">
+                          {approval.changedFiles.map((file, index) => (
+                            <span key={index} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                              {file.split('/').pop()}
+                            </span>
+                          ))}
+                        </div>
+                        {approval.linesAdded !== undefined && approval.linesRemoved !== undefined && (
+                          <div className="flex space-x-3 mt-2 text-xs">
+                            <span className="text-green-600">+{approval.linesAdded} additions</span>
+                            <span className="text-red-600">-{approval.linesRemoved} deletions</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="flex items-center space-x-2">
@@ -479,23 +619,43 @@ export default function TeamsIntegration() {
                 </div>
                 
                 {approval.status === 'pending' && (
-                  <div className="flex items-center space-x-2 pt-3 border-t border-gray-200">
-                    <button
-                      onClick={() => handleApproval(approval.id, 'reject')}
-                      className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
-                    >
-                      Reddet
-                    </button>
-                    <button
-                      onClick={() => handleApproval(approval.id, 'approve')}
-                      className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
-                    >
-                      Onayla
-                    </button>
+                  <div className="bg-gray-50 rounded-lg p-4 border-t border-gray-200">
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      💼 You are signed in as: <span className="text-blue-600">Senior Developer</span>
+                    </p>
+                    <p className="text-xs text-gray-600 mb-3">
+                      As a Senior Developer, you can approve merge requests and feature flags.
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => handleApproval(approval.id, 'reject')}
+                        className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
+                      >
+                        ❌ Reject
+                      </button>
+                      <button
+                        onClick={() => handleApproval(approval.id, 'approve')}
+                        className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+                      >
+                        ✅ Approve
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
             ))}
+            
+            {approvals.length === 0 && !isLoading && (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No approval requests found.</p>
+                <button
+                  onClick={triggerRealApprovalTest}
+                  className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Create Test Approval
+                </button>
+              </div>
+            )}
           </div>
         )}
 
