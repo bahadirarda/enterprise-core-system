@@ -13,12 +13,7 @@ import {
   RefreshCw,
   Bell,
   Settings,
-  Database,
-  Code,
   Server,
-  AlertTriangle,
-  Users,
-  FileText,
   Zap
 } from 'lucide-react'
 
@@ -120,15 +115,15 @@ export default function AutomationPanel() {
       ]);
 
       // Transform pipelines data
-      const transformedPipelines = pipelinesData.map((pipeline: any) => ({
+      const transformedPipelines = pipelinesData.map((pipeline: Pipeline) => ({
         id: pipeline.id,
         status: pipeline.status,
         branch: pipeline.branch,
-        commit: pipeline.commitSha?.substring(0, 7) || 'unknown',
+        commit: pipeline.commit.substring(0, 7) || 'unknown',
         author: pipeline.author,
         message: pipeline.message,
-        createdAt: pipeline.startedAt || pipeline.createdAt,
-        jobs: pipeline.jobs?.map((job: any) => ({
+        createdAt: pipeline.createdAt,
+        jobs: pipeline.jobs?.map((job: PipelineJob) => ({
           id: job.id || `${pipeline.id}-${job.name}`,
           name: job.name,
           status: job.status,
@@ -139,7 +134,7 @@ export default function AutomationPanel() {
       }));
 
       // Transform merge requests data
-      const transformedMergeRequests = mergeRequestsData.map((mr: any) => ({
+      const transformedMergeRequests = mergeRequestsData.map((mr: MergeRequest) => ({
         id: mr.id,
         title: mr.title,
         description: mr.description,
@@ -154,30 +149,30 @@ export default function AutomationPanel() {
         conflicts: mr.conflicts || false,
         pipelineStatus: mr.pipelineStatus,
         changes: {
-          additions: mr.additions || 0,
-          deletions: mr.deletions || 0,
-          files: mr.filesChanged || 0
+          additions: mr.changes?.additions || 0,
+          deletions: mr.changes?.deletions || 0,
+          files: mr.changes?.files || 0
         }
       }));
 
       // Transform deployments data
-      const transformedDeployments = deploymentsData.map((deployment: any) => ({
+      const transformedDeployments = deploymentsData.map((deployment: DeploymentStatus) => ({
         environment: deployment.environment,
         status: deployment.status,
         version: deployment.version,
-        lastDeployment: deployment.deployedAt,
+        lastDeployment: deployment.lastDeployment,
         health: deployment.health
       }));
 
       // Transform feature flags data
-      const transformedFeatureFlags = featureFlagsData.map((flag: any) => ({
+      const transformedFeatureFlags = featureFlagsData.map((flag: FeatureFlag) => ({
         id: flag.id,
         name: flag.name,
         description: flag.description,
         enabled: flag.enabled,
         environment: flag.environment,
         rolloutPercentage: flag.rolloutPercentage,
-        lastModified: flag.updatedAt
+        lastModified: flag.lastModified
       }));
 
       setPipelines(transformedPipelines);
@@ -186,7 +181,7 @@ export default function AutomationPanel() {
       setFeatureFlags(transformedFeatureFlags);
 
       // Update notifications count
-      const pendingMerges = transformedMergeRequests.filter((mr: any) => 
+      const pendingMerges = transformedMergeRequests.filter((mr: MergeRequest) => 
         mr.status === 'open' && mr.requiredApprovals > mr.approvals
       ).length;
       setNotifications(pendingMerges);
@@ -500,7 +495,6 @@ export default function AutomationPanel() {
                     
                     {mr.conflicts && (
                       <span className="flex items-center space-x-1 text-orange-600">
-                        <AlertTriangle className="w-4 h-4" />
                         <span>Conflicts</span>
                       </span>
                     )}

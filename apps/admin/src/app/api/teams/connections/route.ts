@@ -100,7 +100,7 @@ export async function PUT(request: NextRequest) {
 
     const supabase = createClient()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (status) updateData.status = status
     if (permissions) updateData.permissions = permissions
     if (channelCount !== undefined) updateData.channel_count = channelCount

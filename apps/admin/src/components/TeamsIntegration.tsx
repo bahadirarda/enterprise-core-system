@@ -3,19 +3,13 @@
 import { useState, useEffect } from 'react'
 import { 
   MessageSquare, 
-  Users, 
   Settings, 
   CheckCircle, 
   XCircle, 
   Clock, 
   Plus, 
-  Edit, 
-  Trash2, 
-  ExternalLink,
-  AlertTriangle,
   Shield,
   Bell,
-  Zap,
   Link,
   Unlink,
   RefreshCw
@@ -346,7 +340,7 @@ export default function TeamsIntegration() {
       case 'disconnected':
         return <Unlink className="w-4 h-4 text-gray-500" />
       default:
-        return <AlertTriangle className="w-4 h-4 text-gray-500" />
+        return <Clock className="w-4 h-4 text-gray-500" />
     }
   }
 
@@ -423,7 +417,7 @@ export default function TeamsIntegration() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'connections' | 'notifications' | 'approvals' | 'settings')}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'

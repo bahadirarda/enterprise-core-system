@@ -37,8 +37,22 @@ export async function GET() {
       ]);
     }
 
-    // Transform the data to match frontend expectations
-    const transformedData = approvals?.map((approval: any) => ({
+    type IntegrationApprovalRow = {
+      id: string;
+      integration_id: string;
+      integrations?: {
+        name?: string;
+        type?: string;
+        status?: string;
+      };
+      request_type: string;
+      title: string;
+      description: string;
+      status: string;
+      created_at: string;
+      expires_at?: string;
+    };
+    const transformedData = approvals?.map((approval: IntegrationApprovalRow) => ({
       id: approval.id,
       integrationId: approval.integration_id,
       integrationName: approval.integrations?.name || 'Unknown Integration',

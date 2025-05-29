@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Building2, Users, TrendingUp, Activity, UserPlus, DollarSign, LifeBuoy, Settings, ChevronDown, ChevronRight, Search, Filter, MoreVertical, User, Clock, TrendingDown, AlertCircle, CheckCircle, Menu, X, Eye, Edit, Trash2, Monitor, Zap, MessageSquare } from 'lucide-react'
+import { Building2, Users, Activity, UserPlus, DollarSign, LifeBuoy, Settings, ChevronRight, Search, User, Clock, AlertCircle, CheckCircle, X, Eye, Edit, Trash2, Monitor, Zap, MessageSquare } from 'lucide-react'
 import { useAdminStats, useCompanies, useAdminUsers, useRecentActivities } from '@/hooks/useAdminData'
 import { adminActions } from '@/lib/adminActions'
 import { Company } from '@/lib/supabase'
@@ -25,8 +25,8 @@ export default function AdminDashboard() {
 
   // Use real data hooks
   const { stats, loading: statsLoading, error: statsError } = useAdminStats()
-  const { companies, loading: companiesLoading, error: companiesError, refetch: refetchCompanies } = useCompanies()
-  const { users, loading: usersLoading, error: usersError } = useAdminUsers()
+  const { companies, loading: companiesLoading, refetch: refetchCompanies } = useCompanies()
+  const { users, loading: usersLoading } = useAdminUsers()
   const { activities, loading: activitiesLoading } = useRecentActivities()
 
   const sidebarItems = [

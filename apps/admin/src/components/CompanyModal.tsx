@@ -66,7 +66,7 @@ export default function CompanyModal({ isOpen, onClose, onSuccess, company, mode
       } else {
         setError(result?.error || 'Bir hata oluştu')
       }
-    } catch (err) {
+    } catch (_err) {
       setError('Beklenmeyen bir hata oluştu')
     } finally {
       setLoading(false)
@@ -136,7 +136,7 @@ export default function CompanyModal({ isOpen, onClose, onSuccess, company, mode
             </label>
             <select
               value={formData.plan}
-              onChange={(e) => setFormData({ ...formData, plan: e.target.value as any })}
+              onChange={(e) => setFormData({ ...formData, plan: e.target.value as 'Basic' | 'Professional' | 'Enterprise' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="Basic">Basic</option>

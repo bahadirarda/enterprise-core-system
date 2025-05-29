@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/card';
 import { Button } from '@repo/ui/button';
-import { Badge } from '@repo/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/dialog';
 import { Input } from '@repo/ui/input';
 import { Label } from '@repo/ui/label';
@@ -22,11 +20,6 @@ import {
   RefreshCw,
   Bell,
   Activity,
-  Users,
-  FileText,
-  AlertTriangle,
-  Play,
-  Pause,
   Zap
 } from 'lucide-react';
 
@@ -73,9 +66,16 @@ export default function IntegrationsManagement() {
   const [newIntegrationOpen, setNewIntegrationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
-  const [newIntegration, setNewIntegration] = useState({
+  type IntegrationType = 'teams' | 'slack' | 'discord' | 'webhook' | 'email';
+  const [newIntegration, setNewIntegration] = useState<{
+    name: string;
+    type: IntegrationType;
+    description: string;
+    webhookUrl: string;
+    apiKey: string;
+  }>({
     name: '',
-    type: 'teams' as const,
+    type: 'teams',
     description: '',
     webhookUrl: '',
     apiKey: ''
@@ -241,12 +241,12 @@ export default function IntegrationsManagement() {
           {[
             { id: 'connections', label: 'Connections', icon: Activity, count: integrations.filter(i => i.status === 'active').length },
             { id: 'notifications', label: 'Notifications', icon: Bell, count: notifications.filter(n => !n.read).length },
-            { id: 'approvals', label: 'Approvals', icon: FileText, count: approvals.filter(a => a.status === 'pending').length },
+            { id: 'approvals', label: 'Approvals', icon: Settings, count: approvals.filter(a => a.status === 'pending').length },
             { id: 'settings', label: 'Settings', icon: Settings, count: 0 }
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'connections' | 'notifications' | 'approvals' | 'settings')}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
@@ -292,7 +292,7 @@ export default function IntegrationsManagement() {
                       <Select
                         value={newIntegration.type}
                         onValueChange={(value: string) => 
-                          setNewIntegration(prev => ({ ...prev, type: value as any }))
+                          setNewIntegration(prev => ({ ...prev, type: value as IntegrationType }))
                         }
                       >
                         <SelectTrigger>

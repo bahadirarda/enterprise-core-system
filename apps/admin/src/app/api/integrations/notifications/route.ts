@@ -48,7 +48,22 @@ export async function GET() {
     }
 
     // Transform the data to match frontend expectations
-    const transformedData = notifications?.map((notification: any) => ({
+    type IntegrationNotificationRow = {
+      id: string;
+      integration_id: string;
+      integrations?: {
+        name?: string;
+        type?: string;
+        status?: string;
+      };
+      title: string;
+      message: string;
+      type: string;
+      created_at: string;
+      status?: string;
+      priority?: string;
+    };
+    const transformedData = notifications?.map((notification: IntegrationNotificationRow) => ({
       id: notification.id,
       integrationId: notification.integration_id,
       integrationName: notification.integrations?.name || 'Unknown Integration',

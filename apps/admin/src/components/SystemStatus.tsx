@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { CheckCircle, AlertTriangle, XCircle, Activity, Wifi, Database, Server, Globe, Clock, TrendingUp, AlertCircle } from 'lucide-react'
+import { CheckCircle, AlertTriangle, XCircle, Activity, Wifi, Database, Server, Globe } from 'lucide-react'
 
 interface ServiceStatus {
   id: string
@@ -102,7 +102,7 @@ const getStatusIcon = (status: ServiceStatus['status']) => {
     case 'degraded':
       return <AlertTriangle className="h-4 w-4" />
     case 'partial_outage':
-      return <AlertCircle className="h-4 w-4" />
+      return <AlertTriangle className="h-4 w-4" />
     case 'major_outage':
       return <XCircle className="h-4 w-4" />
     default:
@@ -166,7 +166,7 @@ export default function SystemStatus() {
   useEffect(() => {
     const interval = setInterval(refreshStatus, 30000) // Refresh every 30 seconds
     return () => clearInterval(interval)
-  }, [])
+  }, [refreshStatus])
 
   return (
     <div className="space-y-6">
@@ -235,7 +235,7 @@ export default function SystemStatus() {
                     {service.id === 'database' && <Database className="h-5 w-5 text-gray-600" />}
                     {service.id === 'storage' && <Server className="h-5 w-5 text-gray-600" />}
                     {service.id === 'email' && <Globe className="h-5 w-5 text-gray-600" />}
-                    {service.id === 'cdn' && <TrendingUp className="h-5 w-5 text-gray-600" />}
+                    {service.id === 'cdn' && <Globe className="h-5 w-5 text-gray-600" />}
                     <div>
                       <h4 className="font-medium text-gray-900">{service.name}</h4>
                       <p className="text-sm text-gray-500">{service.description}</p>

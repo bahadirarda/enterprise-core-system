@@ -49,8 +49,17 @@ export async function GET() {
       ]);
     }
 
-    // Transform the data to match frontend expectations
-    const transformedData = integrations?.map((integration: any) => ({
+    type IntegrationRow = {
+      id: string;
+      name: string;
+      type: string;
+      status: string;
+      description: string;
+      updated_at?: string;
+      webhook_url?: string;
+      api_key?: string;
+    };
+    const transformedData = integrations?.map((integration: IntegrationRow) => ({
       id: integration.id,
       name: integration.name,
       type: integration.type,
