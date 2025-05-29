@@ -1,20 +1,85 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Mock client for build time
+const createMockClient = (): SupabaseClient => {
+  return {
+    auth: {
+      signInWithPassword: () => Promise.resolve({ data: null, error: null }),
+      signUp: () => Promise.resolve({ data: null, error: null }),
+      signOut: () => Promise.resolve({ error: null }),
+      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+    },
+    from: () => ({
+      select: () => ({
+        order: () => ({
+          limit: () => Promise.resolve({ data: [], error: null })
+        }),
+        eq: () => ({
+          single: () => Promise.resolve({ data: null, error: null })
+        }),
+        single: () => Promise.resolve({ data: null, error: null })
+      }),
+      insert: () => ({
+        select: () => ({
+          single: () => Promise.resolve({ data: null, error: null })
+        })
+      }),
+      update: () => ({
+        eq: () => ({
+          select: () => ({
+            single: () => Promise.resolve({ data: null, error: null })
+          })
+        })
+      })
+    })
+  } as unknown as SupabaseClient;
+};
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+// Lazy initialization to avoid build-time errors
+let supabaseClient: SupabaseClient | null = null;
+
+export const getSupabaseClient = (): SupabaseClient => {
+  // Check if we're in build time
+  if (typeof window === 'undefined' && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    return createMockClient();
+  }
+
+  if (!supabaseClient) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce'
+      }
+    });
+  }
+  
+  return supabaseClient;
+};
+
+// Create client function for API routes
+export const createSupabaseClient = () => {
+  return getSupabaseClient();
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce'
-  }
-})
+// Default export for components - use getter to avoid build-time initialization
+export const supabase = {
+  get auth() {
+    return getSupabaseClient().auth;
+  },
+  from: (table: string) => getSupabaseClient().from(table),
+  storage: getSupabaseClient().storage,
+  functions: getSupabaseClient().functions,
+  realtime: getSupabaseClient().realtime,
+};
+
+// Export createClient for backward compatibility
+export { createSupabaseClient as createClient }
 
 // Database types for better TypeScript support
 export interface Employee {
