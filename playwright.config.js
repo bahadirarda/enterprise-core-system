@@ -2,10 +2,10 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  fullyParallel: false, // Sequential execution to avoid port conflicts
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0, // Reduced retries to prevent loops
+  workers: 1, // Force single worker to avoid port conflicts
   reporter: 'html',
   timeout: 30000, // 30 seconds per test
   expect: {
