@@ -12,10 +12,66 @@ permissions:
   checks: write
 
 jobs:
+  changes:
+    name: 🔍 Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.changes.outputs.status }}
+      admin: ${{ steps.changes.outputs.admin }}
+      auth: ${{ steps.changes.outputs.auth }}
+      hrms: ${{ steps.changes.outputs.hrms }}
+      portal: ${{ steps.changes.outputs.portal }}
+      marketing: ${{ steps.changes.outputs.marketing }}
+      packages: ${{ steps.changes.outputs.packages }}
+      tests: ${{ steps.changes.outputs.tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            status:
+              - 'apps/status/**'
+            admin:
+              - 'apps/admin/**'
+            auth:
+              - 'apps/auth/**'
+            hrms:
+              - 'apps/hrms/**'
+            portal:
+              - 'apps/portal/**'
+            marketing:
+              - 'apps/marketing/**'
+            packages:
+              - 'packages/**'
+            tests:
+              - 'tests/**'
+              - '*.config.js'
+              - '*.config.ts'
+              - 'playwright.config.js'
+              - 'package.json'
+              - 'package-lock.json'
+
   feature-validation:
     name: 🔍 Feature Validation
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    needs: changes
+    if: |
+      github.event.pull_request.draft == false && (
+        needs.changes.outputs.status == 'true' || 
+        needs.changes.outputs.admin == 'true' || 
+        needs.changes.outputs.auth == 'true' || 
+        needs.changes.outputs.hrms == 'true' || 
+        needs.changes.outputs.portal == 'true' || 
+        needs.changes.outputs.marketing == 'true' || 
+        needs.changes.outputs.packages == 'true' || 
+        needs.changes.outputs.tests == 'true'
+      )
     
     steps:
       - name: Checkout
@@ -51,6 +107,16 @@ jobs:
   code-quality:
     name: 📊 Code Quality Check
     runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.status == 'true' || 
+      needs.changes.outputs.admin == 'true' || 
+      needs.changes.outputs.auth == 'true' || 
+      needs.changes.outputs.hrms == 'true' || 
+      needs.changes.outputs.portal == 'true' || 
+      needs.changes.outputs.marketing == 'true' || 
+      needs.changes.outputs.packages == 'true' || 
+      needs.changes.outputs.tests == 'true'
     
     steps:
       - name: Checkout
@@ -82,8 +148,17 @@ jobs:
   preview-deployment:
     name: 🔗 Deploy Preview
     runs-on: ubuntu-latest
-    needs: [feature-validation, code-quality]
-    if: github.event.pull_request.draft == false
+    needs: [changes, feature-validation, code-quality]
+    if: |
+      github.event.pull_request.draft == false && (
+        needs.changes.outputs.status == 'true' || 
+        needs.changes.outputs.admin == 'true' || 
+        needs.changes.outputs.auth == 'true' || 
+        needs.changes.outputs.hrms == 'true' || 
+        needs.changes.outputs.portal == 'true' || 
+        needs.changes.outputs.marketing == 'true' || 
+        needs.changes.outputs.packages == 'true'
+      )
     
     steps:
       - name: Checkout
@@ -120,6 +195,16 @@ jobs:
   feature-flag-check:
     name: 🚩 Feature Flag Validation
     runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.status == 'true' || 
+      needs.changes.outputs.admin == 'true' || 
+      needs.changes.outputs.auth == 'true' || 
+      needs.changes.outputs.hrms == 'true' || 
+      needs.changes.outputs.portal == 'true' || 
+      needs.changes.outputs.marketing == 'true' || 
+      needs.changes.outputs.packages == 'true' || 
+      needs.changes.outputs.tests == 'true'
     
     steps:
       - name: Checkout
@@ -199,4 +284,4 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `📋 **Merge Strategy**: This PR should use \`${mergeStrategy}\` merge based on branch naming convention.`
-            }); 
+            });

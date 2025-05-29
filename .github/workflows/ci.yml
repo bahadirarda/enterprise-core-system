@@ -21,6 +21,7 @@ jobs:
       portal: ${{ steps.changes.outputs.portal }}
       marketing: ${{ steps.changes.outputs.marketing }}
       packages: ${{ steps.changes.outputs.packages }}
+      tests: ${{ steps.changes.outputs.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,6 +47,13 @@ jobs:
               - 'apps/marketing/**'
             packages:
               - 'packages/**'
+            tests:
+              - 'tests/**'
+              - '*.config.js'
+              - '*.config.ts'
+              - 'playwright.config.js'
+              - 'package.json'
+              - 'package-lock.json'
 
   test:
     name: 🧪 Test & Lint
@@ -58,7 +66,8 @@ jobs:
       needs.changes.outputs.hrms == 'true' || 
       needs.changes.outputs.portal == 'true' || 
       needs.changes.outputs.marketing == 'true' || 
-      needs.changes.outputs.packages == 'true'
+      needs.changes.outputs.packages == 'true' || 
+      needs.changes.outputs.tests == 'true'
     
     steps:
       - name: Checkout
