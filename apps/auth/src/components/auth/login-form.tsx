@@ -132,15 +132,19 @@ export function LoginForm() {
   }
 
   const getRedirectUrl = (role?: string) => {
+    // Safe environment variable access with fallbacks
+    const portalUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_PORTAL_URL) || 'http://localhost:3002'
+    const hrmsUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_HRMS_URL) || 'http://localhost:3001'
+    
     switch (role) {
       case 'admin':
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
       case 'hr':
-        return process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:3001'
+        return hrmsUrl
       case 'employee':
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
       default:
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
     }
   }
 

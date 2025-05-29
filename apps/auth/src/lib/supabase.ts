@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 // Lazy initialization to avoid build-time issues
 let supabaseClient: ReturnType<typeof createClient> | null = null
@@ -8,11 +8,29 @@ const getSupabaseClient = () => {
     return supabaseClient
   }
 
+  // Check if we're in a build environment (no window object and specific env vars missing)
+  const isBuildTime = typeof window === 'undefined' && !process.env.NEXT_PUBLIC_SUPABASE_URL
+  
+  if (isBuildTime) {
+    // Return a mock client during build time to prevent errors
+    return {
+      auth: {
+        signInWithPassword: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signInWithOAuth: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signUp: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signOut: () => Promise.resolve({ error: null }),
+        resetPasswordForEmail: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } }, error: null }),
+      }
+    } as unknown as SupabaseClient
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables')
+    throw new Error('Missing Supabase environment variables. Please check your .env.local file.')
   }
 
   supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
