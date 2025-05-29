@@ -1,11 +1,11 @@
 // E2E Test Suite for HRMS System - Testing CI pipeline trigger
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env.ports') });
 
-const PORTAL_PORT = process.env.PORTAL_PORT || 3001;
-const HRMS_PORT = process.env.HRMS_PORT || 3002;
-const ADMIN_PORT = process.env.ADMIN_PORT || 8080;
-const STATUS_PORT = process.env.STATUS_PORT || 8081;
-const AUTH_PORT = process.env.AUTH_PORT || 3000;
+const PORTAL_PORT = process.env.PORTAL_PORT || 4001;
+const HRMS_PORT = process.env.HRMS_PORT || 4002;
+const ADMIN_PORT = process.env.ADMIN_PORT || 4003;
+const STATUS_PORT = process.env.STATUS_PORT || 4004;
+const AUTH_PORT = process.env.AUTH_PORT || 4000;
 
 const { test, expect } = require('@playwright/test');
 
@@ -25,7 +25,7 @@ test.describe('HRMS System E2E Tests', () => {
     await expect(page.locator('button:has-text("Google")')).toBeVisible();
     await expect(page.locator('button:has-text("GitHub")')).toBeVisible();
     
-    console.log('✅ Auth App (Port 3000) - Login page test passed');
+    console.log('✅ Auth App (Port 4000) - Login page test passed');
   });
 
   test('Portal App - Main page loads correctly', async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe('HRMS System E2E Tests', () => {
       await expect(loadingText).toBeHidden({ timeout: 15000 });
     }
     
-    console.log('✅ Portal App (Port 3001) - Main page test passed');
+    console.log('✅ Portal App (Port 4001) - Main page test passed');
   });
 
   test('HRMS App - Dashboard loads correctly', async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe('HRMS System E2E Tests', () => {
       await expect(loadingText).toBeHidden({ timeout: 10000 });
     }
     
-    console.log('✅ HRMS App (Port 3001) - Dashboard test passed');
+    console.log('✅ HRMS App (Port 4002) - Dashboard test passed');
   });
 
   test('Admin App - Dashboard loads correctly', async ({ page }) => {
@@ -77,7 +77,7 @@ test.describe('HRMS System E2E Tests', () => {
     // Stats kartları yüklenene kadar bekle
     await page.waitForTimeout(2000);
     
-    console.log('✅ Admin App (Port 3003) - Dashboard test passed');
+    console.log('✅ Admin App (Port 4003) - Dashboard test passed');
   });
 
   test('Admin App - Navigation test', async ({ page }) => {

@@ -99,8 +99,28 @@ jobs:
 
       - name: Start all apps
         run: |
+          # Kill any existing processes on our ports
+          sudo lsof -ti:4000,4001,4002,4003,4004 | xargs -r sudo kill -9 || true
+          
+          # Export port configuration
+          export AUTH_PORT=4000
+          export PORTAL_PORT=4001
+          export HRMS_PORT=4002
+          export ADMIN_PORT=4003
+          export STATUS_PORT=4004
+          
+          # Start apps in background with port configuration
           npm run dev &
-          sleep 15
+          
+          # Wait for apps to start and verify they're running
+          echo "🔄 Waiting for apps to start..."
+          sleep 30
+          
+          # Check if apps are responding
+          for port in 4000 4001 4002 4003 4004; do
+            echo "🔍 Checking port $port..."
+            timeout 10 bash -c "until curl -s http://localhost:$port > /dev/null; do sleep 1; done" || echo "⚠️ Port $port not responding"
+          done
 
       - name: Run Playwright E2E tests
         run: npx playwright test

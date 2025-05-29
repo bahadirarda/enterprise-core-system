@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=${PORT:-8080} next dev --turbo",
+    "dev": "PORT=${ADMIN_PORT:-4003} next dev --turbo",
     "build": "next build",
-    "start": "PORT=${PORT:-8080} next start",
+    "start": "PORT=${ADMIN_PORT:-4003} next start",
     "lint": "next lint",
     "test": "echo \"No tests specified\" && exit 0"
   },
