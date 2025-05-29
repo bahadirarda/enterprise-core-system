@@ -17,7 +17,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 })
 
 // Auth helpers
-export const signUp = async (email: string, password: string, userData?: Record<string, any>) => {
+export const signUp = async (email: string, password: string, userData?: Record<string, unknown>) => {
   return await supabase.auth.signUp({
     email,
     password,
