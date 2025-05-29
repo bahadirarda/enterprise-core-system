@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { PortalDashboard } from '@/components/portal/portal-dashboard'
 import { sharedAuthManager } from '@/lib/shared-auth'
@@ -15,7 +15,7 @@ interface User {
   }
 }
 
-export default function HomePage() {
+function HomePageContent() {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const searchParams = useSearchParams()
@@ -102,4 +102,19 @@ export default function HomePage() {
   }
 
   return <PortalDashboard />
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Kikos Portal yükleniyor...</p>
+        </div>
+      </div>
+    }>
+      <HomePageContent />
+    </Suspense>
+  )
 }
