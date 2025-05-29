@@ -41,22 +41,27 @@ module.exports = defineConfig({
     {
       command: 'cd apps/auth && npm run dev',
       port: 3000,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: true,
     },
     {
       command: 'cd apps/hrms && npm run dev',
-      port: 3001,
-      reuseExistingServer: !process.env.CI,
+      port: 3002,
+      reuseExistingServer: true,
     },
     {
       command: 'cd apps/portal && npm run dev',
-      port: 3002,
-      reuseExistingServer: !process.env.CI,
+      port: 3001,
+      reuseExistingServer: true,
     },
     {
       command: 'cd apps/admin && npm run dev',
-      port: 3003,
-      reuseExistingServer: !process.env.CI,
+      port: 8080,
+      reuseExistingServer: true,
+    },
+    {
+      command: 'cd apps/status && npm run dev',
+      port: 8081,
+      reuseExistingServer: true,
     },
   ],
 }); 
