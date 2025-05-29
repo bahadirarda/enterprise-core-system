@@ -6,7 +6,8 @@
     "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start -p 3004",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "react": "^18.2.0",
