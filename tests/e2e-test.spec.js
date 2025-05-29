@@ -9,7 +9,11 @@ const AUTH_PORT = process.env.AUTH_PORT || 4000;
 
 const { test, expect } = require('@playwright/test');
 
-test.describe('HRMS System E2E Tests', () => {
+test.describe.parallel('HRMS System E2E Tests', () => {
+  test.beforeAll(async () => {
+    console.log('🚀 Starting parallel E2E tests with new port configuration (4000-4004)');
+  });
+
   test('Auth App - Login page loads correctly', async ({ page }) => {
     await page.goto(`http://localhost:${AUTH_PORT}`);
     

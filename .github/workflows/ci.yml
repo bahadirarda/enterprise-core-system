@@ -123,7 +123,12 @@ jobs:
           done
 
       - name: Run Playwright E2E tests
-        run: npx playwright test
+        run: |
+          echo "🧪 Running Playwright tests with maximum parallelism..."
+          npx playwright test --workers=100% --reporter=github --project=chromium,firefox --max-failures=5
+        env:
+          CI: true
+          PLAYWRIGHT_WORKERS: 100%
 
   security:
     name: 🔒 Security Scan

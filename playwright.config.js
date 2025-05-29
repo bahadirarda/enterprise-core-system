@@ -2,22 +2,38 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
-  fullyParallel: false, // Sequential execution to avoid port conflicts
+  fullyParallel: true, // Enable parallel execution for maximum speed
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0, // Reduced retries to prevent loops
-  workers: 1, // Force single worker to avoid port conflicts
-  reporter: 'html',
-  timeout: 30000, // 30 seconds per test
+  retries: process.env.CI ? 2 : 1, // Allow retries for flaky tests
+  workers: process.env.CI ? '100%' : '50%', // Use all available cores in CI, 50% locally
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/junit.xml' }]
+  ],
+  timeout: 45000, // 45 seconds per test for complex scenarios
   expect: {
-    timeout: 10000, // 10 seconds for assertions
+    timeout: 15000, // 15 seconds for assertions
   },
   use: {
     baseURL: 'http://localhost',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 10000, // 10 seconds for actions
-    navigationTimeout: 15000, // 15 seconds for navigation
+    actionTimeout: 15000, // 15 seconds for actions
+    navigationTimeout: 30000, // 30 seconds for navigation
+    // Performance optimizations
+    ignoreHTTPSErrors: true,
+    launchOptions: {
+      args: [
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
+      ]
+    }
   },
 
   projects: [

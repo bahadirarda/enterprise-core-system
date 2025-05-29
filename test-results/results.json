@@ -1,0 +1,633 @@
+{
+  "config": {
+    "configFile": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/playwright.config.js",
+    "rootDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 5,
+    "metadata": {
+      "actualWorkers": 5
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.52.0",
+    "workers": 8,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e-test.spec.js",
+      "file": "e2e-test.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "HRMS System E2E Tests",
+          "file": "e2e-test.spec.js",
+          "line": 12,
+          "column": 15,
+          "specs": [
+            {
+              "title": "Auth App - Login page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 30215,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App (Port 4000) - Login page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:08.260Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-990a0252c7205ca2bedf",
+              "file": "e2e-test.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Portal App - Main page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14748,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Portal App (Port 4001) - Main page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:39.346Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-084a977c94f2ac033422",
+              "file": "e2e-test.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "HRMS App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 40931,
+                      "error": {
+                        "message": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n\n    at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:52:16",
+                        "location": {
+                          "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
+                          "column": 16,
+                          "line": 52
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 50 |\u001b[39m\n \u001b[90m 51 |\u001b[39m   test(\u001b[32m'HRMS App - Dashboard loads correctly'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`http://localhost:${HRMS_PORT}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m     \n \u001b[90m 54 |\u001b[39m     \u001b[90m// Sayfa yüklendiğini kontrol et\u001b[39m\n \u001b[90m 55 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'body'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
+                            "column": 16,
+                            "line": 52
+                          },
+                          "message": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 50 |\u001b[39m\n \u001b[90m 51 |\u001b[39m   test(\u001b[32m'HRMS App - Dashboard loads correctly'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`http://localhost:${HRMS_PORT}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m     \n \u001b[90m 54 |\u001b[39m     \u001b[90m// Sayfa yüklendiğini kontrol et\u001b[39m\n \u001b[90m 55 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'body'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:52:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:08.247Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
+                        "column": 16,
+                        "line": 52
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1262,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-29T16:49:54.112Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "flaky"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-0b55454b3a7338a03857",
+              "file": "e2e-test.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2665,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App (Port 4003) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:55.779Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-5c18738ab31e43bc6642",
+              "file": "e2e-test.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Navigation test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 32676,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Navigation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:08.217Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-7f85c3dbc44972093a9b",
+              "file": "e2e-test.spec.js",
+              "line": 87,
+              "column": 3
+            },
+            {
+              "title": "System Status Check - All ports respond",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 12194,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App (Port 4000) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Portal App (Port 4001) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Admin App (Port 4003) - HTTP Status: 200\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:41.674Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-aab0bf741127ed985c10",
+              "file": "e2e-test.spec.js",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Form validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 32529,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Form validation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:08.221Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-c536fa0d7cbf64f05cb5",
+              "file": "e2e-test.spec.js",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "Admin App - System Status Widget",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3406,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App - System Status Widget test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:41.506Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-a96dbd02911b1e1c5388",
+              "file": "e2e-test.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "Responsive Design Test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 33162,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Responsive Design test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:08.263Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-5367fb779030a50f96c5",
+              "file": "e2e-test.spec.js",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "Performance Test - Page Load Times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 11266,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App - Load time: 2360ms\n"
+                        },
+                        {
+                          "text": "✅ HRMS App - Load time: 1237ms\n"
+                        },
+                        {
+                          "text": "✅ Portal App - Load time: 4352ms\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Load time: 2052ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-29T16:49:42.131Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-4870600d171622cdaf73",
+              "file": "e2e-test.spec.js",
+              "line": 169,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-05-29T16:49:06.651Z",
+    "duration": 51832.205,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 1
+  }
+}
