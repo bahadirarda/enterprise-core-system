@@ -1,4 +1,4 @@
-// E2E Test Suite for HRMS System - Testing CI pipeline trigger
+// E2E Test Suite for HRMS System - Updated with new port configuration (4000-4004)
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env.ports') });
 
 const PORTAL_PORT = process.env.PORTAL_PORT || 4001;

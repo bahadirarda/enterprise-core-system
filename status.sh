@@ -33,8 +33,8 @@ echo "🕐 Kontrol Zamanı: $(date)"
 echo
 
 # Check services
-check_service "Admin Panel" "3003" "http://localhost:3003"
-check_service "Status Dashboard" "3004" "http://localhost:3004"
+check_service "Admin Panel" "4003" "http://localhost:4003"
+check_service "Status Dashboard" "4004" "http://localhost:4004"
 
 # Check if any Next.js processes are running
 next_processes=$(pgrep -f "next dev" | wc -l)

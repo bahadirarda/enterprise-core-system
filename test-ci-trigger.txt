@@ -1,0 +1,5 @@
+# CI Test File
+This file is created to test GitHub Actions workflow triggers.
+Created on: 29 Mayıs 2025
+
+Testing the updated port configuration and workflow changes.

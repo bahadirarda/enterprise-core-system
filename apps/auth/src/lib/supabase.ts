@@ -121,6 +121,6 @@ export const onAuthStateChange = (callback: (event: string, session: unknown) =>
 }
 
 // Eğer bir yerde sabit port ile yönlendirme varsa:
-// örn: fetch(`http://localhost:3000/api/...`) yerine
+// örn: fetch(`http://localhost:4000/api/...`) yerine
 // fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
 // veya import ports from '../../../ports.js' ile kullanılabilir

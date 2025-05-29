@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-    NEXT_PUBLIC_PORT: `${process.env.PORT || process.env.ADMIN_PORT || '8080'}`,
+    NEXT_PUBLIC_PORT: `${process.env.PORT || process.env.ADMIN_PORT || '4003'}`,
   },
   
   // Dynamic rendering'i zorla - static generation'ı devre dışı bırak

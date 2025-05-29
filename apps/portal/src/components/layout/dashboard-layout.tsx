@@ -54,7 +54,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       } catch (error) {
         console.error('Error fetching employee data:', error)
         // Redirect to auth if not authenticated
-        window.location.href = process.env.NEXT_PUBLIC_APP_URL || 'http://auth.localhost:3000'
+        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
       } finally {
         setLoading(false)
       }

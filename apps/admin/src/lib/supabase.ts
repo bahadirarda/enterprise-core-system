@@ -109,6 +109,6 @@ export interface AdminStats {
 }
 
 // Eğer bir yerde sabit port ile yönlendirme varsa:
-// örn: fetch(`http://localhost:8080/api/...`) yerine
+// örn: fetch(`http://localhost:4003/api/...`) yerine
 // fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
 // veya import ports from '../../../ports.js' ile kullanılabilir

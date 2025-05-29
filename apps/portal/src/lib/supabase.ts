@@ -314,10 +314,10 @@ export const signOut = async () => {
     console.error('Error signing out:', error)
     throw error
   }
-  window.location.href = process.env.NEXT_PUBLIC_APP_URL || 'http://auth.localhost:3000'
+  window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
 }
 
 // Eğer bir yerde sabit port ile yönlendirme varsa:
-// örn: fetch(`http://localhost:3001/api/...`) yerine
+// örn: fetch(`http://localhost:4001/api/...`) yerine
 // fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
 // veya import ports from '../../../ports.js' ile kullanılabilir

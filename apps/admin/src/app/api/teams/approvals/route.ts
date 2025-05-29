@@ -214,20 +214,20 @@ export async function POST(request: NextRequest) {
               type: 'Action.Http',
               title: '✅ Approve',
               method: 'POST',
-              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003'}/api/teams/approvals/${approval.id}/approve`,
+              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:4003'}/api/teams/approvals/${approval.id}/approve`,
               style: 'positive'
             },
             {
               type: 'Action.Http',
               title: '❌ Reject',
               method: 'POST', 
-              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003'}/api/teams/approvals/${approval.id}/reject`,
+              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:4003'}/api/teams/approvals/${approval.id}/reject`,
               style: 'destructive'
             },
             {
               type: 'Action.OpenUrl',
               title: '📋 View Details',
-              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003'}/?tab=teams-integration`
+              url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:4003'}/?tab=teams-integration`
             }
           ]
         }

@@ -174,14 +174,14 @@ else
     sleep 5
     
     # Check if services are running
-    if curl -sf "http://localhost:3004" &> /dev/null; then
-        log_success "Status app is running on http://localhost:3004"
+    if curl -sf "http://localhost:4004" &> /dev/null; then
+        log_success "Status app is running on http://localhost:4004"
     else
         log_warning "Status app may not be ready yet"
     fi
     
-    if curl -sf "http://localhost:3001" &> /dev/null; then
-        log_success "Admin app is running on http://localhost:3001"
+    if curl -sf "http://localhost:4003" &> /dev/null; then
+        log_success "Admin app is running on http://localhost:4003"
     else
         log_warning "Admin app may not be ready yet"
     fi
@@ -197,16 +197,16 @@ log_info "=================="
 
 if [ "$USE_DOCKER" = "true" ]; then
     echo "🐳 Docker Mode:"
-    echo "   Status Page:  http://localhost:3004"
-    echo "   Admin Panel:  http://localhost:3001"
-    echo "   Auth Service: http://localhost:3000"
-    echo "   Portal App:   http://localhost:3002"
-    echo "   HRMS App:     http://localhost:3003"
+    echo "   Status Page:  http://localhost:4004"
+    echo "   Admin Panel:  http://localhost:4003"
+    echo "   Auth Service: http://localhost:4000"
+    echo "   Portal App:   http://localhost:4001"
+    echo "   HRMS App:     http://localhost:4002"
     echo "   Load Balancer: http://localhost:80"
 else
     echo "🔧 Development Mode:"
-    echo "   Status Page: http://localhost:3004"
-    echo "   Admin Panel: http://localhost:3001"
+    echo "   Status Page: http://localhost:4004"
+    echo "   Admin Panel: http://localhost:4003"
 fi
 
 echo ""

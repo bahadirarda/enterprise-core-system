@@ -136,11 +136,11 @@ export function PortalDashboard() {
       const currentSession = sharedAuthManager.getSharedSession()
       if (currentSession) {
         const tokenParam = encodeURIComponent(JSON.stringify(currentSession))
-        const hrmsUrl = process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:3002'
+        const hrmsUrl = process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:4002'
         window.location.href = `${hrmsUrl}?session=${tokenParam}`
       } else {
         // No session found, redirect to auth
-        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
       }
     } else {
       // Diğer uygulamalar için genel yönlendirme

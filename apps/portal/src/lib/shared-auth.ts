@@ -227,7 +227,7 @@ export class SharedAuthManager {
       this.clearSharedSession()
       
       // Redirect to auth provider
-      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
     } catch (error) {
       console.error('Error signing out:', error)
     }

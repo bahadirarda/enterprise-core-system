@@ -64,7 +64,7 @@ function HomePageContent() {
       
       if (!isAuthenticated || !authUser) {
         console.log('Portal: No authenticated user, redirecting to auth...')
-        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
         return
       }
 
@@ -76,7 +76,7 @@ function HomePageContent() {
       
     } catch (error) {
       console.error('Error checking authentication:', error)
-      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
     } finally {
       setIsLoading(false)
     }

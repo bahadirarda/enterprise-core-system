@@ -7,7 +7,7 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_PORT: process.env.PORT || process.env.STATUS_PORT || 8081,
+    NEXT_PUBLIC_PORT: process.env.PORT || process.env.STATUS_PORT || 4004,
   },
 };
 

@@ -71,7 +71,7 @@ function HRMSContent() {
       if (sharedAuthManager.checkAuthStatus) {
         const { isAuthenticated, user: authUser } = await sharedAuthManager.checkAuthStatus()
         if (!isAuthenticated || !authUser) {
-          window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+          window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
           return
         }
         setUser(authUser)
@@ -88,14 +88,14 @@ function HRMSContent() {
       const { data: { user: supaUser } } = await supabase.auth.getUser()
       const { data: { session: supaSession } } = await supabase.auth.getSession()
       if (!supaUser) {
-        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
         return
       }
       setUser(supaUser)
       setAccessToken(supaSession?.access_token || null)
       setIsLoading(false)
     } catch {
-      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+      window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
     } finally {
       setIsLoading(false)
     }
@@ -133,7 +133,7 @@ function HRMSContent() {
         
         if (!profile) {
           console.error('No user profile found for user:', user.id)
-          window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+          window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
           return
         }
         
@@ -202,7 +202,7 @@ function HRMSContent() {
         
       } catch (fetchError) {
         console.error('Error fetching employee data:', fetchError)
-        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+        window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:4000'
       }
     })()
   }, [user, accessToken])
