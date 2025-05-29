@@ -1,3 +1,4 @@
+// E2E Test Suite for HRMS System - Testing CI pipeline trigger
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env.ports') });
 
 const PORTAL_PORT = process.env.PORTAL_PORT || 3001;
