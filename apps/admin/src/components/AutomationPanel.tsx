@@ -115,23 +115,26 @@ export default function AutomationPanel() {
       ]);
 
       // Transform pipelines data
-      const transformedPipelines = pipelinesData.map((pipeline: Pipeline) => ({
-        id: pipeline.id,
-        status: pipeline.status,
-        branch: pipeline.branch,
-        commit: pipeline.commit.substring(0, 7) || 'unknown',
-        author: pipeline.author,
-        message: pipeline.message,
-        createdAt: pipeline.createdAt,
-        jobs: pipeline.jobs?.map((job: PipelineJob) => ({
-          id: job.id || `${pipeline.id}-${job.name}`,
-          name: job.name,
-          status: job.status,
-          duration: job.duration,
-          startedAt: job.startedAt,
-          finishedAt: job.finishedAt
-        })) || []
-      }));
+      const transformedPipelines = pipelinesData.map((pipeline: any) => {
+        const p = pipeline as Pipeline;
+        return {
+          id: p.id,
+          status: p.status,
+          branch: p.branch,
+          commit: p.commit.substring(0, 7) || 'unknown',
+          author: p.author,
+          message: p.message,
+          createdAt: p.createdAt,
+          jobs: p.jobs?.map((job: PipelineJob) => ({
+            id: job.id || `${p.id}-${job.name}`,
+            name: job.name,
+            status: job.status,
+            duration: job.duration,
+            startedAt: job.startedAt,
+            finishedAt: job.finishedAt
+          })) || []
+        }
+      });
 
       // Transform merge requests data
       const transformedMergeRequests = mergeRequestsData.map((mr: MergeRequest) => ({

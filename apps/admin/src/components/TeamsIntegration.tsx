@@ -109,7 +109,7 @@ export default function TeamsIntegration() {
 
       if (connectionsData.success) {
         // API'den gelen veriyi frontend formatına dönüştür
-        const formattedConnections = connectionsData.connections.map((conn: any) => ({
+        const formattedConnections = connectionsData.connections.map((conn: Record<string, unknown>) => ({
           id: conn.id,
           name: conn.name,
           tenantId: conn.tenant_id,
