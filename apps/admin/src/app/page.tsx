@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       } else {
         alert(result.error || 'Silme işlemi başarısız')
       }
-    } catch (error) {
+    } catch {
       alert('Beklenmeyen bir hata oluştu')
     } finally {
       setDeleteLoading(null)
