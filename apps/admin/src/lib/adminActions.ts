@@ -4,7 +4,7 @@ export interface CreateCompanyData {
   name: string
   domain: string
   plan: 'Basic' | 'Professional' | 'Enterprise'
-  settings?: any
+  settings?: Record<string, unknown>
 }
 
 export interface UpdateCompanyData extends Partial<CreateCompanyData> {
@@ -52,7 +52,7 @@ export const adminActions = {
   // Update company
   async updateCompany(data: UpdateCompanyData): Promise<{ success: boolean; data?: Company; error?: string }> {
     try {
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         updated_at: new Date().toISOString()
       }
 
@@ -196,7 +196,7 @@ export const adminActions = {
   },
 
   // System Stats
-  async getSystemHealth(): Promise<{ success: boolean; data?: any; error?: string }> {
+  async getSystemHealth(): Promise<{ success: boolean; data?: Record<string, unknown>; error?: string }> {
     try {
       // Check database connectivity
       const { data, error } = await supabase

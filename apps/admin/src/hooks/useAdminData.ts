@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 import { supabase, Company, AdminUser, AdminStats } from '@/lib/supabase'
 
+type RecentActivity = {
+  id: number;
+  text: string;
+  time: string;
+  type: 'success' | 'info';
+};
+
 export function useAdminStats() {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -191,7 +198,7 @@ export function useAdminUsers() {
 }
 
 export function useRecentActivities() {
-  const [activities, setActivities] = useState<any[]>([])
+  const [activities, setActivities] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -213,18 +220,18 @@ export function useRecentActivities() {
           .order('created_at', { ascending: false })
           .limit(2)
 
-        const activities = [
+        const activities: RecentActivity[] = [
           ...(recentOrgs || []).map(org => ({
             id: Math.random(),
             text: `Yeni şirket eklendi: ${org.name}`,
             time: formatTimeAgo(org.created_at),
-            type: 'success'
+            type: 'success' as const
           })),
           ...(recentUsers || []).map(user => ({
             id: Math.random(),
             text: `Yeni kullanıcı kaydı: ${user.email}`,
             time: formatTimeAgo(user.created_at),
-            type: 'info'
+            type: 'info' as const
           }))
         ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 4)
 

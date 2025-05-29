@@ -60,7 +60,25 @@ export async function GET() {
     }
 
     // Transform the data to match frontend expectations
-    const transformedData = deployments?.map((deployment: any) => ({
+    type DeploymentRow = {
+      id: string;
+      environment: string;
+      version: string;
+      status: string;
+      health: string;
+      deployed_by: string;
+      deployed_at: string;
+      created_at?: string;
+      updated_at?: string;
+      pipelines?: {
+        id: string;
+        branch: string;
+        commit_sha: string;
+        author: string;
+        message: string;
+      } | null;
+    };
+    const transformedData = deployments?.map((deployment: DeploymentRow) => ({
       id: deployment.id,
       environment: deployment.environment,
       version: deployment.version,

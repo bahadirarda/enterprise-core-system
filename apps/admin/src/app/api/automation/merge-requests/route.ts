@@ -72,7 +72,34 @@ export async function GET() {
     }
 
     // Transform the data to match frontend expectations
-    const transformedData = mergeRequests?.map((mr: any) => ({
+    type MergeApprovalRow = {
+      id: string;
+      approver: string;
+      action: string;
+      comment: string | null;
+      created_at: string;
+    };
+    type MergeRequestRow = {
+      id: string;
+      external_id: string;
+      title: string;
+      description: string;
+      author: string;
+      source_branch: string;
+      target_branch: string;
+      status: string;
+      approvals: number;
+      required_approvals: number;
+      pipeline_status: string;
+      additions: number;
+      deletions: number;
+      files_changed: number;
+      created_at: string;
+      updated_at: string;
+      conflicts: boolean;
+      merge_approvals?: MergeApprovalRow[];
+    };
+    const transformedData = mergeRequests?.map((mr: MergeRequestRow) => ({
       id: mr.id,
       externalId: mr.external_id,
       title: mr.title,
@@ -90,7 +117,7 @@ export async function GET() {
       createdAt: mr.created_at,
       updatedAt: mr.updated_at,
       conflicts: mr.conflicts,
-      mergeApprovals: mr.merge_approvals?.map((approval: any) => ({
+      mergeApprovals: mr.merge_approvals?.map((approval: MergeApprovalRow) => ({
         id: approval.id,
         approver: approval.approver,
         action: approval.action,

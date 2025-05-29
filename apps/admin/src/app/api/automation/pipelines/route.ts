@@ -78,9 +78,30 @@ export async function GET() {
       .select('*')
 
     // Transform the data to match frontend expectations
-    const transformedData = pipelines?.map((pipeline: any) => {
+    type PipelineJobRow = {
+      id: string;
+      pipeline_id: string;
+      name: string;
+      status: string;
+      duration: number | null;
+      started_at?: string;
+      finished_at?: string;
+    };
+    type PipelineRow = {
+      id: string;
+      branch: string;
+      commit_sha: string;
+      author: string;
+      message: string;
+      status: string;
+      environment: string;
+      started_at?: string;
+      finished_at?: string;
+      created_at?: string;
+    };
+    const transformedData = pipelines?.map((pipeline: PipelineRow) => {
       // Find jobs for this pipeline
-      const pipelineJobs = jobs?.filter((job: any) => job.pipeline_id === pipeline.id) || []
+      const pipelineJobs = jobs?.filter((job: PipelineJobRow) => job.pipeline_id === pipeline.id) || []
       
       return {
         id: pipeline.id,
@@ -92,7 +113,7 @@ export async function GET() {
         environment: pipeline.environment,
         startedAt: pipeline.started_at || pipeline.created_at,
         finishedAt: pipeline.finished_at,
-        jobs: pipelineJobs.map((job: any) => ({
+        jobs: pipelineJobs.map((job: PipelineJobRow) => ({
           id: job.id,
           name: job.name,
           status: job.status,

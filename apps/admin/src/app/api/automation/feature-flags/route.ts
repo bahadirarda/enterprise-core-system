@@ -63,7 +63,20 @@ export async function GET() {
     }
 
     // Transform the data to match frontend expectations
-    const transformedData = featureFlags?.map((flag: any) => ({
+    type FeatureFlagRow = {
+      id: string;
+      name: string;
+      description: string;
+      enabled: boolean;
+      environment: string;
+      rollout_percentage: number;
+      conditions?: unknown;
+      metadata?: unknown;
+      created_by: string;
+      created_at: string;
+      updated_at?: string;
+    };
+    const transformedData = featureFlags?.map((flag: FeatureFlagRow) => ({
       id: flag.id,
       name: flag.name,
       description: flag.description,
