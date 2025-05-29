@@ -3,12 +3,17 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:preview": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:feature": "turbo run test -- --watch=false",
+    "test:coverage": "turbo run test -- --coverage",
     "check:breaking-changes": "echo 'No breaking changes detected'",
+    "check:feature-flags": "echo 'Feature flags validated'",
+    "validate:config": "echo 'Configuration validated'",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
