@@ -8,20 +8,29 @@ import { Loader2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { createClient } from '@supabase/supabase-js'
 
-interface User {
+interface Employee {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+  role: 'admin' | 'hr_manager' | 'hr_specialist' | 'department_manager' | 'employee' | 'authenticated'
+  position?: { id?: string; title: string; description?: string }
+  department?: { id: string; name: string } // id artık zorunlu
+  status: string
+  full_name?: string
+  employee_id?: string
+}
+
+interface AuthUser {
   id: string
   email?: string
-  full_name?: string
-  avatar_url?: string
-  role?: 'admin' | 'hr_manager' | 'hr_specialist' | 'department_manager' | 'employee' | 'authenticated'
   user_metadata?: Record<string, unknown>
-  position?: { id: string; title: string }
 }
 
 function HRMSContent() {
-  const [employee, setEmployee] = useState<any | null>(null)
+  const [employee, setEmployee] = useState<Employee | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState<any | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -39,11 +48,13 @@ function HRMSContent() {
           window.history.replaceState({}, '', url.toString())
           setUser(sessionData.user)
           setAccessToken(sessionData.access_token)
-          sharedAuthManager.updateActivity && sharedAuthManager.updateActivity()
+          if (sharedAuthManager.updateActivity) {
+            sharedAuthManager.updateActivity()
+          }
           setIsLoading(false)
           return
-        } catch (error) {
-          console.error('HRMS: Error parsing session parameter:', error)
+        } catch (parseError) {
+          console.error('HRMS: Error parsing session parameter:', parseError)
         }
       }
       // 2. LocalStorage'da session var mı?
@@ -51,7 +62,9 @@ function HRMSContent() {
       if (existingSession && existingSession.user) {
         setUser(existingSession.user)
         setAccessToken(existingSession.access_token)
-        sharedAuthManager.updateActivity && sharedAuthManager.updateActivity()
+        if (sharedAuthManager.updateActivity) {
+          sharedAuthManager.updateActivity()
+        }
         setIsLoading(false)
         return
       }
@@ -66,7 +79,9 @@ function HRMSContent() {
         // access_token yoksa Supabase auth'dan al
         const { data: { session } } = await supabase.auth.getSession()
         setAccessToken(session?.access_token || null)
-        sharedAuthManager.updateActivity && sharedAuthManager.updateActivity()
+        if (sharedAuthManager.updateActivity) {
+          sharedAuthManager.updateActivity()
+        }
         setIsLoading(false)
         return
       }
@@ -142,40 +157,47 @@ function HRMSContent() {
           // Employee kaydı yoksa fallback employee objesi oluştur
           setEmployee({
             id: user.id,
-            email: user.email || profile.email,
-            first_name: user.user_metadata?.first_name || 'Admin',
-            last_name: user.user_metadata?.last_name || 'User',
-            role: profile.role, // user_profiles'dan gelen role
+            email: user.email || profile.email || '',
+            first_name: user.user_metadata?.first_name as string || 'Admin',
+            last_name: user.user_metadata?.last_name as string || 'User',
+            role: profile.role as Employee['role'], // user_profiles'dan gelen role
             position: { title: 'System Administrator' },
-            department: { name: 'IT' },
+            department: { id: 'default-dept', name: 'IT' }, // Default ID ekledik
             status: 'active',
             full_name: profile.full_name
           })
           return
         }
         
-        // Hem profile hem employee verisi varsa birleştir
-        setEmployee({
+        // Department verisini güvenli bir şekilde işle
+        const department = emp.department?.[0]
+        const safeEmployee: Employee = {
           id: emp.id,
-          email: emp.email,
-          first_name: emp.first_name,
-          last_name: emp.last_name,
-          role: profile.role, // user_profiles'dan gelen role kullan
-          position: emp.position,
-          department: emp.department,
-          status: emp.status,
+          email: emp.email || '',
+          first_name: emp.first_name || '',
+          last_name: emp.last_name || '',
+          role: profile.role as Employee['role'], // user_profiles'dan gelen role kullan
+          position: emp.position?.[0] || { title: 'Employee' },
+          department: department ? {
+            id: department.id || `dept-${emp.id}`, // ID yoksa fallback ID oluştur
+            name: department.name
+          } : { id: 'general-dept', name: 'General' }, // Department yoksa default değer
+          status: emp.status || 'active',
           full_name: profile.full_name,
           employee_id: emp.employee_id
-        })
+        }
+        
+        setEmployee(safeEmployee)
         
         console.log('Final employee object set:', {
           role: profile.role,
-          position: emp.position,
-          name: `${emp.first_name} ${emp.last_name}`
+          position: emp?.position?.[0]?.title || 'Employee',
+          name: `${emp?.first_name || 'Admin'} ${emp?.last_name || 'User'}`,
+          department: safeEmployee.department
         })
         
-      } catch (e) {
-        console.error('Error fetching employee data:', e)
+      } catch (fetchError) {
+        console.error('Error fetching employee data:', fetchError)
         window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
       }
     })()
