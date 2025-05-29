@@ -1,4 +1,4 @@
-import { createSupabaseClient } from './supabase'
+import { getSupabaseClient } from './supabase'
 
 /**
  * Simple helper to read/write integration enabled flags.
@@ -6,7 +6,7 @@ import { createSupabaseClient } from './supabase'
  */
 export async function isIntegrationEnabled(name: string): Promise<boolean> {
   try {
-    const supabase = createSupabaseClient()
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('integration_settings')
       .select('enabled')
@@ -25,7 +25,7 @@ export async function isIntegrationEnabled(name: string): Promise<boolean> {
 }
 
 export async function setIntegrationEnabled(name: string, enabled: boolean, adminEmail?: string) {
-  const supabase = createSupabaseClient()
+  const supabase = getSupabaseClient()
   // upsert row
   await supabase
     .from('integration_settings')

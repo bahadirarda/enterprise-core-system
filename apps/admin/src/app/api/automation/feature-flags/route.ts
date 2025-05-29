@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseClient();
     
     const { data: featureFlags, error } = await supabase
       .from('feature_flags')
@@ -100,7 +100,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const supabase = createClient();
+    const supabase = getSupabaseClient();
     
     // Create new feature flag
     const { data: featureFlag, error } = await supabase
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const supabase = createClient();
+    const supabase = getSupabaseClient();
     const { id, enabled, rolloutPercentage, conditions, metadata } = body;
 
     const { data: featureFlag, error } = await supabase
@@ -170,7 +170,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const supabase = createClient();
+    const supabase = getSupabaseClient();
 
     if (!id) {
       return NextResponse.json({ error: 'Feature flag ID required' }, { status: 400 });

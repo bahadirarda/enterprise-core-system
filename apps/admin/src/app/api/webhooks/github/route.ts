@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseClient } from '@/lib/supabase'
 import crypto from 'crypto'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 const WEBHOOK_SECRET = process.env.GITHUB_WEBHOOK_SECRET || 'dev-secret'
 
@@ -28,6 +23,7 @@ async function createPipeline(data: Record<string, unknown>) {
     throw new Error('Invalid push event payload')
   }
   const head_commit = data.head_commit as { id: string; author: { name: string }; message: string }
+  const supabase = getSupabaseClient()
 
   const defaultJobs = [
     'Lint & Type Check',
@@ -85,6 +81,7 @@ async function handlePullRequest(data: Record<string, unknown>) {
     changed_files?: number;
     merged?: boolean;
   }
+  const supabase = getSupabaseClient()
 
   if (action === 'opened' || action === 'reopened') {
     // Create new merge request
@@ -166,6 +163,7 @@ async function handleWorkflowRun(data: Record<string, unknown>) {
     head_sha: string;
     pull_requests?: { number: number }[]
   }
+  const supabase = getSupabaseClient()
   
   if (action === 'completed' || action === 'requested' || action === 'in_progress') {
     // Update pipeline status based on workflow
@@ -210,6 +208,7 @@ export async function POST(request: NextRequest) {
 
     const data = JSON.parse(payload)
     let result = null
+    const supabase = getSupabaseClient()
 
     switch (eventType) {
       case 'push':

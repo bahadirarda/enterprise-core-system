@@ -1,4 +1,4 @@
-import { supabase, Company } from './supabase'
+import { getSupabaseClient, Company } from './supabase'
 
 export interface CreateCompanyData {
   name: string
@@ -16,6 +16,7 @@ export const adminActions = {
   // Create new company
   async createCompany(data: CreateCompanyData): Promise<{ success: boolean; data?: Company; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       const { data: company, error } = await supabase
         .from('organizations')
         .insert([{
@@ -52,6 +53,7 @@ export const adminActions = {
   // Update company
   async updateCompany(data: UpdateCompanyData): Promise<{ success: boolean; data?: Company; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       const updateData: Record<string, unknown> = {
         updated_at: new Date().toISOString()
       }
@@ -97,6 +99,7 @@ export const adminActions = {
   // Delete company
   async deleteCompany(id: string): Promise<{ success: boolean; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       // First, check if company has users
       const { count } = await supabase
         .from('user_profiles')
@@ -123,6 +126,7 @@ export const adminActions = {
   // Get company details
   async getCompanyDetails(id: string): Promise<{ success: boolean; data?: Company; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       const { data: company, error: companyError } = await supabase
         .from('organizations')
         .select('*')
@@ -159,6 +163,7 @@ export const adminActions = {
   // User Management Actions
   async updateUserRole(userId: string, newRole: string): Promise<{ success: boolean; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       const { error } = await supabase
         .from('user_profiles')
         .update({ 
@@ -177,6 +182,7 @@ export const adminActions = {
 
   async deactivateUser(userId: string): Promise<{ success: boolean; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       // In a real implementation, you might want to update a status field
       // For now, we'll just update the role to 'inactive'
       const { error } = await supabase
@@ -198,6 +204,7 @@ export const adminActions = {
   // System Stats
   async getSystemHealth(): Promise<{ success: boolean; data?: Record<string, unknown>; error?: string }> {
     try {
+      const supabase = getSupabaseClient()
       // Check database connectivity
       const { error } = await supabase
         .from('organizations')
