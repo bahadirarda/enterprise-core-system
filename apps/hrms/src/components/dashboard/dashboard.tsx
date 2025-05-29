@@ -114,7 +114,7 @@ export function Dashboard({ employee }: DashboardProps) {
   const [editingApplication, setEditingApplication] = useState<ApplicationProgress | undefined>(undefined)
 
   // Role mapping - Önce employee.role kullan, yoksa position title'a göre belirle
-  const getUserRole = (employee: any): string => {
+  const getUserRole = (employee: Employee): string => {
     // Eğer employee'da direkt role varsa ve 'authenticated' değilse onu kullan
     if (employee.role && employee.role !== 'authenticated') {
       console.log('Using direct role from employee:', employee.role)

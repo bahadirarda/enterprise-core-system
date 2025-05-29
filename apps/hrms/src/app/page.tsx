@@ -14,8 +14,8 @@ interface Employee {
   first_name: string
   last_name: string
   role: 'admin' | 'hr_manager' | 'hr_specialist' | 'department_manager' | 'employee' | 'authenticated'
-  position?: { id?: string; title: string; description?: string }
-  department?: { id: string; name: string } // id artık zorunlu
+  position?: { id: string; title: string } // id zorunlu, description kaldırıldı
+  department?: { id: string; name: string } // id zorunlu
   status: string
   full_name?: string
   employee_id?: string
@@ -95,12 +95,12 @@ function HRMSContent() {
       setUser(supaUser)
       setAccessToken(supaSession?.access_token || null)
       setIsLoading(false)
-    } catch (error) {
+    } catch {
       window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
     } finally {
       setIsLoading(false)
     }
-  }, [searchParams, router])
+  }, [searchParams])
 
   // Kullanıcı geldikten sonra Supabase'den employee/profile/position çek
   useEffect(() => {
@@ -161,7 +161,7 @@ function HRMSContent() {
             first_name: user.user_metadata?.first_name as string || 'Admin',
             last_name: user.user_metadata?.last_name as string || 'User',
             role: profile.role as Employee['role'], // user_profiles'dan gelen role
-            position: { title: 'System Administrator' },
+            position: { id: 'default-pos', title: 'System Administrator' }, // Default ID ekledik
             department: { id: 'default-dept', name: 'IT' }, // Default ID ekledik
             status: 'active',
             full_name: profile.full_name
@@ -171,13 +171,18 @@ function HRMSContent() {
         
         // Department verisini güvenli bir şekilde işle
         const department = emp.department?.[0]
+        const position = emp.position?.[0]
+        
         const safeEmployee: Employee = {
           id: emp.id,
           email: emp.email || '',
           first_name: emp.first_name || '',
           last_name: emp.last_name || '',
           role: profile.role as Employee['role'], // user_profiles'dan gelen role kullan
-          position: emp.position?.[0] || { title: 'Employee' },
+          position: position ? {
+            id: position.id || `pos-${emp.id}`, // ID yoksa fallback ID oluştur
+            title: position.title
+          } : { id: 'employee-pos', title: 'Employee' }, // Position yoksa default değer
           department: department ? {
             id: department.id || `dept-${emp.id}`, // ID yoksa fallback ID oluştur
             name: department.name
@@ -191,7 +196,7 @@ function HRMSContent() {
         
         console.log('Final employee object set:', {
           role: profile.role,
-          position: emp?.position?.[0]?.title || 'Employee',
+          position: safeEmployee.position,
           name: `${emp?.first_name || 'Admin'} ${emp?.last_name || 'User'}`,
           department: safeEmployee.department
         })
