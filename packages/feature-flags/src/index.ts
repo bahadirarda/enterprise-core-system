@@ -194,20 +194,20 @@ export class FeatureFlagManager {
   private evaluateCondition(condition: FeatureFlagCondition, values: string[]): boolean {
     switch (condition.operator) {
       case 'in':
-        return values.some(value => condition.values.includes(value))
+        return values.some(value => value && condition.values.includes(value))
       
       case 'not_in':
-        return !values.some(value => condition.values.includes(value))
+        return !values.some(value => value && condition.values.includes(value))
       
       case 'equals':
-        return values.length === 1 && condition.values.includes(values[0])
+        return values.length === 1 && values[0] !== undefined && condition.values.includes(values[0])
       
       case 'not_equals':
-        return values.length !== 1 || !condition.values.includes(values[0])
+        return values.length !== 1 || values[0] === undefined || !condition.values.includes(values[0])
       
       case 'contains':
         return values.some(value => 
-          condition.values.some(condValue => value.includes(condValue))
+          value && condition.values.some(condValue => condValue && value.includes(condValue))
         )
       
       default:
