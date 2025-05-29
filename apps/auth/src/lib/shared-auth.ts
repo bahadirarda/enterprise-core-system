@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import type { User } from '@supabase/supabase-js'
 
 // Shared authentication configuration
 export const AUTH_CONFIG = {
@@ -11,7 +12,7 @@ export const AUTH_CONFIG = {
 export interface SharedSession {
   access_token: string
   refresh_token: string
-  user: any
+  user: User
   expires_at: number
   created_at: number
 }
@@ -193,7 +194,7 @@ export class SharedAuthManager {
   }
 
   // Check authentication status across apps
-  async checkAuthStatus(): Promise<{ isAuthenticated: boolean; user: any | null }> {
+  async checkAuthStatus(): Promise<{ isAuthenticated: boolean; user: User | null }> {
     try {
       console.log('🔍 SharedAuth: Starting checkAuthStatus...')
       

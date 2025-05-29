@@ -6,7 +6,6 @@ import {
   Mail, 
   Phone, 
   Calendar, 
-  MapPin, 
   Building2, 
   Badge as BadgeIcon,
   CreditCard,
@@ -187,7 +186,7 @@ export function ProfileOverview() {
           className="flex items-center space-x-2 text-sm text-gray-500 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          <span>Kikos Portal'a Dön</span>
+          <span>Kikos Portal&apos;a Dön</span>
         </button>
       </div>
 

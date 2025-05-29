@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
+import { isIntegrationEnabled } from '@/lib/integrationSettings'
 
 export async function GET() {
+  if (!(await isIntegrationEnabled('teams'))) {
+    return NextResponse.json({ success: false, error: 'Teams integration disabled' }, { status: 403 })
+  }
+
   try {
-    const supabase = createClient()
+    const supabase = getSupabaseClient()
     
     // Teams bağlantılarını getir
     const { data: connections, error } = await supabase
@@ -40,7 +45,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createClient()
+    const supabase = getSupabaseClient()
 
     // Yeni Teams bağlantısı oluştur
     const { data: connection, error } = await supabase
@@ -93,9 +98,9 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const supabase = createClient()
+    const supabase = getSupabaseClient()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (status) updateData.status = status
     if (permissions) updateData.permissions = permissions
     if (channelCount !== undefined) updateData.channel_count = channelCount
@@ -138,7 +143,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const supabase = createClient()
+    const supabase = getSupabaseClient()
 
     const { error } = await supabase
       .from('teams_connections')

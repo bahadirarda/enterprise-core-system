@@ -5,6 +5,12 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     branches: [develop, main]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  checks: write
+
 jobs:
   feature-validation:
     name: 🔍 Feature Validation

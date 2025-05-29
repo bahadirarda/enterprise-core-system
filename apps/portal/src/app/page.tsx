@@ -1,22 +1,26 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState, useCallback, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { PortalDashboard } from '@/components/portal/portal-dashboard'
 import { sharedAuthManager } from '@/lib/shared-auth'
 import { Loader2 } from 'lucide-react'
 
-export default function HomePage() {
-  const [user, setUser] = useState<any>(null)
+interface User {
+  id: string
+  email?: string
+  user_metadata?: {
+    full_name?: string
+    avatar_url?: string
+  }
+}
+
+function HomePageContent() {
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
   const searchParams = useSearchParams()
 
-  useEffect(() => {
-    checkAuthentication()
-  }, [])
-
-  const checkAuthentication = async () => {
+  const checkAuthentication = useCallback(async () => {
     try {
       console.log('Portal: Checking authentication...')
       
@@ -40,19 +44,26 @@ export default function HomePage() {
           setIsLoading(false)
           return
         } catch (error) {
-          console.error('Portal: Error parsing session parameter:', error)
+          console.error('Error parsing session parameter:', error)
         }
       }
-      
-      console.log('Portal: localStorage session:', localStorage.getItem('hrms_shared_session'))
-      
+
+      // Check for existing session in localStorage
+      const existingSession = sharedAuthManager.getSharedSession()
+      if (existingSession && existingSession.user) {
+        console.log('Portal: Found existing session')
+        setUser(existingSession.user)
+        sharedAuthManager.updateActivity()
+        setIsLoading(false)
+        return
+      }
+
+      // No valid session found, get fresh authentication
+      console.log('Portal: No session found, checking direct authentication...')
       const { isAuthenticated, user: authUser } = await sharedAuthManager.checkAuthStatus()
       
-      console.log('Portal: Auth result:', { isAuthenticated, user: authUser })
-      
-      if (!isAuthenticated) {
-        console.log('Portal: Not authenticated, redirecting to auth provider')
-        // Redirect to auth provider
+      if (!isAuthenticated || !authUser) {
+        console.log('Portal: No authenticated user, redirecting to auth...')
         window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
         return
       }
@@ -69,7 +80,11 @@ export default function HomePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [searchParams])
+
+  useEffect(() => {
+    checkAuthentication()
+  }, [checkAuthentication])
 
   if (isLoading) {
     return (
@@ -87,4 +102,19 @@ export default function HomePage() {
   }
 
   return <PortalDashboard />
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Kikos Portal yükleniyor...</p>
+        </div>
+      </div>
+    }>
+      <HomePageContent />
+    </Suspense>
+  )
 }

@@ -51,7 +51,14 @@ jobs:
     name: 🧪 Test & Lint
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.status == 'true' || needs.changes.outputs.admin == 'true' || needs.changes.outputs.auth == 'true' || needs.changes.outputs.hrms == 'true' || needs.changes.outputs.portal == 'true' || needs.changes.outputs.marketing == 'true' || needs.changes.outputs.packages == 'true'
+    if: |
+      needs.changes.outputs.status == 'true' || 
+      needs.changes.outputs.admin == 'true' || 
+      needs.changes.outputs.auth == 'true' || 
+      needs.changes.outputs.hrms == 'true' || 
+      needs.changes.outputs.portal == 'true' || 
+      needs.changes.outputs.marketing == 'true' || 
+      needs.changes.outputs.packages == 'true'
     
     steps:
       - name: Checkout
@@ -78,6 +85,17 @@ jobs:
       - name: Build all apps
         run: npm run build
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Start all apps
+        run: |
+          npm run dev &
+          sleep 15
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test
+
   security:
     name: 🔒 Security Scan
     runs-on: ubuntu-latest
@@ -101,7 +119,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, security]
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
-    environment: staging
     
     steps:
       - name: Checkout
@@ -132,7 +149,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, security]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment: production
     
     steps:
       - name: Checkout

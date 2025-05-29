@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { 
   User, 
   Calendar, 
   Clock,
   DollarSign,
-  Plus,
   Users,
   Bell,
   Menu,
@@ -14,27 +13,20 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  TrendingUp,
-  Activity,
   Home,
   FileText,
   Shield,
-  ChevronDown,
   Building,
   CreditCard,
   UserCheck,
   Search,
-  Filter,
   X
 } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { format } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { AddEmployeeWizard } from '@/components/employee/add-employee-wizard'
-import { PendingApplications } from '@/components/employee/pending-applications'
+import { PendingApplications, type ApplicationProgress } from '@/components/employee/pending-applications'
 
 interface Employee {
   id: string
@@ -119,13 +111,38 @@ export function Dashboard({ employee }: DashboardProps) {
   const [currentView, setCurrentView] = useState<'dashboard' | 'add-employee' | 'pending-applications'>('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [activeMenuItem, setActiveMenuItem] = useState('dashboard')
-  const [editingApplication, setEditingApplication] = useState<any>(null)
+  const [editingApplication, setEditingApplication] = useState<ApplicationProgress | undefined>(undefined)
 
-  // Mock rol - gerçek uygulamada API'den gelecek - HR Manager yapıyorum test için
-  // Supabase auth user'ın "authenticated" rolünü "hr_manager" olarak map ediyoruz
-  const userRole = employee.role === 'authenticated' ? 'hr_manager' : (employee.role || 'hr_manager')
+  // Role mapping - Önce employee.role kullan, yoksa position title'a göre belirle
+  const getUserRole = (employee: any): string => {
+    // Eğer employee'da direkt role varsa ve 'authenticated' değilse onu kullan
+    if (employee.role && employee.role !== 'authenticated') {
+      console.log('Using direct role from employee:', employee.role)
+      return employee.role
+    }
+    
+    // Yoksa position title'a göre belirle
+    const positionTitle = employee.position?.title?.toLowerCase() || ''
+    
+    if (positionTitle.includes('sistem yöneticisi') || positionTitle.includes('admin')) {
+      return 'admin'
+    } else if (positionTitle.includes('müdür') || positionTitle.includes('manager')) {
+      if (positionTitle.includes('ik') || positionTitle.includes('insan kaynakları')) {
+        return 'hr_manager'
+      }
+      return 'department_manager'
+    } else if (positionTitle.includes('ik') || positionTitle.includes('insan kaynakları')) {
+      return 'hr_specialist'
+    }
+    
+    return 'employee'
+  }
+  
+  const userRole = getUserRole(employee)
   console.log('Employee:', employee)
-  console.log('User Role:', userRole)
+  console.log('Position Title:', employee.position?.title)
+  console.log('Direct Role:', employee.role)
+  console.log('Final User Role:', userRole)
   const menuItems = getMenuItems(userRole)
 
   // Yetki kontrolü
@@ -212,12 +229,12 @@ export function Dashboard({ employee }: DashboardProps) {
             onComplete={() => {
               setCurrentView('dashboard')
               setActiveMenuItem('dashboard')
-              setEditingApplication(null)
+              setEditingApplication(undefined)
             }}
             onCancel={() => {
               setCurrentView('dashboard')
               setActiveMenuItem('dashboard')
-              setEditingApplication(null)
+              setEditingApplication(undefined)
             }}
           />
         </div>
@@ -329,7 +346,7 @@ export function Dashboard({ employee }: DashboardProps) {
               setActiveMenuItem('recruitment')
             }}
             onCreateNew={() => {
-              setEditingApplication(null)
+              setEditingApplication(undefined)
               setCurrentView('add-employee')
               setActiveMenuItem('recruitment')
             }}
@@ -556,7 +573,7 @@ export function Dashboard({ employee }: DashboardProps) {
                       <>
                         <button 
                           onClick={() => {
-                            setEditingApplication(null)
+                            setEditingApplication(undefined)
                             setCurrentView('add-employee')
                             setActiveMenuItem('recruitment')
                           }}

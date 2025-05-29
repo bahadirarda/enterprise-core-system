@@ -13,12 +13,7 @@ import {
   RefreshCw,
   Bell,
   Settings,
-  Database,
-  Code,
   Server,
-  AlertTriangle,
-  Users,
-  FileText,
   Zap
 } from 'lucide-react'
 
@@ -82,6 +77,17 @@ interface FeatureFlag {
   lastModified: string
 }
 
+interface PipelineApiResponse {
+  id: string;
+  status: string;
+  branch: string;
+  commitSha: string;
+  author: string;
+  message: string;
+  createdAt: string;
+  jobs?: PipelineJob[];
+}
+
 export default function AutomationPanel() {
   const [pipelines, setPipelines] = useState<Pipeline[]>([])
   const [mergeRequests, setMergeRequests] = useState<MergeRequest[]>([])
@@ -104,177 +110,186 @@ export default function AutomationPanel() {
     setIsLoading(true)
     
     try {
-      // Mock data - in real implementation, these would be API calls
-      setPipelines([
-        {
-          id: '1',
-          status: 'running',
-          branch: 'feature/status-page-updates',
-          commit: 'abc123f',
-          author: 'bahadirarda',
-          message: 'Add comprehensive status page features',
-          createdAt: new Date().toISOString(),
-          jobs: [
-            { id: '1', name: 'Lint & Type Check', status: 'success', duration: 45 },
-            { id: '2', name: 'Unit Tests', status: 'success', duration: 120 },
-            { id: '3', name: 'Build Applications', status: 'running' },
-            { id: '4', name: 'Integration Tests', status: 'pending' },
-            { id: '5', name: 'Deploy to Staging', status: 'pending' }
-          ]
-        },
-        {
-          id: '2',
-          status: 'success',
-          branch: 'main',
-          commit: 'def456g',
-          author: 'team-member',
-          message: 'Fix authentication middleware',
-          createdAt: new Date(Date.now() - 3600000).toISOString(),
-          jobs: [
-            { id: '6', name: 'Lint & Type Check', status: 'success', duration: 38 },
-            { id: '7', name: 'Unit Tests', status: 'success', duration: 95 },
-            { id: '8', name: 'Build Applications', status: 'success', duration: 180 },
-            { id: '9', name: 'Integration Tests', status: 'success', duration: 210 },
-            { id: '10', name: 'Deploy to Production', status: 'success', duration: 300 }
-          ]
-        }
-      ])
+      // Fetch real data from API endpoints
+      const [pipelinesResponse, mergeRequestsResponse, deploymentsResponse, featureFlagsResponse] = await Promise.all([
+        fetch('/api/automation/pipelines'),
+        fetch('/api/automation/merge-requests'),
+        fetch('/api/automation/deployments'),
+        fetch('/api/automation/feature-flags')
+      ]);
 
-      setMergeRequests([
-        {
-          id: '1',
-          title: 'Add DevOps pipeline and Docker configuration',
-          description: 'Complete CI/CD setup with Docker, health checks, and automated deployments',
-          author: 'bahadirarda',
-          sourceBranch: 'feature/devops-setup',
-          targetBranch: 'main',
-          status: 'open',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          approvals: 0,
-          requiredApprovals: 1,
-          conflicts: false,
-          pipelineStatus: 'running',
-          changes: {
-            additions: 450,
-            deletions: 23,
-            files: 12
-          }
-        },
-        {
-          id: '2',
-          title: 'Update admin panel automation features',
-          description: 'Enhanced admin panel with pipeline management and merge request approval system',
-          author: 'team-member',
-          sourceBranch: 'feature/admin-automation',
-          targetBranch: 'develop',
-          status: 'open',
-          createdAt: new Date(Date.now() - 7200000).toISOString(),
-          updatedAt: new Date(Date.now() - 1800000).toISOString(),
-          approvals: 1,
-          requiredApprovals: 2,
-          conflicts: true,
-          pipelineStatus: 'failed',
-          changes: {
-            additions: 280,
-            deletions: 56,
-            files: 8
-          }
-        }
-      ])
+      const [pipelinesData, mergeRequestsData, deploymentsData, featureFlagsData] = await Promise.all([
+        pipelinesResponse.json(),
+        mergeRequestsResponse.json(),
+        deploymentsResponse.json(),
+        featureFlagsResponse.json()
+      ]);
 
-      setDeployments([
-        {
-          environment: 'Production',
-          status: 'success',
-          version: 'v1.2.3',
-          lastDeployment: new Date(Date.now() - 3600000).toISOString(),
-          health: 'healthy'
-        },
-        {
-          environment: 'Staging',
-          status: 'deploying',
-          version: 'v1.2.4-rc.1',
-          lastDeployment: new Date().toISOString(),
-          health: 'unknown'
-        },
-        {
-          environment: 'Development',
-          status: 'success',
-          version: 'v1.2.4-dev.15',
-          lastDeployment: new Date(Date.now() - 900000).toISOString(),
-          health: 'healthy'
-        }
-      ])
+      // Transform pipelines data
+      const transformedPipelines = (pipelinesData as PipelineApiResponse[]).map((pipeline: PipelineApiResponse) => ({
+        id: pipeline.id,
+        status: pipeline.status as Pipeline['status'],
+        branch: pipeline.branch,
+        commit: pipeline.commitSha?.substring(0, 7) || 'unknown',
+        author: pipeline.author,
+        message: pipeline.message,
+        createdAt: pipeline.createdAt,
+        jobs: pipeline.jobs?.map((job: PipelineJob) => ({
+          id: job.id || `${pipeline.id}-${job.name}`,
+          name: job.name,
+          status: job.status,
+          duration: job.duration,
+          startedAt: job.startedAt,
+          finishedAt: job.finishedAt
+        })) || []
+      }));
 
-      setFeatureFlags([
-        {
-          id: '1',
-          name: 'enhanced_status_page',
-          description: 'New enhanced status page with real-time metrics',
-          enabled: true,
-          environment: 'production',
-          rolloutPercentage: 100,
-          lastModified: new Date(Date.now() - 1800000).toISOString()
-        },
-        {
-          id: '2',
-          name: 'admin_automation_v2',
-          description: 'Advanced admin panel automation features',
-          enabled: false,
-          environment: 'staging',
-          rolloutPercentage: 50,
-          lastModified: new Date().toISOString()
+      // Transform merge requests data
+      const transformedMergeRequests = mergeRequestsData.map((mr: MergeRequest) => ({
+        id: mr.id,
+        title: mr.title,
+        description: mr.description,
+        author: mr.author,
+        sourceBranch: mr.sourceBranch,
+        targetBranch: mr.targetBranch,
+        status: mr.status,
+        createdAt: mr.createdAt,
+        updatedAt: mr.updatedAt,
+        approvals: mr.approvals || 0,
+        requiredApprovals: mr.requiredApprovals || 1,
+        conflicts: mr.conflicts || false,
+        pipelineStatus: mr.pipelineStatus,
+        changes: {
+          additions: mr.changes?.additions || 0,
+          deletions: mr.changes?.deletions || 0,
+          files: mr.changes?.files || 0
         }
-      ])
+      }));
+
+      // Transform deployments data
+      const transformedDeployments = deploymentsData.map((deployment: DeploymentStatus) => ({
+        environment: deployment.environment,
+        status: deployment.status,
+        version: deployment.version,
+        lastDeployment: deployment.lastDeployment,
+        health: deployment.health
+      }));
+
+      // Transform feature flags data
+      const transformedFeatureFlags = featureFlagsData.map((flag: FeatureFlag) => ({
+        id: flag.id,
+        name: flag.name,
+        description: flag.description,
+        enabled: flag.enabled,
+        environment: flag.environment,
+        rolloutPercentage: flag.rolloutPercentage,
+        lastModified: flag.lastModified
+      }));
+
+      setPipelines(transformedPipelines);
+      setMergeRequests(transformedMergeRequests);
+      setDeployments(transformedDeployments);
+      setFeatureFlags(transformedFeatureFlags);
 
       // Update notifications count
-      const pendingMerges = mergeRequests.filter(mr => mr.status === 'open' && mr.requiredApprovals > mr.approvals).length
-      setNotifications(pendingMerges)
+      const pendingMerges = transformedMergeRequests.filter((mr: MergeRequest) => 
+        mr.status === 'open' && mr.requiredApprovals > mr.approvals
+      ).length;
+      setNotifications(pendingMerges);
 
     } catch (error) {
-      console.error('Failed to load automation data:', error)
+      console.error('Failed to load automation data:', error);
+      
+      // Fallback to minimal mock data on error
+      setPipelines([]);
+      setMergeRequests([]);
+      setDeployments([]);
+      setFeatureFlags([]);
+      setNotifications(0);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   const handleMergeApproval = async (mergeId: string, action: 'approve' | 'reject') => {
-    const updatedMergeRequests = mergeRequests.map(mr => 
-      mr.id === mergeId 
-        ? { 
-            ...mr, 
-            approvals: action === 'approve' ? mr.approvals + 1 : mr.approvals,
-            status: action === 'reject' ? 'closed' as const : mr.approvals + 1 >= mr.requiredApprovals ? 'merged' as const : mr.status
-          }
-        : mr
-    )
-    setMergeRequests(updatedMergeRequests)
+    try {
+      const response = await fetch('/api/automation/merge-requests', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: mergeId,
+          action: action,
+          approver: 'admin-user', // In real implementation, use actual user
+          comment: `${action === 'approve' ? 'Approved' : 'Rejected'} via admin panel`
+        })
+      });
 
-    // In real implementation, this would call the Git API
-    console.log(`${action === 'approve' ? 'Approved' : 'Rejected'} merge request ${mergeId}`)
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`${action === 'approve' ? 'Approved' : 'Rejected'} merge request ${mergeId}`);
+      } else {
+        console.error('Failed to update merge request');
+      }
+    } catch (error) {
+      console.error('Error updating merge request:', error);
+    }
   }
 
   const handlePipelineAction = async (pipelineId: string, action: 'retry' | 'cancel') => {
-    const updatedPipelines = pipelines.map(p => 
-      p.id === pipelineId 
-        ? { ...p, status: action === 'retry' ? 'pending' as const : 'cancelled' as const }
-        : p
-    )
-    setPipelines(updatedPipelines)
+    try {
+      const response = await fetch('/api/automation/pipelines', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: pipelineId,
+          action: action
+        })
+      });
 
-    console.log(`${action === 'retry' ? 'Retried' : 'Cancelled'} pipeline ${pipelineId}`)
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`${action === 'retry' ? 'Retried' : 'Cancelled'} pipeline ${pipelineId}`);
+      } else {
+        console.error('Failed to update pipeline');
+      }
+    } catch (error) {
+      console.error('Error updating pipeline:', error);
+    }
   }
 
   const handleFeatureFlagToggle = async (flagId: string) => {
-    const updatedFlags = featureFlags.map(flag => 
-      flag.id === flagId 
-        ? { ...flag, enabled: !flag.enabled, lastModified: new Date().toISOString() }
-        : flag
-    )
-    setFeatureFlags(updatedFlags)
+    try {
+      // Get current flag to toggle it
+      const currentFlag = featureFlags.find(flag => flag.id === flagId);
+      if (!currentFlag) return;
 
-    console.log(`Toggled feature flag ${flagId}`)
+      const response = await fetch('/api/automation/feature-flags', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: flagId,
+          enabled: !currentFlag.enabled
+        })
+      });
+
+      if (response.ok) {
+        // Reload data to reflect changes
+        await loadAutomationData();
+        console.log(`Toggled feature flag ${flagId}`);
+      } else {
+        console.error('Failed to update feature flag');
+      }
+    } catch (error) {
+      console.error('Error updating feature flag:', error);
+    }
   }
 
   const getStatusIcon = (status: string) => {
@@ -334,7 +349,7 @@ export default function AutomationPanel() {
             <p className="text-gray-600">CI/CD Pipeline Management & Deployment Control</p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-3">
           {notifications > 0 && (
             <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg">
@@ -353,12 +368,12 @@ export default function AutomationPanel() {
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
+          </div>
         </div>
-      </div>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8">
           {[
             { id: 'pipelines', label: 'Pipelines', icon: Activity, count: pipelines.filter(p => p.status === 'running').length },
             { id: 'merges', label: 'Merge Requests', icon: GitMerge, count: mergeRequests.filter(mr => mr.status === 'open').length },
@@ -367,7 +382,7 @@ export default function AutomationPanel() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
@@ -415,26 +430,26 @@ export default function AutomationPanel() {
                       </span>
                       
                       {(pipeline.status === 'failed' || pipeline.status === 'cancelled') && (
-                        <button
+            <button
                           onClick={() => handlePipelineAction(pipeline.id, 'retry')}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        >
+            >
                           <Play className="w-4 h-4" />
-                        </button>
+            </button>
                       )}
                       
                       {pipeline.status === 'running' && (
-                        <button
+            <button
                           onClick={() => handlePipelineAction(pipeline.id, 'cancel')}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
+            >
                           <Pause className="w-4 h-4" />
-                        </button>
+            </button>
                       )}
                     </div>
-                  </div>
-                </div>
-                
+        </div>
+      </div>
+
                 <div className="p-4 space-y-2">
                   {pipeline.jobs.map((job) => (
                     <div key={job.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -450,7 +465,7 @@ export default function AutomationPanel() {
                         <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(job.status)}`}>
                           {job.status}
                         </span>
-                      </div>
+          </div>
                     </div>
                   ))}
                 </div>
@@ -482,7 +497,7 @@ export default function AutomationPanel() {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                   <div className="flex items-center space-x-4 text-sm">
                     <span className="text-green-600">+{mr.changes.additions}</span>
@@ -491,7 +506,7 @@ export default function AutomationPanel() {
                     
                     {mr.conflicts && (
                       <span className="flex items-center space-x-1 text-orange-600">
-                        <AlertTriangle className="w-4 h-4" />
+                        <Clock className="w-4 h-4" />
                         <span>Conflicts</span>
                       </span>
                     )}
@@ -500,7 +515,7 @@ export default function AutomationPanel() {
                       <div className="flex items-center space-x-1">
                         {getStatusIcon(mr.pipelineStatus)}
                         <span>Pipeline {mr.pipelineStatus}</span>
-                      </div>
+                  </div>
                     )}
                   </div>
                   
@@ -515,21 +530,21 @@ export default function AutomationPanel() {
                         className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
                       >
                         Reject
-                      </button>
+                  </button>
                       
-                      <button
+                  <button
                         onClick={() => handleMergeApproval(mr.id, 'approve')}
                         className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
-                      >
+                  >
                         Approve
-                      </button>
+                  </button>
                     </div>
                   )}
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
+      )}
 
         {/* Deployments Tab */}
         {activeTab === 'deployments' && (
@@ -540,7 +555,7 @@ export default function AutomationPanel() {
                   <h3 className="font-medium text-gray-900">{deployment.environment}</h3>
                   {getStatusIcon(deployment.status)}
                 </div>
-                
+
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Version:</span>
@@ -568,12 +583,12 @@ export default function AutomationPanel() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
+      )}
 
         {/* Feature Flags Tab */}
         {activeTab === 'features' && (
-          <div className="space-y-4">
+            <div className="space-y-4">
             {featureFlags.map((flag) => (
               <div key={flag.id} className="bg-white rounded-lg border border-gray-200 p-4">
                 <div className="flex items-center justify-between">
@@ -595,7 +610,7 @@ export default function AutomationPanel() {
                         : 'bg-gray-100 text-gray-700'
                     }`}>
                       {flag.enabled ? 'Enabled' : 'Disabled'}
-                    </span>
+                      </span>
                     
                     <button
                       onClick={() => handleFeatureFlagToggle(flag.id)}
@@ -609,13 +624,13 @@ export default function AutomationPanel() {
                         }`}
                       />
                     </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
         )}
-      </div>
+        </div>
     </div>
   )
 } 

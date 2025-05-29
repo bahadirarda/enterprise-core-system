@@ -7,10 +7,7 @@ import {
   Settings, 
   BarChart3, 
   Shield, 
-  Calendar, 
-  FileText, 
   CreditCard,
-  AlertTriangle,
   CheckCircle,
   Clock,
   ExternalLink,
@@ -22,7 +19,7 @@ interface Application {
   id: string
   name: string
   description: string
-  icon: any
+  icon: React.ComponentType<{ className?: string }>
   url: string
   status: 'active' | 'maintenance' | 'disabled'
   category: 'hr' | 'finance' | 'operations' | 'analytics'
@@ -36,7 +33,7 @@ const applications: Application[] = [
     name: 'İnsan Kaynakları',
     description: 'Çalışan yönetimi, bordro, izin takibi ve IK süreçleri',
     icon: Users,
-    url: 'http://localhost:3001',
+    url: 'http://localhost:{process.env.NEXT_PUBLIC_HRMS_PORT || 3002}',
     status: 'active',
     category: 'hr',
     version: '1.0.0',
@@ -139,7 +136,7 @@ export function PortalDashboard() {
       const currentSession = sharedAuthManager.getSharedSession()
       if (currentSession) {
         const tokenParam = encodeURIComponent(JSON.stringify(currentSession))
-        const hrmsUrl = process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:3001'
+        const hrmsUrl = process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:3002'
         window.location.href = `${hrmsUrl}?session=${tokenParam}`
       } else {
         // No session found, redirect to auth

@@ -28,7 +28,7 @@ interface SelectProps {
   defaultOpen?: boolean
 }
 
-const Select = ({ children, value, onValueChange, disabled, defaultOpen = false }: SelectProps) => {
+const Select = ({ children, value, onValueChange, disabled }: SelectProps) => {
   const [open, setOpen] = React.useState(false)
   
   const onOpenChange = React.useCallback((newOpen: boolean) => {
@@ -46,7 +46,7 @@ const Select = ({ children, value, onValueChange, disabled, defaultOpen = false 
   )
 }
 
-interface SelectTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+type SelectTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ className, children, ...props }, ref) => {

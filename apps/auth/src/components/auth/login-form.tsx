@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { signIn, signInWithOAuth, supabase } from '@/lib/supabase'
@@ -26,7 +24,6 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -48,7 +45,7 @@ export function LoginForm() {
         return
       }
 
-      if (authData.user && authData.session) {
+      if (authData.user && authData.session && authData.user.email) {
         console.log('🔐 Authentication successful, checking user profile...')
         
         // Kullanıcının profil bilgilerini al
@@ -96,7 +93,7 @@ export function LoginForm() {
         }
 
         // Role-based redirect with session token in URL
-        const redirectUrl = getRedirectUrl(userProfile.role)
+        const redirectUrl = getRedirectUrl(userProfile.role as string)
         const tokenParam = encodeURIComponent(JSON.stringify(sharedSession))
         const fullRedirectUrl = `${redirectUrl}?session=${tokenParam}`
         
@@ -135,15 +132,19 @@ export function LoginForm() {
   }
 
   const getRedirectUrl = (role?: string) => {
+    // Safe environment variable access with fallbacks
+    const portalUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_PORTAL_URL) || 'http://localhost:3001'
+    const hrmsUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_HRMS_URL) || 'http://localhost:3002'
+    
     switch (role) {
       case 'admin':
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
       case 'hr':
-        return process.env.NEXT_PUBLIC_HRMS_URL || 'http://localhost:3001'
+        return hrmsUrl
       case 'employee':
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
       default:
-        return process.env.NEXT_PUBLIC_PORTAL_URL || 'http://localhost:3002'
+        return portalUrl
     }
   }
 

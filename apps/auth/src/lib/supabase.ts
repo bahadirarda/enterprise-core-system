@@ -1,24 +1,65 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Lazy initialization to avoid build-time issues
+let supabaseClient: ReturnType<typeof createClient> | null = null
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+const getSupabaseClient = () => {
+  if (supabaseClient) {
+    return supabaseClient
+  }
+
+  // Check if we're in a build environment (no window object and specific env vars missing)
+  const isBuildTime = typeof window === 'undefined' && !process.env.NEXT_PUBLIC_SUPABASE_URL
+  
+  if (isBuildTime) {
+    // Return a mock client during build time to prevent errors
+    return {
+      auth: {
+        signInWithPassword: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signInWithOAuth: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signUp: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        signOut: () => Promise.resolve({ error: null }),
+        resetPasswordForEmail: () => Promise.resolve({ data: null, error: new Error('Build time mock') }),
+        getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } }, error: null }),
+      }
+    } as unknown as SupabaseClient
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables. Please check your .env.local file.')
+  }
+
+  supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+      flowType: 'pkce'
+    }
+  })
+
+  return supabaseClient
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce'
-  }
-})
+// Export a getter function instead of the client directly
+export const supabase = {
+  get auth() {
+    return getSupabaseClient().auth
+  },
+  from: (table: string) => getSupabaseClient().from(table),
+  storage: getSupabaseClient().storage,
+  functions: getSupabaseClient().functions,
+  realtime: getSupabaseClient().realtime,
+}
 
 // Auth helpers
-export const signUp = async (email: string, password: string, userData?: Record<string, any>) => {
-  return await supabase.auth.signUp({
+export const signUp = async (email: string, password: string, userData?: Record<string, unknown>) => {
+  const client = getSupabaseClient()
+  return await client.auth.signUp({
     email,
     password,
     options: {
@@ -29,14 +70,16 @@ export const signUp = async (email: string, password: string, userData?: Record<
 }
 
 export const signIn = async (email: string, password: string) => {
-  return await supabase.auth.signInWithPassword({
+  const client = getSupabaseClient()
+  return await client.auth.signInWithPassword({
     email,
     password
   })
 }
 
 export const signInWithOAuth = async (provider: 'google' | 'github') => {
-  return await supabase.auth.signInWithOAuth({
+  const client = getSupabaseClient()
+  return await client.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
@@ -45,25 +88,39 @@ export const signInWithOAuth = async (provider: 'google' | 'github') => {
 }
 
 export const signOut = async () => {
-  return await supabase.auth.signOut()
+  const client = getSupabaseClient()
+  return await client.auth.signOut()
 }
 
 export const resetPassword = async (email: string) => {
-  return await supabase.auth.resetPasswordForEmail(email, {
+  const client = getSupabaseClient()
+  return await client.auth.resetPasswordForEmail(email, {
     redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password`
   })
 }
 
 export const updatePassword = async (password: string) => {
-  return await supabase.auth.updateUser({
-    password
-  })
+  const client = getSupabaseClient()
+  return await client.auth.updateUser({ password })
 }
 
-export const getCurrentUser = () => {
-  return supabase.auth.getUser()
+export const getUser = async () => {
+  const client = getSupabaseClient()
+  return client.auth.getUser()
 }
 
-export const getSession = () => {
-  return supabase.auth.getSession()
-} 
+export const getSession = async () => {
+  const client = getSupabaseClient()
+  return client.auth.getSession()
+}
+
+// Auth state change listener
+export const onAuthStateChange = (callback: (event: string, session: unknown) => void) => {
+  const client = getSupabaseClient()
+  return client.auth.onAuthStateChange(callback)
+}
+
+// Eğer bir yerde sabit port ile yönlendirme varsa:
+// örn: fetch(`http://localhost:3000/api/...`) yerine
+// fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
+// veya import ports from '../../../ports.js' ile kullanılabilir

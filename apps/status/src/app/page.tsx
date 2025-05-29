@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { CheckCircle, AlertTriangle, XCircle, Activity, Wifi, Database, Server, Globe, TrendingUp, AlertCircle as AlertIcon, Monitor, RefreshCw, LayoutGrid, Columns, Square, Grid } from 'lucide-react'
+import { CheckCircle, AlertTriangle, XCircle, Activity, Wifi, Database, TrendingUp, AlertCircle as AlertIcon, Monitor, RefreshCw, LayoutGrid, Columns, Square, Grid } from 'lucide-react'
 
 interface ServiceStatus {
   id: string
@@ -11,13 +11,6 @@ interface ServiceStatus {
   responseTime: number
   lastIncident?: string
   description: string
-}
-
-interface SystemMetrics {
-  totalUptime: number
-  totalRequests: number
-  errorRate: number
-  avgResponseTime: number
 }
 
 interface AdCard {

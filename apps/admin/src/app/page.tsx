@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Building2, Users, TrendingUp, Activity, UserPlus, DollarSign, LifeBuoy, Settings, ChevronDown, ChevronRight, Search, Filter, MoreVertical, User, Clock, TrendingDown, AlertCircle, CheckCircle, Menu, X, Eye, Edit, Trash2, Monitor, Zap, MessageSquare } from 'lucide-react'
+import { Building2, Users, Activity, UserPlus, DollarSign, LifeBuoy, Settings, ChevronRight, Search, User, Clock, AlertCircle, CheckCircle, X, Eye, Edit, Trash2, Monitor, Zap, MessageSquare } from 'lucide-react'
 import { useAdminStats, useCompanies, useAdminUsers, useRecentActivities } from '@/hooks/useAdminData'
 import { adminActions } from '@/lib/adminActions'
 import { Company } from '@/lib/supabase'
@@ -9,7 +9,7 @@ import CompanyModal from '@/components/CompanyModal'
 import SystemStatus from '@/components/SystemStatus'
 import AutomationPanel from '@/components/AutomationPanel'
 import CompactSystemStatus from '@/components/CompactSystemStatus'
-import TeamsIntegration from '@/components/TeamsIntegration'
+import IntegrationsManagement from '@/components/IntegrationsManagement'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -24,9 +24,9 @@ export default function AdminDashboard() {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
 
   // Use real data hooks
-  const { stats, loading: statsLoading, error: statsError } = useAdminStats()
-  const { companies, loading: companiesLoading, error: companiesError, refetch: refetchCompanies } = useCompanies()
-  const { users, loading: usersLoading, error: usersError } = useAdminUsers()
+  const { stats, loading: statsLoading } = useAdminStats()
+  const { companies, loading: companiesLoading, refetch: refetchCompanies } = useCompanies()
+  const { users, loading: usersLoading } = useAdminUsers()
   const { activities, loading: activitiesLoading } = useRecentActivities()
 
   const sidebarItems = [
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
     { id: 'users', icon: Users, label: 'Kullanıcılar' },
     { id: 'system-status', icon: Monitor, label: 'Sistem Durumu' },
     { id: 'automation', icon: Zap, label: 'Otomasyon' },
-    { id: 'teams-integration', icon: MessageSquare, label: 'Teams Entegrasyonu' },
+    { id: 'integrations', icon: MessageSquare, label: 'Entegrasyonlar' },
     { id: 'support', icon: LifeBuoy, label: 'Destek' },
     { id: 'revenue', icon: DollarSign, label: 'Gelir Analizi' },
     { id: 'settings', icon: Settings, label: 'Sistem Ayarları' },
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       } else {
         alert(result.error || 'Silme işlemi başarısız')
       }
-    } catch (error) {
+    } catch {
       alert('Beklenmeyen bir hata oluştu')
     } finally {
       setDeleteLoading(null)
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
           ))
         ) : (
           <div className="col-span-4 bg-red-50 p-4 rounded-lg">
-            <p className="text-red-600">Veriler yüklenirken hata oluştu: {statsError}</p>
+            <p className="text-red-600">Veriler yüklenirken hata oluştu.</p>
           </div>
         )}
       </div>
@@ -502,8 +502,8 @@ export default function AdminDashboard() {
         return <SystemStatus />
       case 'automation':
         return <AutomationPanel />
-      case 'teams-integration':
-        return <TeamsIntegration />
+      case 'integrations':
+        return <IntegrationsManagement />
       case 'support':
         return renderSupportContent()
       case 'revenue':

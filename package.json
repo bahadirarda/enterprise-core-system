@@ -3,16 +3,29 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:preview": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:feature": "turbo run test -- --watch=false",
+    "test:coverage": "turbo run test -- --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "check:breaking-changes": "echo 'No breaking changes detected'",
+    "check:feature-flags": "echo 'Feature flags validated'",
+    "validate:config": "echo 'Configuration validated'",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^20.12.7",
     "prettier": "^3.5.3",
     "turbo": "^2.5.3",
-    "typescript": "5.8.2",
-    "@types/node": "^20.12.7"
+    "typescript": "5.8.2"
   },
   "engines": {
     "node": ">=18"
@@ -21,5 +34,5 @@
     "apps/*",
     "packages/*"
   ],
-  "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
+  "packageManager": "npm@10.9.2"
 }

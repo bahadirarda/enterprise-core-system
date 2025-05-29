@@ -16,7 +16,6 @@ import {
   DollarSign,
   FileText,
   Plus,
-  Users,
   Bell,
   LogOut,
   Menu,
@@ -31,7 +30,6 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { format } from 'date-fns'
 import { tr } from 'date-fns/locale'
-import Link from 'next/link'
 
 // Mock Data
 const mockEmployee = {
@@ -317,7 +315,7 @@ export function DemoOverview() {
           onClick={() => window.location.href = '/'}
         >
           <LogOut className="mr-3 h-5 w-5" />
-          Demo'dan Çık
+          Demo&apos;dan Çık
         </Button>
       </div>
     </div>
@@ -736,7 +734,7 @@ export function DemoOverview() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => window.location.href = '/'}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    Demo'dan Çık
+                    Demo&apos;dan Çık
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

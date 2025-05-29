@@ -3,19 +3,13 @@
 import { useState, useEffect } from 'react'
 import { 
   MessageSquare, 
-  Users, 
   Settings, 
   CheckCircle, 
   XCircle, 
   Clock, 
   Plus, 
-  Edit, 
-  Trash2, 
-  ExternalLink,
-  AlertTriangle,
   Shield,
   Bell,
-  Zap,
   Link,
   Unlink,
   RefreshCw
@@ -90,9 +84,13 @@ export default function TeamsIntegration() {
     description: '',
     channels: [] as string[]
   })
+  const [teamsEnabled, setTeamsEnabled] = useState(true)
 
   useEffect(() => {
     loadTeamsData()
+    fetch('/api/integrations')
+      .then(r => r.json())
+      .then(d => setTeamsEnabled(d.integrations?.teams ?? true))
   }, [])
 
   const loadTeamsData = async () => {
@@ -111,7 +109,7 @@ export default function TeamsIntegration() {
 
       if (connectionsData.success) {
         // API'den gelen veriyi frontend formatına dönüştür
-        const formattedConnections = connectionsData.connections.map((conn: any) => ({
+        const formattedConnections = connectionsData.connections.map((conn: Record<string, unknown>) => ({
           id: conn.id,
           name: conn.name,
           tenantId: conn.tenant_id,
@@ -342,7 +340,7 @@ export default function TeamsIntegration() {
       case 'disconnected':
         return <Unlink className="w-4 h-4 text-gray-500" />
       default:
-        return <AlertTriangle className="w-4 h-4 text-gray-500" />
+        return <Clock className="w-4 h-4 text-gray-500" />
     }
   }
 
@@ -362,6 +360,16 @@ export default function TeamsIntegration() {
       default:
         return 'bg-gray-50 text-gray-700 border-gray-200'
     }
+  }
+
+  const toggleTeams = async () => {
+    const newVal = !teamsEnabled
+    setTeamsEnabled(newVal)
+    await fetch('/api/integrations', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ integration: 'teams', enabled: newVal })
+    })
   }
 
   return (
@@ -409,7 +417,7 @@ export default function TeamsIntegration() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'connections' | 'notifications' | 'approvals' | 'settings')}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
@@ -665,6 +673,17 @@ export default function TeamsIntegration() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">Entegrasyon Ayarları</h3>
             
             <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Microsoft Teams Entegrasyonu</span>
+                <label className="inline-flex items-center cursor-pointer">
+                  <span className="mr-2 text-xs text-gray-500">{teamsEnabled ? 'Açık' : 'Kapalı'}</span>
+                  <input type="checkbox" className="sr-only" checked={teamsEnabled} onChange={toggleTeams} />
+                  <div className={`w-11 h-6 rounded-full ${teamsEnabled ? 'bg-blue-600' : 'bg-gray-300'} relative transition-colors`}>
+                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transform transition-transform ${teamsEnabled ? 'translate-x-5' : ''}`}></span>
+                  </div>
+                </label>
+              </div>
+              
               <div>
                 <label className="flex items-center space-x-2">
                   <input type="checkbox" className="rounded" defaultChecked />

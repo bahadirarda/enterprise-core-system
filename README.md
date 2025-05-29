@@ -1,84 +1,161 @@
-# Turborepo starter
+# HRMS System
 
-This Turborepo starter is maintained by the Turborepo core team.
+Modern İnsan Kaynakları Yönetim Sistemi - Microsoft Teams entegrasyonu ile gelişmiş bildirim ve onay sistemi
 
-## Using this example
+## 🚀 Hızlı Başlangıç
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
+### Sistemi Başlatma
+```bash
+cd hrms-system
+./start.sh
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+### Sistemi Durdurma
+```bash
+./stop.sh
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+### Durum Kontrolü
+```bash
+./status.sh
 ```
 
-### Remote Caching
+## 📱 Erişim URL'leri
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+- **Admin Panel**: http://localhost:3003
+- **Status Dashboard**: http://localhost:3004
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## ⭐ Teams Entegrasyonu
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+Teams entegrasyonu Admin Panel'de **"Teams Entegrasyonu"** sekmesinde bulunur. Bu bölümde:
+
+- 🔗 Teams bağlantılarını yönetebilirsiniz
+- 📢 Bildirimleri takip edebilirsiniz
+- ✅ Onay süreçlerini yönetebilirsiniz
+- ⚙️ Entegrasyon ayarlarını yapılandırabilirsiniz
+
+### Teams Entegrasyonu Özellikleri
+
+1. **Bağlantı Yönetimi**
+   - Teams workspace'lerini sisteme bağlama
+   - Bağlantı durumu takibi
+   - Admin onayı gerektiren güvenli bağlantı süreci
+
+2. **Bildirim Sistemi**
+   - Pipeline hatalarında otomatik Teams bildirimi
+   - Merge request bildirimleri
+   - Deployment durumu bildirimleri
+   - Özelleştirilebilir bildirim şablonları
+
+3. **Onay Süreçleri**
+   - Teams üzerinden interaktif onay kartları
+   - Adaptive Cards ile modern UI
+   - Onay geçmişi takibi
+   - Otomatik durum güncellemeleri
+
+4. **Test Araçları**
+   - Entegrasyon test endpoint'leri
+   - Bildirim simülasyonu
+   - Bağlantı test araçları
+   - Webhook test sistemi
+
+## 🛠️ Geliştirme
+
+### Gereksinimler
+- Node.js 18+
+- npm veya yarn
+- Supabase hesabı
+
+### Kurulum
+```bash
+npm install
+```
+
+### Development Ortamı
+```bash
+# Tüm servisleri başlat
+npm run dev
+
+# Sadece admin panel
+npm run dev --workspace=apps/admin
+
+# Sadece status dashboard
+npm run dev --workspace=apps/status
+```
+
+## 📁 Proje Yapısı
 
 ```
-cd my-turborepo
-npx turbo login
+hrms-system/
+├── apps/
+│   ├── admin/          # Admin yönetim paneli
+│   └── status/         # Sistem durum dashboard'u
+├── packages/
+│   └── shared/         # Paylaşılan bileşenler
+├── supabase/           # Veritabanı şemaları ve migrasyonlar
+├── .github/            # CI/CD pipeline'ları
+├── start.sh            # Sistem başlatma scripti
+├── stop.sh             # Sistem durdurma scripti
+├── status.sh           # Durum kontrol scripti
+└── TEAMS_INTEGRATION.md # Teams entegrasyonu detaylı dokümantasyonu
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 🔧 API Endpoints
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+### Teams API'leri
+- `GET/POST /api/teams/connections` - Teams bağlantıları
+- `GET/POST /api/teams/notifications` - Bildirim yönetimi
+- `GET/POST /api/teams/approvals` - Onay süreçleri
+- `POST /api/teams/test` - Test araçları
 
+## 🚀 Deployment
+
+### CI/CD Pipeline
+- **Main branch**: Production deployment
+- **Develop branch**: Staging deployment  
+- **Feature branches**: Preview deployments + automated tests
+
+### Docker
+```bash
+docker-compose up -d
 ```
-npx turbo link
+
+### Manual Deployment
+```bash
+./deploy.sh production
 ```
 
-## Useful Links
+## 📚 Dokümantasyon
 
-Learn more about the power of Turborepo:
+- [Teams Entegrasyonu](./TEAMS_INTEGRATION.md) - Detaylı entegrasyon rehberi
+- [API Dokümantasyonu](./docs/api.md) - API referansı
+- [Deployment Rehberi](./docs/deployment.md) - Deployment talimatları
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+## 🔐 Güvenlik
+
+- Teams bağlantıları admin onayı gerektirir
+- API endpoint'leri authentication ile korunur
+- Webhook imzaları doğrulanır
+- Sensitive data encrypt edilir
+
+## 🆘 Destek
+
+Sorun yaşarsanız:
+
+1. `./status.sh` ile sistem durumunu kontrol edin
+2. Browser console'da hata mesajlarını kontrol edin
+3. `./stop.sh && ./start.sh` ile sistemi yeniden başlatın
+4. Sorun devam ederse GitHub Issues'da bildirim yapın
+
+## 📈 Sistem Metrikleri
+
+Admin panel'de aşağıdaki metrikleri takip edebilirsiniz:
+- Aktif kullanıcı sayısı
+- Teams bağlantı durumları
+- Bildirim başarı oranları
+- API yanıt süreleri
+- Sistem uptime
+
+---
+
+**Not**: Teams entegrasyonu için Microsoft Teams hesabınızda webhook ayarları yapmanız gerekebilir. Detaylı rehber için `TEAMS_INTEGRATION.md` dosyasını inceleyin.

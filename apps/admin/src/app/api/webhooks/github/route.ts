@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseClient } from '@/lib/supabase'
 import crypto from 'crypto'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 const WEBHOOK_SECRET = process.env.GITHUB_WEBHOOK_SECRET || 'dev-secret'
 
@@ -23,7 +18,13 @@ function verifySignature(payload: string, signature: string): boolean {
   )
 }
 
-async function createPipeline(data: any) {
+async function createPipeline(data: Record<string, unknown>) {
+  if (typeof data.ref !== 'string' || typeof data.head_commit !== 'object' || !data.head_commit) {
+    throw new Error('Invalid push event payload')
+  }
+  const head_commit = data.head_commit as { id: string; author: { name: string }; message: string }
+  const supabase = getSupabaseClient()
+
   const defaultJobs = [
     'Lint & Type Check',
     'Unit Tests', 
@@ -36,9 +37,9 @@ async function createPipeline(data: any) {
     .from('pipelines')
     .insert({
       branch: data.ref.replace('refs/heads/', ''),
-      commit_sha: data.head_commit.id,
-      author: data.head_commit.author.name,
-      message: data.head_commit.message,
+      commit_sha: head_commit.id,
+      author: head_commit.author.name,
+      message: head_commit.message,
       environment: data.ref.includes('main') ? 'production' : 
                    data.ref.includes('staging') ? 'staging' : 'development',
       status: 'pending'
@@ -65,8 +66,22 @@ async function createPipeline(data: any) {
   return pipeline
 }
 
-async function handlePullRequest(data: any) {
-  const { action, pull_request } = data
+async function handlePullRequest(data: Record<string, unknown>) {
+  const action = data.action as string
+  const pull_request = data.pull_request as {
+    number: number;
+    title: string;
+    body?: string;
+    user: { login: string };
+    head: { ref: string };
+    base: { ref: string };
+    draft?: boolean;
+    additions?: number;
+    deletions?: number;
+    changed_files?: number;
+    merged?: boolean;
+  }
+  const supabase = getSupabaseClient()
 
   if (action === 'opened' || action === 'reopened') {
     // Create new merge request
@@ -139,8 +154,16 @@ async function handlePullRequest(data: any) {
   return null
 }
 
-async function handleWorkflowRun(data: any) {
-  const { action, workflow_run } = data
+async function handleWorkflowRun(data: Record<string, unknown>) {
+  const action = data.action as string
+  const workflow_run = data.workflow_run as {
+    status: string;
+    conclusion?: string;
+    run_started_at?: string;
+    head_sha: string;
+    pull_requests?: { number: number }[]
+  }
+  const supabase = getSupabaseClient()
   
   if (action === 'completed' || action === 'requested' || action === 'in_progress') {
     // Update pipeline status based on workflow
@@ -185,6 +208,7 @@ export async function POST(request: NextRequest) {
 
     const data = JSON.parse(payload)
     let result = null
+    const supabase = getSupabaseClient()
 
     switch (eventType) {
       case 'push':

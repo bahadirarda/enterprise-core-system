@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react'
-import { supabase, Company, AdminUser, AdminStats } from '@/lib/supabase'
+import { getSupabaseClient, Company, AdminUser, AdminStats } from '@/lib/supabase'
+
+type RecentActivity = {
+  id: number;
+  text: string;
+  time: string;
+  type: 'success' | 'info';
+};
 
 export function useAdminStats() {
   const [stats, setStats] = useState<AdminStats | null>(null)
@@ -9,6 +16,7 @@ export function useAdminStats() {
   const fetchStats = async () => {
     try {
       setLoading(true)
+      const supabase = getSupabaseClient()
       
       // Fetch company count
       const { count: companyCount } = await supabase
@@ -19,12 +27,6 @@ export function useAdminStats() {
       const { count: userCount } = await supabase
         .from('user_profiles')
         .select('*', { count: 'exact', head: true })
-
-      // Fetch active employees count
-      const { count: employeeCount } = await supabase
-        .from('employees')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active')
 
       // Calculate today's signups
       const today = new Date().toISOString().split('T')[0]
@@ -63,6 +65,7 @@ export function useCompanies() {
   const fetchCompanies = async () => {
     try {
       setLoading(true)
+      const supabase = getSupabaseClient()
       
       // Fetch organizations and their user counts
       const { data: orgs, error: orgError } = await supabase
@@ -80,7 +83,7 @@ export function useCompanies() {
 
       // For each organization, get user count
       const companiesWithCounts = await Promise.all(
-        (orgs || []).map(async (org) => {
+        (orgs || []).map(async (org: { id: string; name: string; created_at: string; domain?: string; updated_at?: string; settings?: unknown }) => {
           const { count } = await supabase
             .from('user_profiles')
             .select('*', { count: 'exact', head: true })
@@ -128,6 +131,7 @@ export function useAdminUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true)
+      const supabase = getSupabaseClient()
       
       const { data: profiles, error: profileError } = await supabase
         .from('user_profiles')
@@ -147,7 +151,7 @@ export function useAdminUsers() {
 
       if (profileError) throw profileError
 
-      const usersWithStatus = (profiles || []).map(profile => {
+      const usersWithStatus = (profiles || []).map((profile: { id: string; email: string; full_name?: string; organizations?: unknown; created_at: string; organization_id?: string; role?: string }) => {
         const organization = Array.isArray(profile.organizations) 
           ? profile.organizations[0] 
           : profile.organizations
@@ -191,13 +195,14 @@ export function useAdminUsers() {
 }
 
 export function useRecentActivities() {
-  const [activities, setActivities] = useState<any[]>([])
+  const [activities, setActivities] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchActivities() {
       try {
         setLoading(true)
+        const supabase = getSupabaseClient()
         
         // Fetch recent organizations
         const { data: recentOrgs } = await supabase
@@ -213,18 +218,18 @@ export function useRecentActivities() {
           .order('created_at', { ascending: false })
           .limit(2)
 
-        const activities = [
-          ...(recentOrgs || []).map(org => ({
+        const activities: RecentActivity[] = [
+          ...(recentOrgs || []).map((org: { name: string; created_at: string }) => ({
             id: Math.random(),
             text: `Yeni şirket eklendi: ${org.name}`,
             time: formatTimeAgo(org.created_at),
-            type: 'success'
+            type: 'success' as const
           })),
-          ...(recentUsers || []).map(user => ({
+          ...(recentUsers || []).map((user: { email: string; created_at: string }) => ({
             id: Math.random(),
             text: `Yeni kullanıcı kaydı: ${user.email}`,
             time: formatTimeAgo(user.created_at),
-            type: 'info'
+            type: 'info' as const
           }))
         ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 4)
 
