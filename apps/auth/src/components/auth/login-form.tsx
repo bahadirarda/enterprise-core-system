@@ -45,7 +45,7 @@ export function LoginForm() {
         return
       }
 
-      if (authData.user && authData.session) {
+      if (authData.user && authData.session && authData.user.email) {
         console.log('🔐 Authentication successful, checking user profile...')
         
         // Kullanıcının profil bilgilerini al
@@ -93,7 +93,7 @@ export function LoginForm() {
         }
 
         // Role-based redirect with session token in URL
-        const redirectUrl = getRedirectUrl(userProfile.role)
+        const redirectUrl = getRedirectUrl(userProfile.role as string)
         const tokenParam = encodeURIComponent(JSON.stringify(sharedSession))
         const fullRedirectUrl = `${redirectUrl}?session=${tokenParam}`
         
