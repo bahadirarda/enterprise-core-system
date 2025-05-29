@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
 
   // Use real data hooks
-  const { stats, loading: statsLoading, error: statsError } = useAdminStats()
+  const { stats, loading: statsLoading } = useAdminStats()
   const { companies, loading: companiesLoading, refetch: refetchCompanies } = useCompanies()
   const { users, loading: usersLoading } = useAdminUsers()
   const { activities, loading: activitiesLoading } = useRecentActivities()
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
           ))
         ) : (
           <div className="col-span-4 bg-red-50 p-4 rounded-lg">
-            <p className="text-red-600">Veriler yüklenirken hata oluştu: {statsError}</p>
+            <p className="text-red-600">Veriler yüklenirken hata oluştu.</p>
           </div>
         )}
       </div>
