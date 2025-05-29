@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react'
 
 interface User {
   id: string
-  email: string
+  email?: string
   user_metadata?: {
     full_name?: string
     avatar_url?: string
