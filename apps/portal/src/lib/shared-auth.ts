@@ -8,10 +8,17 @@ export const AUTH_CONFIG = {
   ACTIVITY_KEY: 'hrms_last_activity'
 }
 
+export interface User {
+  id: string
+  email?: string
+  user_metadata?: Record<string, unknown>
+  app_metadata?: Record<string, unknown>
+}
+
 export interface SharedSession {
   access_token: string
   refresh_token: string
-  user: any
+  user: User
   expires_at: number
   created_at: number
 }
@@ -176,7 +183,7 @@ export class SharedAuthManager {
   }
 
   // Check authentication status across apps
-  async checkAuthStatus(): Promise<{ isAuthenticated: boolean; user: any | null }> {
+  async checkAuthStatus(): Promise<{ isAuthenticated: boolean; user: User | null }> {
     try {
       console.log('🔍 SharedAuth: Starting checkAuthStatus...')
       

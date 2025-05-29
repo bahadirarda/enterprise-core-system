@@ -44,26 +44,19 @@ export default function HomePage() {
           setIsLoading(false)
           return
         } catch (error) {
-          console.error('Error parsing session parameter:', error)
+          console.error('Portal: Error parsing session parameter:', error)
         }
       }
-
-      // Check for existing session in localStorage
-      const existingSession = sharedAuthManager.getSharedSession()
-      if (existingSession && existingSession.user) {
-        console.log('Portal: Found existing session')
-        setUser(existingSession.user)
-        sharedAuthManager.updateActivity()
-        setIsLoading(false)
-        return
-      }
-
-      // No valid session found, get fresh authentication
-      console.log('Portal: No session found, checking direct authentication...')
+      
+      console.log('Portal: localStorage session:', localStorage.getItem('hrms_shared_session'))
+      
       const { isAuthenticated, user: authUser } = await sharedAuthManager.checkAuthStatus()
       
-      if (!isAuthenticated || !authUser) {
-        console.log('Portal: No authenticated user, redirecting to auth...')
+      console.log('Portal: Auth result:', { isAuthenticated, user: authUser })
+      
+      if (!isAuthenticated) {
+        console.log('Portal: Not authenticated, redirecting to auth provider')
+        // Redirect to auth provider
         window.location.href = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
         return
       }
@@ -80,11 +73,7 @@ export default function HomePage() {
     } finally {
       setIsLoading(false)
     }
-  }, [searchParams])
-
-  useEffect(() => {
-    checkAuthentication()
-  }, [checkAuthentication])
+  }
 
   if (isLoading) {
     return (

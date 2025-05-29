@@ -7,10 +7,7 @@ import {
   Settings, 
   BarChart3, 
   Shield, 
-  Calendar, 
-  FileText, 
   CreditCard,
-  AlertTriangle,
   CheckCircle,
   Clock,
   ExternalLink,
@@ -22,7 +19,7 @@ interface Application {
   id: string
   name: string
   description: string
-  icon: any
+  icon: React.ComponentType<{ className?: string }>
   url: string
   status: 'active' | 'maintenance' | 'disabled'
   category: 'hr' | 'finance' | 'operations' | 'analytics'
