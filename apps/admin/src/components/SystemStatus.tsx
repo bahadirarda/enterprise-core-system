@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { CheckCircle, AlertTriangle, XCircle, Activity, Wifi, Database, Server, Globe } from 'lucide-react'
 
 interface ServiceStatus {
@@ -136,7 +136,7 @@ const getOverallStatus = (services: ServiceStatus[]) => {
 
 export default function SystemStatus() {
   const [services, setServices] = useState<ServiceStatus[]>(mockServices)
-  const [metrics, setMetrics] = useState<SystemMetrics>({
+  const [metrics] = useState<SystemMetrics>({
     totalUptime: 99.7,
     totalRequests: 1250000,
     errorRate: 0.3,
@@ -147,7 +147,7 @@ export default function SystemStatus() {
 
   const overallStatus = getOverallStatus(services)
 
-  const refreshStatus = async () => {
+  const refreshStatus = useCallback(async () => {
     setRefreshing(true)
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000))
@@ -161,7 +161,7 @@ export default function SystemStatus() {
     
     setServices(updatedServices)
     setRefreshing(false)
-  }
+  }, [services])
 
   useEffect(() => {
     const interval = setInterval(refreshStatus, 30000) // Refresh every 30 seconds

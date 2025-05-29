@@ -66,7 +66,7 @@ export default function CompanyModal({ isOpen, onClose, onSuccess, company, mode
       } else {
         setError(result?.error || 'Bir hata oluştu')
       }
-    } catch (_err) {
+    } catch {
       setError('Beklenmeyen bir hata oluştu')
     } finally {
       setLoading(false)

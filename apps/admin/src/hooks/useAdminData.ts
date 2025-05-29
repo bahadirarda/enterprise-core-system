@@ -27,12 +27,6 @@ export function useAdminStats() {
         .from('user_profiles')
         .select('*', { count: 'exact', head: true })
 
-      // Fetch active employees count
-      const { count: employeeCount } = await supabase
-        .from('employees')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active')
-
       // Calculate today's signups
       const today = new Date().toISOString().split('T')[0]
       const { count: todaySignups } = await supabase

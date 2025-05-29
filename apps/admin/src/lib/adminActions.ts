@@ -199,7 +199,7 @@ export const adminActions = {
   async getSystemHealth(): Promise<{ success: boolean; data?: Record<string, unknown>; error?: string }> {
     try {
       // Check database connectivity
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('organizations')
         .select('id')
         .limit(1)
