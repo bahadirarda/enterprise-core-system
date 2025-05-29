@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Dashboard } from '@/components/dashboard/dashboard'
 import { sharedAuthManager } from '@/lib/shared-auth'
 import { Loader2 } from 'lucide-react'
@@ -33,7 +33,6 @@ function HRMSContent() {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const searchParams = useSearchParams()
-  const router = useRouter()
 
   const checkAuthentication = useCallback(async () => {
     try {
