@@ -81,7 +81,7 @@ interface PipelineApiResponse {
   id: string;
   status: string;
   branch: string;
-  commit: string;
+  commitSha: string;
   author: string;
   message: string;
   createdAt: string;
@@ -130,7 +130,7 @@ export default function AutomationPanel() {
         id: pipeline.id,
         status: pipeline.status as Pipeline['status'],
         branch: pipeline.branch,
-        commit: pipeline.commit.substring(0, 7) || 'unknown',
+        commit: pipeline.commitSha?.substring(0, 7) || 'unknown',
         author: pipeline.author,
         message: pipeline.message,
         createdAt: pipeline.createdAt,

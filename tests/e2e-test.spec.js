@@ -1,8 +1,16 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env.ports') });
+
+const PORTAL_PORT = process.env.PORTAL_PORT || 3001;
+const HRMS_PORT = process.env.HRMS_PORT || 3002;
+const ADMIN_PORT = process.env.ADMIN_PORT || 8080;
+const STATUS_PORT = process.env.STATUS_PORT || 8081;
+const AUTH_PORT = process.env.AUTH_PORT || 3000;
+
 const { test, expect } = require('@playwright/test');
 
 test.describe('HRMS System E2E Tests', () => {
   test('Auth App - Login page loads correctly', async ({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto(`http://localhost:${AUTH_PORT}`);
     
     // Başlık kontrolü
     await expect(page.locator('h1')).toContainText('HRMS Giriş');
@@ -20,7 +28,7 @@ test.describe('HRMS System E2E Tests', () => {
   });
 
   test('Portal App - Main page loads correctly', async ({ page }) => {
-    await page.goto('http://localhost:3002');
+    await page.goto(`http://localhost:${PORTAL_PORT}`);
     
     // Sayfa yüklendiğini kontrol et
     await expect(page.locator('body')).toBeVisible();
@@ -32,11 +40,11 @@ test.describe('HRMS System E2E Tests', () => {
       await expect(loadingText).toBeHidden({ timeout: 10000 });
     }
     
-    console.log('✅ Portal App (Port 3002) - Main page test passed');
+    console.log('✅ Portal App (Port 3001) - Main page test passed');
   });
 
   test('HRMS App - Dashboard loads correctly', async ({ page }) => {
-    await page.goto('http://localhost:3001');
+    await page.goto(`http://localhost:${HRMS_PORT}`);
     
     // Sayfa yüklendiğini kontrol et
     await expect(page.locator('body')).toBeVisible();
@@ -52,7 +60,7 @@ test.describe('HRMS System E2E Tests', () => {
   });
 
   test('Admin App - Dashboard loads correctly', async ({ page }) => {
-    await page.goto('http://localhost:3003');
+    await page.goto(`http://localhost:${ADMIN_PORT}`);
     
     // Başlık kontrolü
     await expect(page.locator('h1:has-text("Admin Panel")')).toBeVisible();
@@ -72,7 +80,7 @@ test.describe('HRMS System E2E Tests', () => {
   });
 
   test('Admin App - Navigation test', async ({ page }) => {
-    await page.goto('http://localhost:3003');
+    await page.goto(`http://localhost:${ADMIN_PORT}`);
     
     // Şirketler sayfasına git
     await page.click('button:has-text("Şirketler")');
@@ -91,10 +99,10 @@ test.describe('HRMS System E2E Tests', () => {
 
   test('System Status Check - All ports respond', async ({ page }) => {
     const ports = [
-      { port: 3000, name: 'Auth' },
-      { port: 3001, name: 'HRMS' },
-      { port: 3002, name: 'Portal' },
-      { port: 3003, name: 'Admin' }
+      { port: AUTH_PORT, name: 'Auth' },
+      { port: HRMS_PORT, name: 'HRMS' },
+      { port: PORTAL_PORT, name: 'Portal' },
+      { port: ADMIN_PORT, name: 'Admin' }
     ];
     
     for (const { port, name } of ports) {
@@ -105,7 +113,7 @@ test.describe('HRMS System E2E Tests', () => {
   });
 
   test('Auth App - Form validation', async ({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto(`http://localhost:${AUTH_PORT}`);
     
     // Boş form göndermeyi test et
     await page.click('button[type="submit"]');
@@ -121,7 +129,7 @@ test.describe('HRMS System E2E Tests', () => {
   });
 
   test('Admin App - System Status Widget', async ({ page }) => {
-    await page.goto('http://localhost:3003');
+    await page.goto(`http://localhost:${ADMIN_PORT}`);
     
     // Sistem durumu widget'ının varlığını kontrol et
     await expect(page.locator('h3:has-text("Sistem Durumu")')).toBeVisible();
@@ -137,7 +145,7 @@ test.describe('HRMS System E2E Tests', () => {
   test('Responsive Design Test', async ({ page }) => {
     // Desktop test
     await page.setViewportSize({ width: 1920, height: 1080 });
-    await page.goto('http://localhost:3003');
+    await page.goto(`http://localhost:${ADMIN_PORT}`);
     await expect(page.locator('h1:has-text("Admin Panel")')).toBeVisible();
     
     // Tablet test
@@ -155,10 +163,10 @@ test.describe('HRMS System E2E Tests', () => {
 
   test('Performance Test - Page Load Times', async ({ page }) => {
     const apps = [
-      { url: 'http://localhost:3000', name: 'Auth' },
-      { url: 'http://localhost:3001', name: 'HRMS' },
-      { url: 'http://localhost:3002', name: 'Portal' },
-      { url: 'http://localhost:3003', name: 'Admin' }
+      { url: `http://localhost:${AUTH_PORT}`, name: 'Auth' },
+      { url: `http://localhost:${HRMS_PORT}`, name: 'HRMS' },
+      { url: `http://localhost:${PORTAL_PORT}`, name: 'Portal' },
+      { url: `http://localhost:${ADMIN_PORT}`, name: 'Admin' }
     ];
     
     for (const { url, name } of apps) {
@@ -171,4 +179,4 @@ test.describe('HRMS System E2E Tests', () => {
       console.log(`✅ ${name} App - Load time: ${loadTime}ms`);
     }
   });
-}); 
+});

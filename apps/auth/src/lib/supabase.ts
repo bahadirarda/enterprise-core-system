@@ -119,3 +119,8 @@ export const onAuthStateChange = (callback: (event: string, session: unknown) =>
   const client = getSupabaseClient()
   return client.auth.onAuthStateChange(callback)
 }
+
+// Eğer bir yerde sabit port ile yönlendirme varsa:
+// örn: fetch(`http://localhost:3000/api/...`) yerine
+// fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
+// veya import ports from '../../../ports.js' ile kullanılabilir

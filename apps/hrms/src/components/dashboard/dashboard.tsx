@@ -113,11 +113,36 @@ export function Dashboard({ employee }: DashboardProps) {
   const [activeMenuItem, setActiveMenuItem] = useState('dashboard')
   const [editingApplication, setEditingApplication] = useState<ApplicationProgress | undefined>(undefined)
 
-  // Mock rol - gerçek uygulamada API'den gelecek - HR Manager yapıyorum test için
-  // Supabase auth user'ın "authenticated" rolünü "hr_manager" olarak map ediyoruz
-  const userRole = employee.role === 'authenticated' ? 'hr_manager' : (employee.role || 'hr_manager')
+  // Role mapping - Önce employee.role kullan, yoksa position title'a göre belirle
+  const getUserRole = (employee: any): string => {
+    // Eğer employee'da direkt role varsa ve 'authenticated' değilse onu kullan
+    if (employee.role && employee.role !== 'authenticated') {
+      console.log('Using direct role from employee:', employee.role)
+      return employee.role
+    }
+    
+    // Yoksa position title'a göre belirle
+    const positionTitle = employee.position?.title?.toLowerCase() || ''
+    
+    if (positionTitle.includes('sistem yöneticisi') || positionTitle.includes('admin')) {
+      return 'admin'
+    } else if (positionTitle.includes('müdür') || positionTitle.includes('manager')) {
+      if (positionTitle.includes('ik') || positionTitle.includes('insan kaynakları')) {
+        return 'hr_manager'
+      }
+      return 'department_manager'
+    } else if (positionTitle.includes('ik') || positionTitle.includes('insan kaynakları')) {
+      return 'hr_specialist'
+    }
+    
+    return 'employee'
+  }
+  
+  const userRole = getUserRole(employee)
   console.log('Employee:', employee)
-  console.log('User Role:', userRole)
+  console.log('Position Title:', employee.position?.title)
+  console.log('Direct Role:', employee.role)
+  console.log('Final User Role:', userRole)
   const menuItems = getMenuItems(userRole)
 
   // Yetki kontrolü

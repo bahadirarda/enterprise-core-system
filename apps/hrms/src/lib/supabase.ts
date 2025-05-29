@@ -151,7 +151,8 @@ export const getCurrentEmployee = async () => {
       *,
       department:departments(id, name),
       position:positions(id, title),
-      manager:employees!manager_id(id, first_name, last_name)
+      manager:employees!manager_id(id, first_name, last_name),
+      user_profile:user_profiles(role)
     `)
     .eq('user_id', user.id)
     .single()
@@ -161,7 +162,7 @@ export const getCurrentEmployee = async () => {
     return null
   }
   
-  return employee as Employee
+  return { ...employee, role: employee.user_profile?.role } as Employee & { role?: string }
 }
 
 export const getEmployeeLeaveRequests = async (employeeId: string) => {
@@ -314,4 +315,9 @@ export const signOut = async () => {
     throw error
   }
   window.location.href = process.env.NEXT_PUBLIC_APP_URL || 'http://auth.localhost:3000'
-} 
+}
+
+// Eğer bir yerde sabit port ile yönlendirme varsa:
+// örn: fetch(`http://localhost:3002/api/...`) yerine
+// fetch(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/...`)
+// veya import ports from '../../../ports.js' ile kullanılabilir

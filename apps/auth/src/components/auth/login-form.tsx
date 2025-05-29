@@ -133,8 +133,8 @@ export function LoginForm() {
 
   const getRedirectUrl = (role?: string) => {
     // Safe environment variable access with fallbacks
-    const portalUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_PORTAL_URL) || 'http://localhost:3002'
-    const hrmsUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_HRMS_URL) || 'http://localhost:3001'
+    const portalUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_PORTAL_URL) || 'http://localhost:3001'
+    const hrmsUrl = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_HRMS_URL) || 'http://localhost:3002'
     
     switch (role) {
       case 'admin':
