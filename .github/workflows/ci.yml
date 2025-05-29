@@ -54,6 +54,9 @@ jobs:
               - 'playwright.config.js'
               - 'package.json'
               - 'package-lock.json'
+              - '.github/workflows/**'
+              - 'turbo.json'
+              - 'commitlint.config.js'
 
   test:
     name: 🧪 Test & Lint
