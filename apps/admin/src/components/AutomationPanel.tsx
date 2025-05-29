@@ -115,7 +115,7 @@ export default function AutomationPanel() {
       ]);
 
       // Transform pipelines data
-      const transformedPipelines = pipelinesData.map((pipeline: any) => {
+      const transformedPipelines = pipelinesData.map((pipeline: unknown) => {
         const p = pipeline as Pipeline;
         return {
           id: p.id,
@@ -374,7 +374,7 @@ export default function AutomationPanel() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
