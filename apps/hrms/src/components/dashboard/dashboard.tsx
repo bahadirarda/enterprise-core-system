@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { 
   User, 
   Calendar, 
   Clock,
   DollarSign,
-  Plus,
   Users,
   Bell,
   Menu,
@@ -14,27 +13,20 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  TrendingUp,
-  Activity,
   Home,
   FileText,
   Shield,
-  ChevronDown,
   Building,
   CreditCard,
   UserCheck,
   Search,
-  Filter,
   X
 } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { format } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { AddEmployeeWizard } from '@/components/employee/add-employee-wizard'
-import { PendingApplications } from '@/components/employee/pending-applications'
+import { PendingApplications, type ApplicationProgress } from '@/components/employee/pending-applications'
 
 interface Employee {
   id: string
@@ -119,7 +111,7 @@ export function Dashboard({ employee }: DashboardProps) {
   const [currentView, setCurrentView] = useState<'dashboard' | 'add-employee' | 'pending-applications'>('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [activeMenuItem, setActiveMenuItem] = useState('dashboard')
-  const [editingApplication, setEditingApplication] = useState<any>(null)
+  const [editingApplication, setEditingApplication] = useState<ApplicationProgress | undefined>(undefined)
 
   // Mock rol - gerçek uygulamada API'den gelecek - HR Manager yapıyorum test için
   // Supabase auth user'ın "authenticated" rolünü "hr_manager" olarak map ediyoruz
@@ -212,12 +204,12 @@ export function Dashboard({ employee }: DashboardProps) {
             onComplete={() => {
               setCurrentView('dashboard')
               setActiveMenuItem('dashboard')
-              setEditingApplication(null)
+              setEditingApplication(undefined)
             }}
             onCancel={() => {
               setCurrentView('dashboard')
               setActiveMenuItem('dashboard')
-              setEditingApplication(null)
+              setEditingApplication(undefined)
             }}
           />
         </div>
@@ -329,7 +321,7 @@ export function Dashboard({ employee }: DashboardProps) {
               setActiveMenuItem('recruitment')
             }}
             onCreateNew={() => {
-              setEditingApplication(null)
+              setEditingApplication(undefined)
               setCurrentView('add-employee')
               setActiveMenuItem('recruitment')
             }}
@@ -556,7 +548,7 @@ export function Dashboard({ employee }: DashboardProps) {
                       <>
                         <button 
                           onClick={() => {
-                            setEditingApplication(null)
+                            setEditingApplication(undefined)
                             setCurrentView('add-employee')
                             setActiveMenuItem('recruitment')
                           }}

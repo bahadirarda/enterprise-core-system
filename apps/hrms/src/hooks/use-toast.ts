@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
 interface Toast {
   id: string
@@ -17,9 +17,14 @@ const initialState: ToastState = {
 }
 
 let state = initialState
-let listeners: Array<(state: ToastState) => void> = []
+const listeners: Array<(state: ToastState) => void> = []
 
-function dispatch(action: { type: string; payload?: any }) {
+type ToastAction = 
+  | { type: 'ADD_TOAST'; payload: Toast }
+  | { type: 'REMOVE_TOAST'; payload: string }
+  | { type: 'CLEAR_TOASTS' }
+
+function dispatch(action: ToastAction) {
   switch (action.type) {
     case 'ADD_TOAST':
       state = {
@@ -45,18 +50,6 @@ function dispatch(action: { type: string; payload?: any }) {
 }
 
 export function useToast() {
-  const [toastState, setToastState] = useState(state)
-
-  const subscribe = useCallback((listener: (state: ToastState) => void) => {
-    listeners.push(listener)
-    return () => {
-      const index = listeners.indexOf(listener)
-      if (index > -1) {
-        listeners.splice(index, 1)
-      }
-    }
-  }, [])
-
   const toast = useCallback(({
     title,
     description,
@@ -104,6 +97,6 @@ export function useToast() {
   return {
     toast,
     dismiss,
-    toasts: toastState.toasts
+    toasts: state.toasts
   }
 } 

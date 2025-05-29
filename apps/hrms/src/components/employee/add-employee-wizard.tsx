@@ -1,42 +1,32 @@
 'use client'
 
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Stars, Float, Text3D, OrbitControls } from '@react-three/drei'
+import { Stars, Float, OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import {
   User,
   Mail,
   Phone,
-  Calendar,
-  MapPin,
-  Users,
   Building,
-  DollarSign,
   CreditCard,
   FileText,
   UserPlus,
   Check,
   ChevronRight,
   ChevronLeft,
-  X,
   Send,
   Eye,
   Clock,
-  AlertCircle,
   Save,
-  CheckCircle,
-  ExternalLink
+  CheckCircle
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 // import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
@@ -137,12 +127,42 @@ function BackgroundScene() {
 }
 
 // Application Status Types
+interface EmployeeFormData {
+  // Step 1: Personal Info
+  first_name?: string
+  last_name?: string
+  email?: string
+  phone?: string
+  birth_date?: string
+  tc_identity?: string
+  address?: string
+  
+  // Step 2: Contact & Emergency
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  emergency_contact_relationship?: string
+  
+  // Step 3: Work Info
+  department_id?: string
+  position_id?: string
+  salary?: string
+  hire_date?: string
+  employee_id?: string
+  
+  // Step 4: Financial Info
+  tax_id?: string
+  bank_account?: string
+  
+  // Step 5: Notes
+  notes?: string
+}
+
 interface ApplicationProgress {
   id: string
   employee_email: string
   employee_name: string
   current_step: number
-  form_data: any
+  form_data: EmployeeFormData
   status: 'draft' | 'form_sent' | 'form_completed' | 'review_pending' | 'completed'
   created_at: string
   updated_at: string
@@ -164,7 +184,7 @@ const steps = [
   { id: 5, title: 'Form Gönderimi & Tamamlama', description: 'Davet ve onay', icon: Send }
 ]
 
-export function AddEmployeeWizard({ onComplete, onCancel, existingProgress }: AddEmployeeWizardProps) {
+export function AddEmployeeWizard({ onComplete, existingProgress }: AddEmployeeWizardProps) {
   const [currentStep, setCurrentStep] = useState(existingProgress?.current_step || 1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -221,30 +241,8 @@ export function AddEmployeeWizard({ onComplete, onCancel, existingProgress }: Ad
     { id: '5', title: 'Satış Temsilcisi', department_id: '4', salary_range: '40000-80000' }
   ]
 
-  // Auto-save progress every 30 seconds
-  useEffect(() => {
-    const autoSaveInterval = setInterval(() => {
-      if (formData.first_name && formData.email) {
-        saveProgress()
-      }
-    }, 30000)
-
-    return () => clearInterval(autoSaveInterval)
-  }, [formData])
-
-  // Generate employee ID
-  useEffect(() => {
-    if (formData.first_name && formData.last_name && !formData.employee_id) {
-      const initials = `${formData.first_name.charAt(0)}${formData.last_name.charAt(0)}`.toUpperCase()
-      const timestamp = Date.now().toString().slice(-4)
-      setFormData(prev => ({
-        ...prev,
-        employee_id: `EMP${initials}${timestamp}`
-      }))
-    }
-  }, [formData.first_name, formData.last_name])
-
-  const saveProgress = async () => {
+  // Save progress function - moved here to be available for useEffects
+  const saveProgress = useCallback(async () => {
     if (!formData.first_name || !formData.email) return
 
     setIsSaving(true)
@@ -280,7 +278,30 @@ export function AddEmployeeWizard({ onComplete, onCancel, existingProgress }: Ad
     } finally {
       setIsSaving(false)
     }
-  }
+  }, [formData, currentStep, formSent, applicationId, toast])
+
+  // Auto-save progress every 30 seconds
+  useEffect(() => {
+    const autoSaveInterval = setInterval(() => {
+      if (formData.first_name && formData.email) {
+        saveProgress()
+      }
+    }, 30000)
+
+    return () => clearInterval(autoSaveInterval)
+  }, [formData, saveProgress])
+
+  // Generate employee ID
+  useEffect(() => {
+    if (formData.first_name && formData.last_name && !formData.employee_id) {
+      const initials = `${formData.first_name.charAt(0)}${formData.last_name.charAt(0)}`.toUpperCase()
+      const timestamp = Date.now().toString().slice(-4)
+      setFormData(prev => ({
+        ...prev,
+        employee_id: `EMP${initials}${timestamp}`
+      }))
+    }
+  }, [formData.first_name, formData.last_name, formData.employee_id])
 
   const nextStep = () => {
     if (currentStep < 5) {
@@ -971,4 +992,4 @@ export function AddEmployeeWizard({ onComplete, onCancel, existingProgress }: Ad
       </div>
     </div>
   )
-} 
+}

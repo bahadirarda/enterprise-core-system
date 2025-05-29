@@ -1,22 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState, useCallback, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Dashboard } from '@/components/dashboard/dashboard'
 import { sharedAuthManager } from '@/lib/shared-auth'
 import { Loader2 } from 'lucide-react'
 
-export default function HRMSHomePage() {
-  const [user, setUser] = useState<any>(null)
+interface User {
+  id: string
+  email?: string
+  full_name?: string
+  avatar_url?: string
+  user_metadata?: Record<string, unknown>
+}
+
+function HRMSContent() {
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
   const searchParams = useSearchParams()
 
-  useEffect(() => {
-    checkAuthentication()
-  }, [])
-
-  const checkAuthentication = async () => {
+  const checkAuthentication = useCallback(async () => {
     try {
       console.log('HRMS: Checking authentication...')
       
@@ -69,7 +72,11 @@ export default function HRMSHomePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [searchParams])
+
+  useEffect(() => {
+    checkAuthentication()
+  }, [checkAuthentication])
 
   if (isLoading) {
     return (
@@ -86,5 +93,20 @@ export default function HRMSHomePage() {
     return null // Will redirect
   }
 
-  return <Dashboard employee={user} />
+  // Convert User to Employee with required email field
+  const employee = {
+    ...user,
+    email: user.email || '', // Fallback to empty string if email is undefined
+    role: 'employee' as const // Default role
+  }
+
+  return <Dashboard employee={employee} />
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" /><p className="text-gray-600">HRMS yükleniyor...</p></div></div>}>
+      <HRMSContent />
+    </Suspense>
+  )
 }

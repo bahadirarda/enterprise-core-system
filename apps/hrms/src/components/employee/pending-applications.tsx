@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Clock,
@@ -8,18 +8,13 @@ import {
   Edit,
   Send,
   CheckCircle,
-  AlertCircle,
   User,
   Mail,
-  Calendar,
   Building,
-  Phone,
   FileText,
   Trash2,
   RefreshCw,
-  Filter,
   Search,
-  ArrowRight,
   ExternalLink,
   MessageSquare,
   Users,
@@ -27,20 +22,49 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 // import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
-interface ApplicationProgress {
+// Employee form data interface
+interface EmployeeFormData {
+  // Step 1: Personal Info
+  first_name?: string
+  last_name?: string
+  email?: string
+  phone?: string
+  birth_date?: string
+  tc_identity?: string
+  address?: string
+  
+  // Step 2: Contact & Emergency
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  emergency_contact_relationship?: string
+  
+  // Step 3: Work Info
+  department_id?: string
+  position_id?: string
+  salary?: string
+  hire_date?: string
+  employee_id?: string
+  
+  // Step 4: Financial Info
+  tax_id?: string
+  bank_account?: string
+  
+  // Step 5: Notes
+  notes?: string
+}
+
+export interface ApplicationProgress {
   id: string
   employee_email: string
   employee_name: string
   current_step: number
-  form_data: any
+  form_data: EmployeeFormData
   status: 'draft' | 'form_sent' | 'form_completed' | 'review_pending' | 'completed'
   created_at: string
   updated_at: string
@@ -100,6 +124,75 @@ const steps = [
   'Form Gönderimi'
 ]
 
+// Mock data - in real app this would come from Supabase
+const mockApplications: ApplicationProgress[] = [
+  {
+    id: 'app_001',
+    employee_email: 'ahmet.yilmaz@example.com',
+    employee_name: 'Ahmet Yılmaz',
+    current_step: 2,
+    form_data: {
+      first_name: 'Ahmet',
+      last_name: 'Yılmaz',
+      email: 'ahmet.yilmaz@example.com',
+      department_id: '2',
+      position_id: '2'
+    },
+    status: 'form_sent',
+    created_at: '2024-05-27T10:30:00Z',
+    updated_at: '2024-05-27T14:15:00Z',
+    hr_manager_id: 'hr_001',
+    hr_manager_name: 'Bahadır Arda',
+    form_url: 'https://forms.kikos.app/employee-form/app_001',
+    form_completion_percentage: 40,
+    last_activity: '2 saat önce',
+    department_name: 'Yazılım Geliştirme',
+    position_title: 'Frontend Developer',
+    notes_count: 2
+  },
+  {
+    id: 'app_002',
+    employee_email: 'elif.kaya@example.com',
+    employee_name: 'Elif Kaya',
+    current_step: 5,
+    form_data: {
+      first_name: 'Elif',
+      last_name: 'Kaya',
+      email: 'elif.kaya@example.com',
+      department_id: '3',
+      position_id: '4'
+    },
+    status: 'form_completed',
+    created_at: '2024-05-26T09:00:00Z',
+    updated_at: '2024-05-27T16:30:00Z',
+    hr_manager_id: 'hr_001',
+    hr_manager_name: 'Bahadır Arda',
+    form_completion_percentage: 100,
+    last_activity: '30 dakika önce',
+    department_name: 'Pazarlama',
+    position_title: 'Pazarlama Uzmanı',
+    notes_count: 0
+  },
+  {
+    id: 'app_003',
+    employee_email: 'mehmet.ozkan@example.com',
+    employee_name: 'Mehmet Özkan',
+    current_step: 1,
+    form_data: {
+      first_name: 'Mehmet',
+      last_name: 'Özkan',
+      email: 'mehmet.ozkan@example.com'
+    },
+    status: 'draft',
+    created_at: '2024-05-27T08:45:00Z',
+    updated_at: '2024-05-27T08:45:00Z',
+    hr_manager_id: 'hr_001',
+    hr_manager_name: 'Bahadır Arda',
+    last_activity: '6 saat önce',
+    notes_count: 1
+  }
+]
+
 export function PendingApplications({ onEditApplication, onCreateNew }: PendingApplicationsProps) {
   const [applications, setApplications] = useState<ApplicationProgress[]>([])
   const [filteredApplications, setFilteredApplications] = useState<ApplicationProgress[]>([])
@@ -110,84 +203,7 @@ export function PendingApplications({ onEditApplication, onCreateNew }: PendingA
   const { toast } = useToast()
   // const supabase = createClientComponentClient()
 
-  // Mock data - in real app this would come from Supabase
-  const mockApplications: ApplicationProgress[] = [
-    {
-      id: 'app_001',
-      employee_email: 'ahmet.yilmaz@example.com',
-      employee_name: 'Ahmet Yılmaz',
-      current_step: 2,
-      form_data: {
-        first_name: 'Ahmet',
-        last_name: 'Yılmaz',
-        email: 'ahmet.yilmaz@example.com',
-        department_id: '2',
-        position_id: '2'
-      },
-      status: 'form_sent',
-      created_at: '2024-05-27T10:30:00Z',
-      updated_at: '2024-05-27T14:15:00Z',
-      hr_manager_id: 'hr_001',
-      hr_manager_name: 'Bahadır Arda',
-      form_url: 'https://forms.kikos.app/employee-form/app_001',
-      form_completion_percentage: 40,
-      last_activity: '2 saat önce',
-      department_name: 'Yazılım Geliştirme',
-      position_title: 'Frontend Developer',
-      notes_count: 2
-    },
-    {
-      id: 'app_002',
-      employee_email: 'elif.kaya@example.com',
-      employee_name: 'Elif Kaya',
-      current_step: 5,
-      form_data: {
-        first_name: 'Elif',
-        last_name: 'Kaya',
-        email: 'elif.kaya@example.com',
-        department_id: '3',
-        position_id: '4'
-      },
-      status: 'form_completed',
-      created_at: '2024-05-26T09:00:00Z',
-      updated_at: '2024-05-27T16:30:00Z',
-      hr_manager_id: 'hr_001',
-      hr_manager_name: 'Bahadır Arda',
-      form_completion_percentage: 100,
-      last_activity: '30 dakika önce',
-      department_name: 'Pazarlama',
-      position_title: 'Pazarlama Uzmanı',
-      notes_count: 0
-    },
-    {
-      id: 'app_003',
-      employee_email: 'mehmet.ozkan@example.com',
-      employee_name: 'Mehmet Özkan',
-      current_step: 1,
-      form_data: {
-        first_name: 'Mehmet',
-        last_name: 'Özkan',
-        email: 'mehmet.ozkan@example.com'
-      },
-      status: 'draft',
-      created_at: '2024-05-27T08:45:00Z',
-      updated_at: '2024-05-27T08:45:00Z',
-      hr_manager_id: 'hr_001',
-      hr_manager_name: 'Bahadır Arda',
-      last_activity: '6 saat önce',
-      notes_count: 1
-    }
-  ]
-
-  useEffect(() => {
-    loadApplications()
-  }, [])
-
-  useEffect(() => {
-    filterAndSortApplications()
-  }, [applications, searchTerm, statusFilter, sortBy])
-
-  const loadApplications = async () => {
+  const loadApplications = useCallback(async () => {
     setIsLoading(true)
     try {
       // Mock API call - replace with actual Supabase query
@@ -203,9 +219,9 @@ export function PendingApplications({ onEditApplication, onCreateNew }: PendingA
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
 
-  const filterAndSortApplications = () => {
+  const filterAndSortApplications = useCallback(() => {
     let filtered = applications
 
     // Search filter
@@ -240,7 +256,15 @@ export function PendingApplications({ onEditApplication, onCreateNew }: PendingA
     })
 
     setFilteredApplications(filtered)
-  }
+  }, [applications, searchTerm, statusFilter, sortBy])
+
+  useEffect(() => {
+    loadApplications()
+  }, [loadApplications])
+
+  useEffect(() => {
+    filterAndSortApplications()
+  }, [filterAndSortApplications])
 
   const handleDeleteApplication = async (applicationId: string) => {
     if (!confirm('Bu başvuruyu silmek istediğinizden emin misiniz?')) return

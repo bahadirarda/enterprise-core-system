@@ -9,8 +9,7 @@ import {
   Building2, 
   Badge as BadgeIcon,
   Edit3,
-  ArrowLeft,
-  Home
+  ArrowLeft
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
