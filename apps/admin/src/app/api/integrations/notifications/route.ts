@@ -1,137 +1,116 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-export async function GET() {
+const getServerSupabaseClient = () => {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+};
+
+export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient();
-    
+    const supabase = getServerSupabaseClient();
+
+    // Fetch integration notifications with integration details
     const { data: notifications, error } = await supabase
       .from('integration_notifications')
       .select(`
         *,
-        integrations (
+        integrations:integration_id (
+          id,
           name,
-          type,
-          status
+          type
         )
       `)
       .order('created_at', { ascending: false })
       .limit(50);
 
     if (error) {
-      console.error('Integration notifications fetch error:', error);
-      // Return mock data if database error
-      return NextResponse.json([
-        {
-          id: "1",
-          integrationId: "1",
-          integrationName: "DigiDaga HR Teams",
-          title: "Production Deployment Successful",
-          message: "HRMS System v2.0 başarıyla production ortamına deploy edildi. Teams entegrasyonu aktif.",
-          type: "deployment",
-          timestamp: "2025-05-28T10:30:00Z",
-          read: false,
-          priority: "high"
-        },
-        {
-          id: "2",
-          integrationId: "2", 
-          integrationName: "Development Team",
-          title: "New Integration Request",
-          message: "Yeni bir Teams entegrasyonu bağlantı talebi alındı.",
-          type: "system",
-          timestamp: "2025-05-28T09:15:00Z",
-          read: false,
-          priority: "medium"
-        }
-      ]);
+      throw error;
     }
 
-    // Transform the data to match frontend expectations
-    type IntegrationNotificationRow = {
-      id: string;
-      integration_id: string;
-      integrations?: {
-        name?: string;
-        type?: string;
-        status?: string;
-      };
-      title: string;
-      message: string;
-      type: string;
-      created_at: string;
-      status?: string;
-      priority?: string;
-    };
-    const transformedData = notifications?.map((notification: IntegrationNotificationRow) => ({
+    // Transform data to match expected format
+    const transformedNotifications = notifications?.map(notification => ({
       id: notification.id,
       integrationId: notification.integration_id,
       integrationName: notification.integrations?.name || 'Unknown Integration',
+      integrationType: notification.integrations?.type || 'unknown',
       title: notification.title,
       message: notification.message,
       type: notification.type,
+      priority: notification.priority,
+      status: notification.status,
       timestamp: notification.created_at,
-      read: notification.status === 'read',
-      priority: notification.priority
-    })) || [];
+      sentAt: notification.sent_at,
+      deliveredAt: notification.delivered_at,
+      metadata: notification.metadata || {},
+      read: notification.status === 'read'
+    }));
 
-    return NextResponse.json(transformedData);
+    return NextResponse.json({
+      success: true,
+      data: transformedNotifications || []
+    });
+
   } catch (error) {
     console.error('Integration notifications API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'Failed to fetch notifications',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getServerSupabaseClient();
     const body = await request.json();
-    const supabase = getSupabaseClient();
-    
+
     const { data: notification, error } = await supabase
       .from('integration_notifications')
       .insert([{
-        integration_id: body.integrationId,
+        integration_id: body.integration_id,
         type: body.type,
         title: body.title,
         message: body.message,
         priority: body.priority || 'medium',
+        status: 'pending',
         metadata: body.metadata || {}
       }])
       .select()
       .single();
 
     if (error) {
-      console.error('Integration notification creation error:', error);
-      return NextResponse.json({
-        id: Date.now().toString(),
-        ...body,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      });
+      throw error;
     }
 
-    // Simulate sending notification
-    setTimeout(async () => {
-      await supabase
-        .from('integration_notifications')
-        .update({ 
-          status: 'sent', 
-          sent_at: new Date().toISOString() 
-        })
-        .eq('id', notification.id);
-    }, 1000);
+    return NextResponse.json({
+      success: true,
+      data: notification
+    });
 
-    return NextResponse.json(notification);
   } catch (error) {
-    console.error('Integration notification creation API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Create notification error:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'Failed to create notification',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
 }
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const supabase = getSupabaseClient();
+    const supabase = getServerSupabaseClient();
     
     const { data: notification, error } = await supabase
       .from('integration_notifications')

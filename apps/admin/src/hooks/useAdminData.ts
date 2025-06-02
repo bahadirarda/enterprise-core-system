@@ -198,53 +198,53 @@ export function useRecentActivities() {
   const [activities, setActivities] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function fetchActivities() {
-      try {
-        setLoading(true)
-        const supabase = getSupabaseClient()
-        
-        // Fetch recent organizations
-        const { data: recentOrgs } = await supabase
-          .from('organizations')
-          .select('name, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2)
+  const fetchActivities = async () => {
+    try {
+      setLoading(true)
+      const supabase = getSupabaseClient()
+      
+      // Fetch recent organizations
+      const { data: recentOrgs } = await supabase
+        .from('organizations')
+        .select('name, created_at')
+        .order('created_at', { ascending: false })
+        .limit(2)
 
-        // Fetch recent users
-        const { data: recentUsers } = await supabase
-          .from('user_profiles')
-          .select('email, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2)
+      // Fetch recent users
+      const { data: recentUsers } = await supabase
+        .from('user_profiles')
+        .select('email, created_at')
+        .order('created_at', { ascending: false })
+        .limit(2)
 
-        const activities: RecentActivity[] = [
-          ...(recentOrgs || []).map((org: { name: string; created_at: string }) => ({
-            id: Math.random(),
-            text: `Yeni şirket eklendi: ${org.name}`,
-            time: formatTimeAgo(org.created_at),
-            type: 'success' as const
-          })),
-          ...(recentUsers || []).map((user: { email: string; created_at: string }) => ({
-            id: Math.random(),
-            text: `Yeni kullanıcı kaydı: ${user.email}`,
-            time: formatTimeAgo(user.created_at),
-            type: 'info' as const
-          }))
-        ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 4)
+      const activities: RecentActivity[] = [
+        ...(recentOrgs || []).map((org: { name: string; created_at: string }) => ({
+          id: Math.random(),
+          text: `Yeni şirket eklendi: ${org.name}`,
+          time: formatTimeAgo(org.created_at),
+          type: 'success' as const
+        })),
+        ...(recentUsers || []).map((user: { email: string; created_at: string }) => ({
+          id: Math.random(),
+          text: `Yeni kullanıcı kaydı: ${user.email}`,
+          time: formatTimeAgo(user.created_at),
+          type: 'info' as const
+        }))
+      ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 4)
 
-        setActivities(activities)
-      } catch (err) {
-        console.error('Error fetching activities:', err)
-      } finally {
-        setLoading(false)
-      }
+      setActivities(activities)
+    } catch (err) {
+      console.error('Error fetching activities:', err)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchActivities()
   }, [])
 
-  return { activities, loading }
+  return { activities, loading, refetch: fetchActivities }
 }
 
 function formatTimeAgo(dateString: string): string {
