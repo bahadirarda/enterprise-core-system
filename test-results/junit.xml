@@ -1,48 +1,39 @@
-<testsuites id="" name="" tests="10" failures="0" skipped="0" errors="0" time="51.832205">
-<testsuite name="e2e-test.spec.js" timestamp="2025-05-29T16:49:06.754Z" hostname="chromium" tests="10" failures="0" skipped="0" time="215.054" errors="0">
-<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="30.215">
+<testsuites id="" name="" tests="50" failures="1" skipped="0" errors="0" time="208.68364300000002">
+<testsuite name="e2e-test.spec.js" timestamp="2025-05-30T16:03:03.722Z" hostname="chromium" tests="10" failures="0" skipped="0" time="125.542" errors="0">
+<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="7.419">
 <system-out>
 <![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
 ✅ Auth App (Port 4000) - Login page test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="14.748">
+<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="12.018">
 <system-out>
 <![CDATA[✅ Portal App (Port 4001) - Main page test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="42.193">
+<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="16.312">
 <system-out>
 <![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
-
-[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/video.webm]]
-
-[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/error-context.md]]
-🚀 Starting parallel E2E tests with new port configuration (4000-4004)
 ✅ HRMS App (Port 4002) - Dashboard test passed
-
-[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="2.665">
+<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="9.907">
 <system-out>
 <![CDATA[✅ Admin App (Port 4003) - Dashboard test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="32.676">
+<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="14.319">
 <system-out>
 <![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
 ✅ Admin App - Navigation test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="12.194">
+<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="14.36">
 <system-out>
 <![CDATA[✅ Auth App (Port 4000) - HTTP Status: 200
 ✅ HRMS App (Port 4002) - HTTP Status: 200
@@ -51,34 +42,412 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="32.529">
+<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="14.297">
 <system-out>
 <![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
 ✅ Auth App - Form validation test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="3.406">
+<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="7.297">
 <system-out>
 <![CDATA[✅ Admin App - System Status Widget test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="33.162">
+<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="19.315">
 <system-out>
 <![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
 ✅ Responsive Design test passed
 ]]>
 </system-out>
 </testcase>
-<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="11.266">
+<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="10.298">
 <system-out>
-<![CDATA[✅ Auth App - Load time: 2360ms
-✅ HRMS App - Load time: 1237ms
-✅ Portal App - Load time: 4352ms
-✅ Admin App - Load time: 2052ms
+<![CDATA[✅ Auth App - Load time: 2356ms
+✅ HRMS App - Load time: 2603ms
+✅ Portal App - Load time: 2306ms
+✅ Admin App - Load time: 1782ms
 ]]>
 </system-out>
+</testcase>
+</testsuite>
+<testsuite name="e2e-test.spec.js" timestamp="2025-05-30T16:03:03.722Z" hostname="firefox" tests="10" failures="1" skipped="0" time="372.161" errors="0">
+<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="23.778">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App (Port 4000) - Login page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="40.769">
+<system-out>
+<![CDATA[✅ Portal App (Port 4001) - Main page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="26.581">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ HRMS App (Port 4002) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="45.01">
+<system-out>
+<![CDATA[✅ Admin App (Port 4003) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="37.3">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Admin App - Navigation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="41.509">
+<system-out>
+<![CDATA[✅ Auth App (Port 4000) - HTTP Status: 200
+✅ HRMS App (Port 4002) - HTTP Status: 200
+✅ Portal App (Port 4001) - HTTP Status: 200
+✅ Admin App (Port 4003) - HTTP Status: 200
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="46.533">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App - Form validation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="7.756">
+<system-out>
+<![CDATA[✅ Admin App - System Status Widget test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="99.127">
+<failure message="e2e-test.spec.js:150:3 Responsive Design Test" type="FAILURE">
+<![CDATA[  [firefox] › e2e-test.spec.js:150:3 › HRMS System E2E Tests › Responsive Design Test ──────────────
+
+    Test timeout of 45000ms exceeded.
+
+    Error: page.reload: Test timeout of 45000ms exceeded.
+    Call log:
+      - waiting for navigation until "load"
+        - navigated to "http://localhost:4003/"
+
+
+      156 |     // Tablet test
+      157 |     await page.setViewportSize({ width: 768, height: 1024 });
+    > 158 |     await page.reload();
+          |                ^
+      159 |     await expect(page.locator('h1:has-text("Admin Panel")')).toBeVisible();
+      160 |     
+      161 |     // Mobile test
+        at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:158:16
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 45000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/error-context.md]]
+🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Responsive Design test passed
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/video.webm]]
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="3.798">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App - Load time: 528ms
+✅ HRMS App - Load time: 898ms
+✅ Portal App - Skipped due to load issue
+✅ Admin App - Load time: 770ms
+]]>
+</system-out>
+<system-err>
+<![CDATA[⚠️ Portal App - Load issue: page.goto: NS_BINDING_ABORTED
+Call log:
+[2m  - navigating to "http://localhost:4001/", waiting until "load"[22m
+
+]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="e2e-test.spec.js" timestamp="2025-05-30T16:03:03.722Z" hostname="webkit" tests="10" failures="0" skipped="0" time="417.713" errors="0">
+<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="57.751">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App (Port 4000) - Login page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="19.888">
+<system-out>
+<![CDATA[✅ Portal App (Port 4001) - Main page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="118.989">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ HRMS App (Port 4002) - Dashboard test passed
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-webkit/test-failed-1.png]]
+🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ HRMS App (Port 4002) - Dashboard test passed
+
+[[ATTACHMENT|e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-webkit-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="6.742">
+<system-out>
+<![CDATA[✅ Admin App (Port 4003) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="81.216">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Admin App - Navigation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="18.155">
+<system-out>
+<![CDATA[✅ Auth App (Port 4000) - HTTP Status: 200
+✅ HRMS App (Port 4002) - HTTP Status: 200
+✅ Portal App (Port 4001) - HTTP Status: 200
+✅ Admin App (Port 4003) - HTTP Status: 200
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="17.898">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App - Form validation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="18.459">
+<system-out>
+<![CDATA[✅ Admin App - System Status Widget test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="17.791">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Responsive Design test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="60.824">
+<system-out>
+<![CDATA[✅ Auth App - Load time: 5156ms
+✅ HRMS App - Load time: 6939ms
+✅ Portal App - Skipped due to load issue
+✅ Admin App - Load time: 6621ms
+]]>
+</system-out>
+<system-err>
+<![CDATA[⚠️ Portal App - Load issue: page.goto: Navigation to "http://localhost:4001/" is interrupted by another navigation to "http://localhost:4000/"
+Call log:
+[2m  - navigating to "http://localhost:4001/", waiting until "load"[22m
+
+]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="e2e-test.spec.js" timestamp="2025-05-30T16:03:03.722Z" hostname="Mobile Chrome" tests="10" failures="0" skipped="0" time="137.174" errors="0">
+<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="8.442">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App (Port 4000) - Login page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="11.918">
+<system-out>
+<![CDATA[✅ Portal App (Port 4001) - Main page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="15.092">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ HRMS App (Port 4002) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="12.925">
+<system-out>
+<![CDATA[✅ Admin App (Port 4003) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="9.73">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Admin App - Navigation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="31.178">
+<system-out>
+<![CDATA[✅ Auth App (Port 4000) - HTTP Status: 200
+✅ HRMS App (Port 4002) - HTTP Status: 200
+✅ Portal App (Port 4001) - HTTP Status: 200
+✅ Admin App (Port 4003) - HTTP Status: 200
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="12.832">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App - Form validation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="6.663">
+<system-out>
+<![CDATA[✅ Admin App - System Status Widget test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="6.276">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Responsive Design test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="22.118">
+<system-out>
+<![CDATA[✅ Auth App - Load time: 5126ms
+✅ HRMS App - Load time: 9781ms
+✅ Portal App - Load time: 3506ms
+✅ Admin App - Load time: 1760ms
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="e2e-test.spec.js" timestamp="2025-05-30T16:03:03.722Z" hostname="Mobile Safari" tests="10" failures="0" skipped="0" time="91.978" errors="0">
+<testcase name="HRMS System E2E Tests › Auth App - Login page loads correctly" classname="e2e-test.spec.js" time="15.921">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App (Port 4000) - Login page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Portal App - Main page loads correctly" classname="e2e-test.spec.js" time="3.094">
+<system-out>
+<![CDATA[✅ Portal App (Port 4001) - Main page test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › HRMS App - Dashboard loads correctly" classname="e2e-test.spec.js" time="18.61">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ HRMS App (Port 4002) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Dashboard loads correctly" classname="e2e-test.spec.js" time="5.442">
+<system-out>
+<![CDATA[✅ Admin App (Port 4003) - Dashboard test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - Navigation test" classname="e2e-test.spec.js" time="18.842">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Admin App - Navigation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › System Status Check - All ports respond" classname="e2e-test.spec.js" time="5.824">
+<system-out>
+<![CDATA[✅ Auth App (Port 4000) - HTTP Status: 200
+✅ HRMS App (Port 4002) - HTTP Status: 200
+✅ Portal App (Port 4001) - HTTP Status: 200
+✅ Admin App (Port 4003) - HTTP Status: 200
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Auth App - Form validation" classname="e2e-test.spec.js" time="4.954">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Auth App - Form validation test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Admin App - System Status Widget" classname="e2e-test.spec.js" time="3.077">
+<system-out>
+<![CDATA[✅ Admin App - System Status Widget test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Responsive Design Test" classname="e2e-test.spec.js" time="11.695">
+<system-out>
+<![CDATA[🚀 Starting parallel E2E tests with new port configuration (4000-4004)
+✅ Responsive Design test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="HRMS System E2E Tests › Performance Test - Page Load Times" classname="e2e-test.spec.js" time="4.519">
+<system-out>
+<![CDATA[✅ Auth App - Load time: 1001ms
+✅ HRMS App - Load time: 1555ms
+✅ Portal App - Skipped due to load issue
+✅ Admin App - Load time: 715ms
+]]>
+</system-out>
+<system-err>
+<![CDATA[⚠️ Portal App - Load issue: page.goto: Navigation to "http://localhost:4001/" is interrupted by another navigation to "http://localhost:4000/"
+Call log:
+[2m  - navigating to "http://localhost:4001/", waiting until "load"[22m
+
+]]>
+</system-err>
 </testcase>
 </testsuite>
 </testsuites>

@@ -9,9 +9,9 @@
     "globalTimeout": 0,
     "grep": {},
     "grepInvert": null,
-    "maxFailures": 5,
+    "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 5
+      "actualWorkers": 8
     },
     "preserveOutput": "always",
     "reporter": [
@@ -43,7 +43,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 8
         },
         "id": "chromium",
         "name": "chromium",
@@ -59,7 +59,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 8
         },
         "id": "firefox",
         "name": "firefox",
@@ -75,7 +75,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 8
         },
         "id": "webkit",
         "name": "webkit",
@@ -91,7 +91,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 8
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -107,7 +107,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 8
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -156,7 +156,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 30215,
+                      "duration": 7419,
                       "errors": [],
                       "stdout": [
                         {
@@ -168,7 +168,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:08.260Z",
+                      "startTime": "2025-05-30T16:03:05.943Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -197,7 +197,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 14748,
+                      "duration": 12018,
                       "errors": [],
                       "stdout": [
                         {
@@ -206,7 +206,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:39.346Z",
+                      "startTime": "2025-05-30T16:03:16.640Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -234,65 +234,8 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 40931,
-                      "error": {
-                        "message": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n",
-                        "stack": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n\n    at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:52:16",
-                        "location": {
-                          "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
-                          "column": 16,
-                          "line": 52
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 50 |\u001b[39m\n \u001b[90m 51 |\u001b[39m   test(\u001b[32m'HRMS App - Dashboard loads correctly'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`http://localhost:${HRMS_PORT}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m     \n \u001b[90m 54 |\u001b[39m     \u001b[90m// Sayfa yüklendiğini kontrol et\u001b[39m\n \u001b[90m 55 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'body'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
-                            "column": 16,
-                            "line": 52
-                          },
-                          "message": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 50 |\u001b[39m\n \u001b[90m 51 |\u001b[39m   test(\u001b[32m'HRMS App - Dashboard loads correctly'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`http://localhost:${HRMS_PORT}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m     \n \u001b[90m 54 |\u001b[39m     \u001b[90m// Sayfa yüklendiğini kontrol et\u001b[39m\n \u001b[90m 55 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'body'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:52:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-05-29T16:49:08.247Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/video.webm"
-                        },
-                        {
-                          "name": "_error-context-0",
-                          "contentType": "text/markdown",
-                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
-                        "column": 16,
-                        "line": 52
-                      }
-                    },
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 1262,
+                      "duration": 16312,
                       "errors": [],
                       "stdout": [
                         {
@@ -303,19 +246,13 @@
                         }
                       ],
                       "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-05-29T16:49:54.112Z",
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:05.910Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-chromium-retry1/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
-                  "status": "flaky"
+                  "status": "expected"
                 }
               ],
               "id": "6a80ceeda440854fd51c-0b55454b3a7338a03857",
@@ -336,10 +273,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 2665,
+                      "duration": 9907,
                       "errors": [],
                       "stdout": [
                         {
@@ -348,7 +285,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:55.779Z",
+                      "startTime": "2025-05-30T16:03:25.501Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -377,7 +314,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 32676,
+                      "duration": 14319,
                       "errors": [],
                       "stdout": [
                         {
@@ -389,7 +326,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:08.217Z",
+                      "startTime": "2025-05-30T16:03:05.763Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -418,7 +355,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 12194,
+                      "duration": 14360,
                       "errors": [],
                       "stdout": [
                         {
@@ -436,7 +373,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:41.674Z",
+                      "startTime": "2025-05-30T16:03:23.538Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -465,7 +402,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 32529,
+                      "duration": 14297,
                       "errors": [],
                       "stdout": [
                         {
@@ -477,7 +414,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:08.221Z",
+                      "startTime": "2025-05-30T16:03:05.912Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -506,7 +443,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 3406,
+                      "duration": 7297,
                       "errors": [],
                       "stdout": [
                         {
@@ -515,7 +452,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:41.506Z",
+                      "startTime": "2025-05-30T16:03:23.480Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -544,7 +481,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 33162,
+                      "duration": 19315,
                       "errors": [],
                       "stdout": [
                         {
@@ -556,7 +493,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:08.263Z",
+                      "startTime": "2025-05-30T16:03:05.864Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -585,25 +522,25 @@
                       "workerIndex": 4,
                       "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 11266,
+                      "duration": 10298,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "✅ Auth App - Load time: 2360ms\n"
+                          "text": "✅ Auth App - Load time: 2356ms\n"
                         },
                         {
-                          "text": "✅ HRMS App - Load time: 1237ms\n"
+                          "text": "✅ HRMS App - Load time: 2603ms\n"
                         },
                         {
-                          "text": "✅ Portal App - Load time: 4352ms\n"
+                          "text": "✅ Portal App - Load time: 2306ms\n"
                         },
                         {
-                          "text": "✅ Admin App - Load time: 2052ms\n"
+                          "text": "✅ Admin App - Load time: 1782ms\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-05-29T16:49:42.131Z",
+                      "startTime": "2025-05-30T16:03:28.572Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -615,6 +552,1781 @@
               "file": "e2e-test.spec.js",
               "line": 169,
               "column": 3
+            },
+            {
+              "title": "Auth App - Login page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 23778,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App (Port 4000) - Login page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:05.920Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-49996c5b5093bd2df956",
+              "file": "e2e-test.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Portal App - Main page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 40769,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Portal App (Port 4001) - Main page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:52.553Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-e34f490dd9e8842ac827",
+              "file": "e2e-test.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "HRMS App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 26581,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:05.932Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-904b8f690a284310a19a",
+              "file": "e2e-test.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 45010,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App (Port 4003) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:55.589Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-f04f8db2ad5fe5e7a302",
+              "file": "e2e-test.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Navigation test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 37300,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Navigation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:06.033Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-230f1bf3787f1eeb50c7",
+              "file": "e2e-test.spec.js",
+              "line": 87,
+              "column": 3
+            },
+            {
+              "title": "System Status Check - All ports respond",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 41509,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App (Port 4000) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Portal App (Port 4001) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Admin App (Port 4003) - HTTP Status: 200\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:02.351Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-969c1cc17b805aedc98f",
+              "file": "e2e-test.spec.js",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Form validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 46533,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Form validation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:39.151Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-919627db923ec967f791",
+              "file": "e2e-test.spec.js",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "Admin App - System Status Widget",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7756,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App - System Status Widget test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:41.929Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-7112846b3fef992f767d",
+              "file": "e2e-test.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "Responsive Design Test",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "timedOut",
+                      "duration": 51764,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js",
+                            "column": 16,
+                            "line": 158
+                          },
+                          "message": "Error: page.reload: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://localhost:4003/\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 156 |\u001b[39m     \u001b[90m// Tablet test\u001b[39m\n \u001b[90m 157 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39msetViewportSize({ width\u001b[33m:\u001b[39m \u001b[35m768\u001b[39m\u001b[33m,\u001b[39m height\u001b[33m:\u001b[39m \u001b[35m1024\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 158 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mreload()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 159 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1:has-text(\"Admin Panel\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 160 |\u001b[39m     \n \u001b[90m 161 |\u001b[39m     \u001b[90m// Mobile test\u001b[39m\u001b[0m\n\u001b[2m    at /Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/tests/e2e-test.spec.js:158:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:40.634Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/video.webm"
+                        },
+                        {
+                          "name": "_error-context-1",
+                          "contentType": "text/markdown",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox/error-context.md"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 3,
+                      "status": "timedOut",
+                      "duration": 47363,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Responsive Design test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-30T16:05:00.612Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-Tests-Responsive-Design-Test-firefox-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-9a3f0fa89a3821aae72e",
+              "file": "e2e-test.spec.js",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "Performance Test - Page Load Times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3798,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Load time: 528ms\n"
+                        },
+                        {
+                          "text": "✅ HRMS App - Load time: 898ms\n"
+                        },
+                        {
+                          "text": "✅ Portal App - Skipped due to load issue\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Load time: 770ms\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "⚠️ Portal App - Load issue: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4001/\", waiting until \"load\"\u001b[22m\n\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:26.810Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-e143fc6a0710a3e978aa",
+              "file": "e2e-test.spec.js",
+              "line": 169,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Login page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 57751,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App (Port 4000) - Login page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:45.197Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-65d5796b6c553a0e42a8",
+              "file": "e2e-test.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Portal App - Main page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 19888,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Portal App (Port 4001) - Main page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:53.219Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-e9ecc1f72b65275cd80b",
+              "file": "e2e-test.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "HRMS App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 2,
+                      "status": "timedOut",
+                      "duration": 80453,
+                      "error": {
+                        "message": "\u001b[31mTearing down \"context\" exceeded the test timeout of 45000ms.\u001b[39m",
+                        "stack": "\u001b[31mTearing down \"context\" exceeded the test timeout of 45000ms.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTearing down \"context\" exceeded the test timeout of 45000ms.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:46.932Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-webkit/test-failed-1.png"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 38536,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-30T16:05:27.841Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/bahadirarda/Documents/bahadirarda96@icloud.com/digidaga/hrms-system/test-results/e2e-test-HRMS-System-E2E-T-fdc09---Dashboard-loads-correctly-webkit-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "flaky"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-2dfeb2edfe6c52a0ebbd",
+              "file": "e2e-test.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 6742,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App (Port 4003) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:14.954Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-3d2c38db2185b3d90493",
+              "file": "e2e-test.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Navigation test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 81216,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Navigation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:03:48.339Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-2a1edb660857cb15879b",
+              "file": "e2e-test.spec.js",
+              "line": 87,
+              "column": 3
+            },
+            {
+              "title": "System Status Check - All ports respond",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 18155,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App (Port 4000) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Portal App (Port 4001) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Admin App (Port 4003) - HTTP Status: 200\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:16.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-d613875909bf2918db59",
+              "file": "e2e-test.spec.js",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Form validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 17898,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Form validation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:47.261Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-7859e38d0950bbb4f5a3",
+              "file": "e2e-test.spec.js",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "Admin App - System Status Widget",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 18459,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App - System Status Widget test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:07.485Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-869d69b7f1e74c3472b0",
+              "file": "e2e-test.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "Responsive Design Test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 17791,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Responsive Design test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:50.195Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-10738a0e3f39a1342a20",
+              "file": "e2e-test.spec.js",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "Performance Test - Page Load Times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 60824,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App - Load time: 5156ms\n"
+                        },
+                        {
+                          "text": "✅ HRMS App - Load time: 6939ms\n"
+                        },
+                        {
+                          "text": "✅ Portal App - Skipped due to load issue\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Load time: 6621ms\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "⚠️ Portal App - Load issue: page.goto: Navigation to \"http://localhost:4001/\" is interrupted by another navigation to \"http://localhost:4000/\"\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4001/\", waiting until \"load\"\u001b[22m\n\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:08.748Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-2a168570d48022501dca",
+              "file": "e2e-test.spec.js",
+              "line": 169,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Login page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 8442,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App (Port 4000) - Login page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:04:51.860Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-51ed35effd76d9b3f609",
+              "file": "e2e-test.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Portal App - Main page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 11918,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Portal App (Port 4001) - Main page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:02.514Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-c64fc635affa155a95f0",
+              "file": "e2e-test.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "HRMS App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 15092,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:04.054Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-f5ef2a07639b35ac85e7",
+              "file": "e2e-test.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12925,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App (Port 4003) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:22.002Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-d75c756af34a407a3db6",
+              "file": "e2e-test.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Navigation test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9730,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Navigation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:27.841Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-7506c4a0c55e9381934c",
+              "file": "e2e-test.spec.js",
+              "line": 87,
+              "column": 3
+            },
+            {
+              "title": "System Status Check - All ports respond",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 31178,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App (Port 4000) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Portal App (Port 4001) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Admin App (Port 4003) - HTTP Status: 200\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:41.069Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-138d4b27e8aadcdeb516",
+              "file": "e2e-test.spec.js",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Form validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 12832,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Form validation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:14.537Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-23acbaffcd3af004b8cb",
+              "file": "e2e-test.spec.js",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "Admin App - System Status Widget",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 6663,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App - System Status Widget test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:27.468Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-54b914547dca372258f9",
+              "file": "e2e-test.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "Responsive Design Test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 6276,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Responsive Design test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:36.704Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-30bd98daed00a20810da",
+              "file": "e2e-test.spec.js",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "Performance Test - Page Load Times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 22118,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App - Load time: 5126ms\n"
+                        },
+                        {
+                          "text": "✅ HRMS App - Load time: 9781ms\n"
+                        },
+                        {
+                          "text": "✅ Portal App - Load time: 3506ms\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Load time: 1760ms\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:43.700Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-e7cab8328fc3ea3ff2d9",
+              "file": "e2e-test.spec.js",
+              "line": 169,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Login page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 15921,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App (Port 4000) - Login page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:41.229Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-19f34c3f4a4af2d9fdb4",
+              "file": "e2e-test.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Portal App - Main page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 3094,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Portal App (Port 4001) - Main page test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:03.800Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-354ac461e5af28783082",
+              "file": "e2e-test.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "HRMS App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 18610,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:41.328Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-d15578c10425078d8042",
+              "file": "e2e-test.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Dashboard loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 5442,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App (Port 4003) - Dashboard test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:06.286Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-21fc7d97f07953997f0d",
+              "file": "e2e-test.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Admin App - Navigation test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 18842,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Navigation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:05:41.229Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-b43c8005f0b12fbd2e75",
+              "file": "e2e-test.spec.js",
+              "line": 87,
+              "column": 3
+            },
+            {
+              "title": "System Status Check - All ports respond",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5824,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App (Port 4000) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ HRMS App (Port 4002) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Portal App (Port 4001) - HTTP Status: 200\n"
+                        },
+                        {
+                          "text": "✅ Admin App (Port 4003) - HTTP Status: 200\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:06.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-f4d21c6976c83c580161",
+              "file": "e2e-test.spec.js",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "Auth App - Form validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 4954,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Auth App - Form validation test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:12.845Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-680ba365520f1b3e4c90",
+              "file": "e2e-test.spec.js",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "Admin App - System Status Widget",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 3077,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Admin App - System Status Widget test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:18.781Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-712e210fa4cfb945f689",
+              "file": "e2e-test.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "Responsive Design Test",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 11695,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Starting parallel E2E tests with new port configuration (4000-4004)\n"
+                        },
+                        {
+                          "text": "✅ Responsive Design test passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:06.920Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-bdf341d4f63982bb4f25",
+              "file": "e2e-test.spec.js",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "Performance Test - Page Load Times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 4519,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Auth App - Load time: 1001ms\n"
+                        },
+                        {
+                          "text": "✅ HRMS App - Load time: 1555ms\n"
+                        },
+                        {
+                          "text": "✅ Portal App - Skipped due to load issue\n"
+                        },
+                        {
+                          "text": "✅ Admin App - Load time: 715ms\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "⚠️ Portal App - Load issue: page.goto: Navigation to \"http://localhost:4001/\" is interrupted by another navigation to \"http://localhost:4000/\"\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4001/\", waiting until \"load\"\u001b[22m\n\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2025-05-30T16:06:18.656Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6a80ceeda440854fd51c-ad21af274f10351a05ee",
+              "file": "e2e-test.spec.js",
+              "line": 169,
+              "column": 3
             }
           ]
         }
@@ -623,11 +2335,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-05-29T16:49:06.651Z",
-    "duration": 51832.205,
-    "expected": 9,
+    "startTime": "2025-05-30T16:03:03.675Z",
+    "duration": 208683.643,
+    "expected": 48,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 1
   }
 }
